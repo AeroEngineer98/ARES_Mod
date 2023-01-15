@@ -2,20 +2,20 @@
 
 mount_vfs_model_path	(current_mod_path.."/Shapes")
 mount_vfs_liveries_path (current_mod_path.."/Liveries")
-mount_vfs_texture_path  (current_mod_path.."/Textures/ARES.zip")
-mount_vfs_texture_path  (current_mod_path.."/Textures/")
+--mount_vfs_texture_path  (current_mod_path.."/Textures/ARES.zip")
+--mount_vfs_texture_path  (current_mod_path.."/Textures/")
 mount_vfs_sound_path    (current_mod_path.."/Sounds")
 
 ARES =  {
 	Name 				=   'ARES',
 	DisplayName			= _('ARES'),
 	Cannon 				= "yes",
-	HumanCockpit 		= false,
-	HumanCockpitPath    = current_mod_path..'/Cockpit/',
-	Picture 			= "A-29B.png", 
+	
+	Picture 			= "ARES_Loadout.png", -- Loadout picture in the weapons loadout screen
 	Rate 				= 40, -- RewardPoint in Multiplayer
 	Shape 				= "ARES",
 	debrisGeneration     = true,
+	
 	shape_table_data 	= 
 	{
 		{
@@ -38,33 +38,28 @@ ARES =  {
 
 	},
 
-
 	mapclasskey 		= "P0091000025", -- Was P0091000024
 	
-
-
-
-		
-    index       =  WSTYPE_PLACEHOLDER;
+	index       =  WSTYPE_PLACEHOLDER;
 	attribute  	= {wsType_Air, wsType_Airplane, wsType_Fighter, WSTYPE_PLACEHOLDER , ARES,"Fighters", "Refuelable",},
 	Categories	= {"{78EFB7A2-FD52-4b57-A6A6-3BF0E1D6555F}", "Interceptor",},	
+	
 	    M_empty									=	5120,  -- kg
 		M_nominal								=	6400,  -- kg  -- kg ~ %50 fuel, combat load
 		M_max									=	9930,  -- kg
 		M_fuel_max								=   640, -- utilizável 495 --509 + 239 + 249*2 + 231,   -- kg Asas, Fuselage, Subalar, Ventral,
-        M_fuel_per_tank 						= 	{320, 320}, -- kg
-		H_max									=	10668 , -- m
+        --M_fuel_per_tank 						= 	{320, 320}, -- kg
+		H_max									=	15000 , -- m
 
-		average_fuel_consumption 	= 0.302, -- this is highly relative, but good estimates are 36-40l/min = 28-31kg/min = 0.47-0.52kg/s -- 45l/min = 35kg/min = 0.583kg/s
-        defFuelRatio    			= 0.68, -- топливо по умолчанию в долях от полного
-		CAS_min 					= 53, -- if this is not OVERAL FLIGHT TIME, but jus LOITER TIME, than it sholud be 10-15 minutes.....CAS capability in minute (for AI)
-		V_opt 						= 240/1.944,-- Cruise speed (for AI) –- Assume Mach 0.80 at 20000 ft as optimal. See -- http://www.nasa.gov/centers/dryden/pdf/87789main_H-636.pdf and		–- http://www.hochwarth.com/misc/AviationCalculator.html 		–- Mach 0.8 at 20000 = XXX kts TAS = XXX m / s
-		V_take_off 					= 120/1.944, -- Take off speed in m/s (for AI)
-		V_land 						= 125/1.944, -- Land speed in m/s (for AI)
-		V_max_sea_level 			= 320/1.944, -- Max speed at sea level in m/s (for AI)
-		V_max_h 					= 210/1.944, -- Max speed at max altitude in m/s (for AI)
-		Vy_max 						= 12, -- Max climb speed in m/s (for AI)
-		Mach_max 					= 0.562, -- Max speed in Mach (for AI)
+		average_fuel_consumption 	= 0.4, -- this is highly relative, but good estimates are 36-40l/min = 28-31kg/min = 0.47-0.52kg/s -- 45l/min = 35kg/min = 0.583kg/s
+		CAS_min 					= 53, -- if this is not OVERAL FLIGHT TIME, but just LOITER TIME, than it sholud be 10-15 minutes.....CAS capability in minute (for AI)
+		V_opt 						= 250,-- Cruise speed (for AI) –- Assume Mach 0.80 at 20000 ft as optimal. See -- http://www.nasa.gov/centers/dryden/pdf/87789main_H-636.pdf and		–- http://www.hochwarth.com/misc/AviationCalculator.html 		–- Mach 0.8 at 20000 = XXX kts TAS = XXX m / s
+		V_take_off 					= 120, -- Take off speed in m/s (for AI)
+		V_land 						= 125, -- Land speed in m/s (for AI)
+		V_max_sea_level 			= 500, -- Max speed at sea level in m/s (for AI)
+		V_max_h 					= 300, -- Max speed at max altitude in m/s (for AI)
+		Vy_max 						= 100, -- Max climb speed in m/s (for AI)
+		Mach_max 					= 0.9, -- Max speed in Mach (for AI)
 		Ny_min 						= -4, -- Min G (for AI)
 		Ny_max 						= 8.0,  -- Max G (for AI)
 		Ny_max_e 					= 8.0,  -- Max G (for AI)
@@ -79,12 +74,12 @@ ARES =  {
 		nose_gear_pos 				= 	{4.15486,	-1.58895,	0}, 
 		tand_gear_max				=	0.57735026919, -- tangent of degrees of rotation max of nose wheel steering
 
-		nose_gear_amortizer_direct_stroke        = 0.00,    -- down from nose_gear_pos !!!
-		nose_gear_amortizer_reversal_stroke      = -0.16,   -- up
-		nose_gear_amortizer_normal_weight_stroke = -0.06,   
-		main_gear_amortizer_direct_stroke        = 0.00,     -- down from main_gear_pos !!!
-		main_gear_amortizer_reversal_stroke      = -0.16,   -- up
-		main_gear_amortizer_normal_weight_stroke = -0.06,   
+		--nose_gear_amortizer_direct_stroke        = 0.00,    -- down from nose_gear_pos !!!
+		--nose_gear_amortizer_reversal_stroke      = -0.16,   -- up
+		--nose_gear_amortizer_normal_weight_stroke = -0.06,   
+		--main_gear_amortizer_direct_stroke        = 0.00,     -- down from main_gear_pos !!!
+		--main_gear_amortizer_reversal_stroke      = -0.16,   -- up
+		--main_gear_amortizer_normal_weight_stroke = -0.06,   
 	
 		nose_gear_wheel_diameter	=	0.547, --in m
 		main_gear_wheel_diameter	=	0.643, -- in m
@@ -155,114 +150,66 @@ ARES =  {
 			[11] = 	{0.50,	0.084,	-2.7534},
 		}, -- end of fires_pos
 	
-		detection_range_max		 = 0, --is the max range in kilometers that the radar can see something large (e.g. a bomber, tanker, AWACS, etc.).
+		detection_range_max		 = 60, --is the max range in kilometers that the radar can see something large (e.g. a bomber, tanker, AWACS, etc.).
 		radar_can_see_ground 	 = false, -- ground target identification capability, but this has not been verified
 
 		CanopyGeometry = { -- Mk1 eyeball sensor for visual spotting targets
 			azimuth = {-160.0, 160.0}, -- pilot view horizontal (AI)
 			elevation = {-40.0, 90.0} -- pilot view vertical (AI)
 		},
+		
+		ViewSettings = {
+			Cockpit = {
+				[1] = {-- player slot 1
+					CockpitLocalPoint      = {3.25426,1.11609,0.000000},--front/back,up/down,left/right
+					CameraViewAngleLimits  = {20.000000,120.000000},
+					CameraAngleRestriction = {true,50.000000,0.400000},
+					CameraAngleLimits      = {80.000000,-75.000000,90.000000},
+					EyePoint               = {0.0,0.2,0.000000},--front/back,up/down,left/right
+					limits_6DOF            = {x = {-0.050000,0.450000},y ={-0.200000,0.200000},z = {-0.220000,0.220000},roll = 90.000000},
+				},
+			}, -- Cockpit 
+			
+			Chase = {
+				LocalPoint      = {-10.0,1.0,3.0},
+				AnglesDefault   = {0.000000, 0.000000},
+			}, -- Chase
+			
+			Arcade = {
+				LocalPoint      = {-21.500000,6.618000,0.000000},
+				AnglesDefault   = {0.000000,-8.000000},
+			}, -- Arcade
+		},
 
 		Sensors = {
+			RWR = "Abstract RWR", -- RWR type
+			RADAR = "AN/APQ-120", -- Radar type
 		},
 
 		HumanRadio = {
-			frequency     = 124.0, -- onboard radio, default DCSW frequency, chnl 0
-			editable     = true,
-			minFrequency     = 30.000,
-			maxFrequency     = 399.975,
-			rangeFrequency = {
-				{min = 30.0,  max = 87.975},
-				{min = 108.0, max = 173.975},
-				{min = 225.0, max = 399.975},
-			},
+			frequency = 251.0,  -- Radio Freq
+			editable = true,
+			minFrequency = 225.000,
+			maxFrequency = 399.975,
+			modulation = MODULATION_AM
 		},
-		
-		panelRadio = {
-			[1] = {
-				name = _("AN/ARC-150(V)-2"), --UHF
-				range = {
-					{min = 225.0, max = 399.975}
-				},
-				channels = {
-					[1] = { name = _("Channel 1"), default = 225.0, modulation = _("AM")}, -- default
-					[2] = { name = _("Channel 2"), default = 258.0, modulation = _("AM")},
-					[3] = { name = _("Channel 3"), default = 260.0, modulation = _("AM")},
-					[4] = { name = _("Channel 4"), default = 270.0, modulation = _("AM")},
-					[5] = { name = _("Channel 5"), default = 255.0, modulation = _("AM")},
-					[6] = { name = _("Channel 6"), default = 259.0, modulation = _("AM")},
-					[7] = { name = _("Channel 7"), default = 262.0, modulation = _("AM")},
-					[8] = { name = _("Channel 8"), default = 257.0, modulation = _("AM")},
-					[9] = { name = _("Channel 9"), default = 253.0, modulation = _("AM")},
-					[10] = { name = _("Channel 10"), default = 263.0, modulation = _("AM")},
-					[11] = { name = _("Channel 11"), default = 267.0, modulation = _("AM")},
-					[12] = { name = _("Channel 12"), default = 254.0, modulation = _("AM")},
-					[13] = { name = _("Channel 13"), default = 264.0, modulation = _("AM")},
-					[14] = { name = _("Channel 14"), default = 266.0, modulation = _("AM")},
-					[15] = { name = _("Channel 15"), default = 265.0, modulation = _("AM")},
-					[16] = { name = _("Channel 16"), default = 252.0, modulation = _("AM")},
-					[17] = { name = _("Channel 17"), default = 268.0, modulation = _("AM")},
-					[18] = { name = _("Channel 18"), default = 269.0, modulation = _("AM")},
-					[19] = { name = _("Channel 19"), default = 268.0, modulation = _("AM")},
-					[20] = { name = _("Channel 20"), default = 269.0, modulation = _("AM")},
-				}
-			},
-			[2] = {
-				name = _("SRT-651/N"), --VHF/UHF
-				range = {{min = 30.0, max = 88.0},
-						 {min = 108.0, max = 174.0},
-						 {min = 225.0, max = 399.975}},
-				channels = {
-					[1] = { name = _("Channel 1"), default = 225.0, connect = true}, -- default
-					[2] = { name = _("Channel 2"), default = 258.0},
-					[3] = { name = _("Channel 3"), default = 260.0},
-					[4] = { name = _("Channel 4"), default = 270.0},
-					[5] = { name = _("Channel 5"), default = 255.0},
-					[6] = { name = _("Channel 6"), default = 259.0},
-					[7] = { name = _("Channel 7"), default = 262.0},
-					[8] = { name = _("Channel 8"), default = 257.0},
-					[9] = { name = _("Channel 9"), default = 253.0},
-					[10] = { name = _("Channel 10"), default = 263.0},
-					[11] = { name = _("Channel 11"), default = 267.0},
-					[12] = { name = _("Channel 12"), default = 254.0},
-					[13] = { name = _("Channel 13"), default = 264.0},
-					[14] = { name = _("Channel 14"), default = 266.0},
-					[15] = { name = _("Channel 15"), default = 265.0},
-					[16] = { name = _("Channel 16"), default = 252.0},
-					[17] = { name = _("Channel 17"), default = 268.0},
-					[18] = { name = _("Channel 18"), default = 269.0},
-					[19] = { name = _("Channel 19"), default = 268.0},
-					[20] = { name = _("Channel 20"), default = 269.0},
-					[21] = { name = _("Channel 21"), default = 225.0},
-					[22] = { name = _("Channel 22"), default = 258.0},
-					[23] = { name = _("Channel 23"), default = 260.0},
-					[24] = { name = _("Channel 24"), default = 270.0},
-					[25] = { name = _("Channel 25"), default = 255.0},
-					[26] = { name = _("Channel 26"), default = 259.0},
-					[27] = { name = _("Channel 27"), default = 262.0},
-					[28] = { name = _("Channel 28"), default = 257.0},
-					[29] = { name = _("Channel 29"), default = 253.0},
-					[30] = { name = _("Channel 30"), default = 263.0},
-				}
-			},
-		},
-	
 		
 		-- Countermeasures
-		SingleChargeTotal = 60,
-		CMDS_Incrementation = 15,
-		ChaffDefault = 30,
-		ChaffChargeSize = 1,
-		FlareDefault = 15,
-		FlareChargeSize = 2,
-		CMDS_Edit = false,
-		chaff_flare_dispenser = {
-			[1] =
+		SingleChargeTotal	 	= 60,
+		CMDS_Incrementation 	= 15,
+		ChaffDefault 			= 30, 
+		ChaffChargeSize 		= 1,
+		FlareDefault 			= 15, 
+		FlareChargeSize 		= 2,
+		CMDS_Edit 				= false,
+		chaff_flare_dispenser 	= {
+			[1] = 
 			{
-				dir = {-1, 0, 0}, -- dispenses to rear
-				pos = {-6, 0, -0.8}, -- left rear of fuselage
+				dir =  {-1,0,0},	-- dispenses to rear
+				pos =  {-6, 0, -0.8},	-- left rear of fuselage
 			}, -- end of [1]
 		}, -- end of chaff_flare_dispenser
+
 
 		Pylons =     {
 			pylon(1, 0, -0.814, -0.525, -2.399,
@@ -731,10 +678,22 @@ ARES =  {
 
 	mapclasskey = "P0091000024",
 
-	Guns = {				-- {Y, Z, X} from Blender
-		MG_20({muzzle_pos = {4.228,0.248, 0.699},_connector =  "Point_Gun",rates = {1025},effect_arg_number = 350,mixes = {{1,2,2,3,3}},azimuth_initial = 0.0,elevation_initial = 0,supply_position = {4.5,0.22, 0.3}})-- MITRAIL AVR 1 
-	}, -- 3dsmax X, Z, -Y
+	--Guns = {				-- {Y, Z, X} from Blender
+	--	MG_20({muzzle_pos = {4.228,0.248, 0.699},_connector =  "Point_Gun",rates = {1025},effect_arg_number = 350,mixes = {{1,2,2,3,3}},azimuth_initial = 0.0,elevation_initial = 0,supply_position = {4.5,0.22, 0.3}})-- MITRAIL AVR 1 
+	--}, -- 3dsmax X, Z, -Y
 	
+	Guns = {gun_mount("M_61", {
+			count = 725,
+			_connector =  "Point_Gun",
+			rates = {1025},
+			muzzle_pos 		  = {4.228,0.248, 0.699},
+			azimuth_initial   = 0.0,
+			elevation_initial = 0.0,
+			supply_position   = {4.5,0.22, 0.3},
+			effect_arg_number = 350,
+			 }
+			)
+			},
 }
 
 add_aircraft(ARES)

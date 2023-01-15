@@ -26,7 +26,7 @@ Skins	=
 	{
 		{
 			name	= _("ARES with EFM"), -- Mod title in bottom banner on startup
-			dir		= "Skins/1"
+			dir		= "Theme"
 		},
 	},
 
@@ -229,16 +229,8 @@ mount_vfs_texture_path  (current_mod_path ..  "/Theme/ME")--for simulator loadin
 mount_vfs_texture_path  (current_mod_path ..  "/Textures/ARES")
 mount_vfs_model_path    (current_mod_path ..  "/Shapes")
 
-
---local support_cockpit = current_mod_path..'/Cockpit/Scripts/'
-dofile(current_mod_path..'/loadout.lua')
-dofile(current_mod_path..'/weapons.lua')
-
 dofile(current_mod_path..'/ARES.lua')
-dofile(current_mod_path.."/Views.lua")
-make_view_settings('ARES', ViewSettings, SnapViews)
-mount_vfs_sound_path (current_mod_path.."/Sounds/")
-
+--dofile(current_mod_path.."/Views.lua")
 
 local FM = 
 {
@@ -251,6 +243,6 @@ local FM =
 
 
 ----------------------------------------------------------------------------------------
-make_flyable('ARES', current_mod_path..'/Cockpit/Scripts/' , FM , current_mod_path..'/comm.lua')
+make_flyable('ARES', current_mod_path..'/Cockpit/Scripts/', FM, nil)
 ----------------------------------------------------------------------------------------
 plugin_done()
