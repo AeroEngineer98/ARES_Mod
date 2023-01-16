@@ -1,4 +1,4 @@
-shape_name   	   = "Cockpit_A-29B"
+shape_name   	   = "ARES_Cockpit"
 is_EDM			   = true
 new_model_format   = true
 ambient_light    = {255,255,255}
@@ -11,16 +11,20 @@ ambient_color_from_panels	 = {35, 25, 25}
 -- use_external_shape=flase
 local ft_to_meter = 0.3048
 
+
+
 dusk_border					 = 0.4
 draw_pilot					 = false
 
 external_model_canopy_arg	 = 38
 
-use_external_views = false
+use_external_views = true
 
 day_texture_set_value   = 0.0
 night_texture_set_value = 0.1
 
+
+--[[
 local controllers = LoRegisterPanelControls()
 
 mirrors_data =
@@ -292,6 +296,14 @@ Z_test =
 }
 
 livery = "FAB"
+--]]
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --[[ available functions
 

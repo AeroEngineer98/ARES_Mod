@@ -4,7 +4,7 @@ dofile(LockOn_Options.script_path.."materials.lua")
 
 layoutGeometry = {}
 
--- MainPanel = {"ccMainPanel",LockOn_Options.script_path.."mainpanel_init.lua", {},}
+MainPanel = {"ccMainPanel",LockOn_Options.script_path.."mainpanel_init.lua", {},}
 
 -- Avionics devices initialization example
 --	items in <...> are optional

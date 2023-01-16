@@ -14,5 +14,10 @@ This mod is my first foray into the modding world of DCS. I've created the 3D mo
 - Andrew Barth
 
 
+### January 15, 2023 Commit
+- Separated the cockpit model from the rest of the plane for future cockpit work
+- Moved the viewpoint to be realistic - could still move forward a bit more.
+- Retextured the cockpit with Zolatone!
+
 ### Initial Commit - January 14, 2023
 - Changed from a simple flight model (SFM) to an external flight model (EFM) using IGServal's "Basic-custom-flight-model-for-DCS-World-main" flight model. Animations are either spotty or don't work, and there's too much stuff that's not applicable to ARES that's still in the mod.
