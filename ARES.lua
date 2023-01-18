@@ -2,8 +2,6 @@
 
 mount_vfs_model_path	(current_mod_path.."/Shapes")
 mount_vfs_liveries_path (current_mod_path.."/Liveries")
---mount_vfs_texture_path  (current_mod_path.."/Textures/ARES.zip")
---mount_vfs_texture_path  (current_mod_path.."/Textures/")
 mount_vfs_sound_path    (current_mod_path.."/Sounds")
 
 ARES =  {
@@ -74,12 +72,12 @@ ARES =  {
 		nose_gear_pos 				= 	{4.15486,	-1.58895,	0}, 
 		tand_gear_max				=	0.57735026919, -- tangent of degrees of rotation max of nose wheel steering
 
-		--nose_gear_amortizer_direct_stroke        = 0.00,    -- down from nose_gear_pos !!!
-		--nose_gear_amortizer_reversal_stroke      = -0.16,   -- up
-		--nose_gear_amortizer_normal_weight_stroke = -0.06,   
-		--main_gear_amortizer_direct_stroke        = 0.00,     -- down from main_gear_pos !!!
-		--main_gear_amortizer_reversal_stroke      = -0.16,   -- up
-		--main_gear_amortizer_normal_weight_stroke = -0.06,   
+		nose_gear_amortizer_direct_stroke        = 0.00,    -- down from nose_gear_pos !!!
+		nose_gear_amortizer_reversal_stroke      = -0.16,   -- up
+		nose_gear_amortizer_normal_weight_stroke = -0.06,   
+		main_gear_amortizer_direct_stroke        = 0.00,     -- down from main_gear_pos !!!
+		main_gear_amortizer_reversal_stroke      = -0.16,   -- up
+		main_gear_amortizer_normal_weight_stroke = -0.06,   
 	
 		nose_gear_wheel_diameter	=	0.547, --in m
 		main_gear_wheel_diameter	=	0.643, -- in m
