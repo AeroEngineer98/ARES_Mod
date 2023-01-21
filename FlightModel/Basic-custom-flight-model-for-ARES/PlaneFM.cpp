@@ -222,6 +222,10 @@ namespace PlaneFM // I tried to convert the imperial units to metric, but it res
 	double		internal_fuel;
 	double		external_fuel;
 
+	double		Airspeed_True			= 0.0;
+	double		Airspeed_Ind			= 0.0;
+	double		Airspeed_Cal			= 0.0;
+
 	//double test_force = 0.0; //test downwards pitch or "nose down" force
 	
 	EDPARAM cockpitAPI;
@@ -339,6 +343,7 @@ void ed_fm_simulate(double dt)
 	}
 
 	PlaneFM::Forward_Velocity = airspeed.x; // Total forward speed (m/s)
+	PlaneFM::Airspeed_True = airspeed.x * 1.94384; // Convert to knots
 
 	// Call the atmosphere model to get mach and dynamic pressure
 	// This was originally programmed with imperial units, so LB/FT^2 for the pressure.
@@ -403,8 +408,9 @@ void ed_fm_simulate(double dt)
 	PlaneFM::internal_fuel -= (PlaneFM::fuel_consumption_since_last_time)*PlaneFM::param_class.fuelvalue;
 
 	// Leading edge flap/slat dynamics controller, this controller is based on dynamic pressure and angle of attack and is completely automatic
-	PlaneFM::leadingEdgeFlap_DEG = PlaneFM::FLIGHTCONTROLS::leading_edge_flap_controller(PlaneFM::alpha_DEG, PlaneFM::dynamicPressure_LBFT2, PlaneFM::ps_LBFT2, dt);
-	PlaneFM::leadingEdgeFlap_PCT = limit(PlaneFM::leadingEdgeFlap_DEG / 25.0, 0.0, 1.0);
+	//PlaneFM::leadingEdgeFlap_DEG = PlaneFM::FLIGHTCONTROLS::leading_edge_flap_controller(PlaneFM::alpha_DEG, PlaneFM::dynamicPressure_LBFT2, PlaneFM::ps_LBFT2, dt);
+	//PlaneFM::leadingEdgeFlap_PCT = limit(PlaneFM::leadingEdgeFlap_DEG / 25.0, 0.0, 1.0);
+	PlaneFM::leadingEdgeFlap_PCT = 0.0;
 
 	// These controls take the following inputs:
 	// -Normalized longitudinal stick input
@@ -463,10 +469,9 @@ void ed_fm_simulate(double dt)
 		yaw_anti_reverse_right -= 100000000000;
 	else yaw_anti_reverse_right = 0;
 
-	PlaneFM::rudder_DEG_commanded = PlaneFM::FLIGHTCONTROLS::fcs_yaw_controller(PlaneFM::pedInput, 0.0, PlaneFM::yawRate_RPS * (180.0 / 3.14159), ((PlaneFM::rollRate_RPS * PlaneFM::radiansToDegrees) / 45),
-		PlaneFM::FLIGHTCONTROLS::alphaFiltered, PlaneFM::aileron_DEG_commanded, PlaneFM::ay / 1.56, dt);
-	PlaneFM::rudder_DEG = PlaneFM::rudder_DEG_commanded + yaw_filter + PlaneFM::yawTrim + yaw_anti_reverse_left + yaw_anti_reverse_right * ( 1+ total_damage * 18446744073709551615);
-	PlaneFM::rudder_DEG = limit(PlaneFM::rudder_DEG, -5 * (1 + wing_damage), 5 * (1 + wing_damage));
+	PlaneFM::rudder_DEG_commanded = PlaneFM::FLIGHTCONTROLS::fcs_yaw_controller(PlaneFM::pedInput, 0.0);
+	PlaneFM::rudder_DEG = PlaneFM::rudder_DEG_commanded;
+	//PlaneFM::rudder_DEG = limit(PlaneFM::rudder_DEG, -5 * (1 + wing_damage), 5 * (1 + wing_damage));
 
 	PlaneFM::flap_DEG = PlaneFM::FLIGHTCONTROLS::fcs_flap_controller(PlaneFM::totalVelocity_FPS);
 
@@ -500,6 +505,13 @@ void ed_fm_simulate(double dt)
 	//Throttle and thrust
 	PlaneFM::throttle_state = PlaneFM::ACTUATORS::throttle_actuator(PlaneFM::throttleInput, dt) / (1 + PlaneFM::engine_damage);
 
+	PlaneFM::thrust_N = PlaneFM::ENGINE::engine_dynamics((PlaneFM::throttleInput), PlaneFM::mach, PlaneFM::altitude_FT, dt);// +(engine_damage * 10);
+
+	// Console Log start
+	//fprintf(stderr, "%s %f\n", "thrust_N", PlaneFM::thrust_N);
+	// Console Log End
+
+	/*
 	if (PlaneFM::throttleInput <= 64.9) //This is to make sure the plane holds still while at idle on the ground.
 	{
 		PlaneFM::thrust_N = PlaneFM::ENGINE::engine_dynamics((PlaneFM::throttleInput - 25), PlaneFM::mach, PlaneFM::altitude_FT, dt) / 1.2 + (engine_damage * 10);
@@ -515,14 +527,15 @@ void ed_fm_simulate(double dt)
 		PlaneFM::thrust_N = PlaneFM::ENGINE::engine_dynamics((PlaneFM::throttleInput - 25), PlaneFM::mach, PlaneFM::altitude_FT, dt) * 1.14 / (1+ total_damage * 10);
 	}
 
-	if (PlaneFM::throttle_state >= 90.0 && PlaneFM::gearDown >= 0.26 && weight_on_wheels == true) //simulating the increased thrust from afterburners.
+	IF (PLANEFM::THROTTLE_STATE >= 90.0 && PLANEFM::GEARDOWN >= 0.26 && WEIGHT_ON_WHEELS == TRUE) //SIMULATING THE INCREASED THRUST FROM AFTERBURNERS.
 	{
-		PlaneFM::thrust_N = PlaneFM::ENGINE::engine_dynamics(PlaneFM::throttleInput, PlaneFM::mach, PlaneFM::altitude_FT, dt) * 1.1 / (1 + total_damage * 15);
+		PLANEFM::THRUST_N = PLANEFM::ENGINE::ENGINE_DYNAMICS(PLANEFM::THROTTLEINPUT, PLANEFM::MACH, PLANEFM::ALTITUDE_FT, DT) * 1.1 / (1 + TOTAL_DAMAGE * 15);
 	}
-	if (PlaneFM::throttle_state >= 95.0 && PlaneFM::gearDown <= 0.26) //simulating the increased thrust from afterburners.
+	IF (PLANEFM::THROTTLE_STATE >= 95.0 && PLANEFM::GEARDOWN <= 0.26) //SIMULATING THE INCREASED THRUST FROM AFTERBURNERS.
 	{
-		PlaneFM::thrust_N = PlaneFM::ENGINE::engine_dynamics(PlaneFM::throttleInput, PlaneFM::mach, PlaneFM::altitude_FT, dt) * 1.4 / (1 + total_damage * 20);
-	}
+		PLANEFM::THRUST_N = PLANEFM::ENGINE::ENGINE_DYNAMICS(PLANEFM::THROTTLEINPUT, PLANEFM::MACH, PLANEFM::ALTITUDE_FT, DT) * 1.4 / (1 + TOTAL_DAMAGE * 20);
+	}*/
+
 	if (PlaneFM::internal_fuel < 5.0)
 	PlaneFM::thrust_N = 0;
 
@@ -912,7 +925,7 @@ void ed_fm_set_current_state_body_axis(
 	if (alpha_DEG > 5) { PlaneFM::pitchRate_RPS = omegaz * (((alpha_DEG * alpha_DEG + 10000) / 180) - 54.5); }
 
 	PlaneFM::az = ay;
-	PlaneFM::gforce = ay / 10;
+	PlaneFM::gforce = ay / 9.806;
 	PlaneFM::ay = az;
 }
 
@@ -1006,7 +1019,8 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 
 		//Yaw
 	case JoystickYaw:
-		PlaneFM::pedInput = limit(-value * (((beta_DEG) / (beta_DEG * beta_DEG + 100 * 5) / beta_DEG) * 501), -1.0, 1.0);
+		//PlaneFM::pedInput = limit(-value * (((beta_DEG) / (beta_DEG * beta_DEG + 100 * 5) / beta_DEG) * 501), -1.0, 1.0);
+		PlaneFM::pedInput = -value;
 		PlaneFM::yaw_cmd_axis = (limit(-value, -10.0, 10.0) * limit(-value, -10.0, 10.0));
 		break;
 
@@ -1071,7 +1085,7 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 	case JoystickThrottle:
 		if (PlaneFM::engineswitch = true)
 		{
-			PlaneFM::throttleInput = limit(((-value + 1.0) / 2.0) * 100.0, 25.0, 100.0);
+			PlaneFM::throttleInput = limit(((-value + 1.0) / 2.0) * 100.0, 0.0, 100.0);
 		}
 		break;
 
@@ -1409,6 +1423,11 @@ void ed_fm_set_draw_args(EdDrawArgument * drawargs, size_t size)
 	// Engines and afterburners
 	//drawargs[28] = (float)limit(((PlaneFM::throttle_state - 90.0) / 10.0), 0.0, 1.0);//This determines where the afterburners start
 	//drawargs[29] = (float)limit(((PlaneFM::throttle_state - 90.0) / 10.0), 0.0, 1.0);
+
+
+	// Airspeed indicator
+	drawargs[500].f = (float)limit(PlaneFM::Airspeed_True * 2 / 500 - 1, -1.0, 1.0);
+
 }
 
 // Cockpit controls (stick, rudder pedals, throttle) don't animate for some reason.

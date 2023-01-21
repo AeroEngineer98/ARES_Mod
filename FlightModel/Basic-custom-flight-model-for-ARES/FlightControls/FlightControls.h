@@ -67,66 +67,13 @@ namespace PlaneFM
 		}
 
 		// Controller for yaw
-		double fcs_yaw_controller(double pedInput, double pedTrim, double yaw_rate, double roll_rate, double aoa_filtered, double aileron_commanded, double ay, double dt)
+		double fcs_yaw_controller(double pedInput, double pedTrim)
 		{
-			if(!(simInitialized))
-			{
-				double numerators[2] = {0.0,4.0};
-				double denominators[2] = {1.0,4.0};
-				rudderCommandFilter.InitFilter(numerators,denominators,1,dt);
-
-				double numerators1[2] = {1.0,0.0};
-				double denominators1[2] = {1.0,1.0};
-				yawRateWashout.InitFilter(numerators1,denominators1,1,dt);
-
-				double numerators2[2] = {3.0,15.0};
-				double denominators2[2] = {1.0,15.0};
-				yawRateFilter.InitFilter(numerators2,denominators2,1,dt);
-
-				double numerators3[3] = { 0.0, 0.0, pow(52.0,2.0)};
-				double denomiantors3[3] = { 1.0, 2.0*0.7*52.0, pow(52.0,2.0)};
-				yawServoFilter.InitFilter(numerators3,denomiantors3,2,dt);
-			}
-
-			double rudderForceCommand = pedInput * 450.0;
-
-			double rudderCommand = 0.0;
-			if(abs(rudderForceCommand) < 44.0)
-			{
-				rudderCommand = 0.0;
-			}
-			else if(rudderForceCommand >= 44.0)
-			{
-				rudderCommand = -0.0739 * rudderForceCommand + 3.2512;
-			}
-			else if(rudderForceCommand <= -44.0)
-			{
-				rudderCommand = -0.0739 * rudderForceCommand - 3.2512;
-			}
-
+			double rudderCommand = pedInput;
 			rudderCommand = limit(rudderCommand, -30.0, 30.0);
-			double rudderCommandFiltered = rudderCommandFilter.Filter(!(simInitialized),dt,rudderCommand);
-			double rudderCommandFilteredWTrim = pedTrim - rudderCommandFiltered;
-
-			double alphaGained = aoa_filtered * (5.0/57.3);
-			double rollRateWithAlpha = roll_rate * alphaGained;
-			double yawRateWithRoll = yaw_rate - rollRateWithAlpha;
-
-			double yawRateWithRollWashedOut = yawRateWashout.Filter(!(simInitialized),dt,yawRateWithRoll);
-			double yawRateWithRollFiltered = yawRateFilter.Filter(!(simInitialized),dt,yawRateWithRollWashedOut);
-
-			double yawRateFilteredWithSideAccel = yawRateWithRollFiltered;// + (ay * 19.3);
-
-		  /*double aileronGained = limit(0.05 * aoa_filtered, 0.0, 1.5) * aileron_commanded;*/
-			double aileronGained = limit(0.05 * aoa_filtered, 0.0, 1.5) * aileron_commanded;
-
-			double finalRudderCommand = aileronGained + yawRateFilteredWithSideAccel + rudderCommandFilteredWTrim;
+			double finalRudderCommand = rudderCommand;
 
 			return finalRudderCommand;
-
-			//TODO: Figure out why there is a ton of flutter at high speed due to these servo dynamics
-			//double yawServoCommand = yawServoFilter.Filter(!(simInitialized),dt,finalRudderCommand);
-			//return yawServoCommand;
 		}
 
 		// Stick force schedule for pitch control

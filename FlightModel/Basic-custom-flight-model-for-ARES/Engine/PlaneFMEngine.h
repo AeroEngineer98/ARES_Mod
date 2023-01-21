@@ -1,5 +1,52 @@
 #include "../stdafx.h"
 
+
+double PLA_array[] = { //Power lever angle
+	20.4,
+	24.7,
+	30.5,
+	32.5,
+	38.7,
+	43.9,
+	48.9,
+	55.1,
+	60.2,
+	67.6,
+	72.8,
+	83.6,
+	85.2 };
+
+double thrust_array[] = { // Thrust at 0 alt
+	466,
+	1028,
+	2753,
+	3079,
+	4537,
+	5498,
+	6302,
+	7426,
+	8478,
+	9732,
+	11049,
+	12626,
+	12696 };
+
+double input_array[] = {
+	1 * 100 / 13,
+	2 * 100 / 13,
+	3 * 100 / 13,
+	4 * 100 / 13,
+	5 * 100 / 13,
+	6 * 100 / 13,
+	7 * 100 / 13,
+	8 * 100 / 13,
+	9 * 100 / 13,
+	10 * 100 / 13,
+	11 * 100 / 13,
+	12 * 100 / 13,
+	13 * 100 / 13 };
+
+
 namespace PlaneFM
 {
 	// Coded from the simulator study document
@@ -12,9 +59,17 @@ namespace PlaneFM
 		double throttlePositionLastTime = 0;
 		double engine_damage;
 		double fuel; 
+
+
+		
 	
 		double engine_dynamics(double throttleInput, double mach, double alt, double frameTime)
 		{
+
+			double thrust_lb = lerp(input_array, thrust_array, sizeof(thrust_array) / sizeof(double), throttleInput);
+			double thrust = thrust_lb * 4.4482189159;	// convert lb to N
+
+			/*
 			if (throttleInput < 90.0)
 			{
 				percentPower = throttleInput * 0.6923;
@@ -96,6 +151,8 @@ namespace PlaneFM
 					thrust = Tmil + (Tmax - Tmil) * (power3 - 50.0) / 50.0;
 				}
 				//thrust = limit(thrust, 0.0, 129000.0);
+				*/
+
 				thrust = limit(thrust, 0.0, 150000.0)/ (1 + engine_damage * 100);
 
 				return thrust;

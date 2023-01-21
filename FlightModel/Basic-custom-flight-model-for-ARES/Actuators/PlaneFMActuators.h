@@ -27,12 +27,13 @@ namespace PlaneFM
 
 		// Set limits for rates and positions on the flight controls
 		//*** Need to update with ARES numbers!!*************************************
-		double elevatorRate_Limit = 0.5;
+		double elevatorRate_Limit = 90;
 		double elevatorPosition_Limits[2] = { -20.0, 20.0 };
-		double aileronRate_Limit = 25.0;
+		double aileronRate_Limit = 90.0;
 		double aileronPosition_Limits[2] = { -15.0, 15.0 };
-		double rudderRate_Limit = 3.0;
-		double rudderPosition_Limits[2] = { -1.0, 1.0 };
+		double rudderRate_Limit = 90.0;
+		double rudderPosition_Limits[2] = { -5, 5 };
+		double airbrakeRate_Limit = 3.0; // Original is 0.75
 
 
 		bool	simInitialized = false;
@@ -178,7 +179,7 @@ namespace PlaneFM
 				return airbrake_state;
 			}
 			airbrake_rate = 20.2 * (airbrake_command - airbrake_state);
-			airbrake_rate = limit(airbrake_rate, -0.75, 0.75);
+			airbrake_rate = limit(airbrake_rate, -airbrakeRate_Limit, airbrakeRate_Limit);
 			airbrake_state += (airbrake_rate * frameTime);
 			airbrake_state = limit(airbrake_state, 0.0, 1.0);
 

@@ -1,6 +1,6 @@
 dofile(LockOn_Options.script_path.."devices.lua")
 dofile(LockOn_Options.common_script_path.."tools.lua")
-dofile(LockOn_Options.script_path.."materials.lua")
+
 
 layoutGeometry = {}
 
