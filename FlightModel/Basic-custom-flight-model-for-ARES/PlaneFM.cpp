@@ -132,7 +132,7 @@ namespace PlaneFM // I tried to convert the imperial units to metric, but it res
 	double		pitch_cmd				= 0.0;			// Elevator/stabilator command
 	double		roll_cmd				= 0.0;			// Aileron command
 	double		yaw_cmd					= 0.0;			// Rudder command
-	double		throttle_state			= 0.2;			// Engine power state
+	double		throttle_state			= 0.0;			// Engine power state
 	double		pedInput				= 0.0;			// Rudder pedal input command normalized (-1 to 1)
 	double		throttleInput			= 0.2;			// Throttle input command normalized (-1 to 1)
 	double		flap_DEG				= 0.0;			// Trailing edge flap deflection (deg)
@@ -344,6 +344,7 @@ void ed_fm_simulate(double dt)
 
 	PlaneFM::Forward_Velocity = airspeed.x; // Total forward speed (m/s)
 	PlaneFM::Airspeed_True = airspeed.x * 1.94384; // Convert to knots
+	PlaneFM::Airspeed_Ind = PlaneFM::Airspeed_True;
 
 	// Call the atmosphere model to get mach and dynamic pressure
 	// This was originally programmed with imperial units, so LB/FT^2 for the pressure.
@@ -353,6 +354,8 @@ void ed_fm_simulate(double dt)
 	PlaneFM::ATMOS::atmos(PlaneFM::ambientTemperature_DegK, PlaneFM::ambientDensity_KgPerM3, PlaneFM::totalVelocity_FPS, temp);
 	PlaneFM::dynamicPressure_LBFT2 = temp[0];
 	PlaneFM::mach = temp[1];
+
+
 
 	//---------------------------------------------
 	//-----CONTROL DYNAMICS------------------------
@@ -776,7 +779,17 @@ compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_total
 			PlaneFM::weight_on_wheels = false;
 		}
 		free(temp);
+
+	// Output airspeed to EFM_Data_Bus.lua
+	void* Airspeed_True_Out = cockpitAPI.getParamHandle("TAS_knots");
+	cockpitAPI.setParamNumber(Airspeed_True_Out, PlaneFM::Airspeed_True);
+
+	void* Altitude_True_Out = cockpitAPI.getParamHandle("ALTITUDE_FT_TRUE");
+	cockpitAPI.setParamNumber(Altitude_True_Out, PlaneFM::altitude_FT);
+
 }
+
+
 
 void ed_fm_set_atmosphere(	
 	double h,//altitude above sea level			(meters)
@@ -1424,17 +1437,14 @@ void ed_fm_set_draw_args(EdDrawArgument * drawargs, size_t size)
 	//drawargs[28] = (float)limit(((PlaneFM::throttle_state - 90.0) / 10.0), 0.0, 1.0);//This determines where the afterburners start
 	//drawargs[29] = (float)limit(((PlaneFM::throttle_state - 90.0) / 10.0), 0.0, 1.0);
 
-
-	// Airspeed indicator
-	drawargs[500].f = (float)limit(PlaneFM::Airspeed_True * 2 / 500 - 1, -1.0, 1.0);
-
 }
 
 // Cockpit controls (stick, rudder pedals, throttle) don't animate for some reason.
 //void ed_fm_set_fc3_cockpit_draw_args(double* drawargs, size_t size)
 
+
 /*
-void ed_fm_set_fc3_cockpit_draw_args(double* drawargs, size_t size)
+void ed_fm_set_fc3_cockpit_draw_args(EdDrawArgument* drawargs, size_t size)
 {
 	drawargs[71] = (float)limit((PlaneFM::FLIGHTCONTROLS::latStickInput), -1.0, 1.0); 
 	drawargs[74] = (float)limit((-PlaneFM::FLIGHTCONTROLS::longStickInput), -1.0, 1.0);
@@ -1451,6 +1461,7 @@ void ed_fm_set_fc3_cockpit_draw_args(double* drawargs, size_t size)
 	drawargs[5] = PlaneFM::GearCommand;
 };
 */
+
 
 void ed_fm_configure(const char * cfg_path)
 {
@@ -1809,7 +1820,7 @@ void ed_fm_hot_start()
 	PlaneFM::gearDown = 1;
 	PlaneFM::GearCommand = 1;
 	PlaneFM::flap_command = 0;
-	PlaneFM::throttleInput = 25.0;
+	PlaneFM::throttleInput = 0.0;
 	PlaneFM::WheelBrakeCommand = 0.0;
 	PlaneFM::flap_command = 0.0;
 	PlaneFM::flaps = 0.0;
@@ -1824,8 +1835,8 @@ void ed_fm_hot_start_in_air()
 {
 	PlaneFM::gearDown = 0;
 	PlaneFM::GearCommand = 0;
-	PlaneFM::throttleInput = 75.0;
-	PlaneFM::throttle_state = 75.0;
+	PlaneFM::throttleInput = 50.0;
+	PlaneFM::throttle_state = 50.0;
 	PlaneFM::WheelBrakeCommand = 0.0;
 	PlaneFM::flap_command = 0.0;
 	PlaneFM::flaps = 0.0;

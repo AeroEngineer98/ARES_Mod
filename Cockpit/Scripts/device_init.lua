@@ -17,6 +17,9 @@ MainPanel = {"ccMainPanel",LockOn_Options.script_path.."mainpanel_init.lua", {},
 --						 }
 creators                          = {}
 creators[devices.ELECTRIC_SYSTEM] = {"avSimpleElectricSystem",LockOn_Options.script_path.."Systems/electric_system.lua"}
+creators[devices.AVIONICS] = {"avLuaDevice",LockOn_Options.script_path.."Systems/avionics.lua"}
+creators[devices.GEAR] = {"avLuaDevice",LockOn_Options.script_path.."Systems/gear.lua"}
+
 
 
 ---------------------------------------------

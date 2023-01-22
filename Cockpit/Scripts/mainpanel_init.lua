@@ -12,7 +12,6 @@ ambient_color_from_panels	 = {35, 25, 25}
 local ft_to_meter = 0.3048
 
 
-dofile(LockOn_Options.script_path.."EFM_Data_Bus.lua")
 
 dusk_border					 = 0.4
 draw_pilot					 = false
@@ -32,6 +31,24 @@ local RADIANS_TO_DEGREES = 57.2958
 
 
 
+Airspeed_True					= CreateGauge("parameter")
+Airspeed_True.arg_number		= 500
+Airspeed_True.input				= {0, 500}
+Airspeed_True.output			= {-1, 1}
+Airspeed_True.parameter_name	= "TAS_knots"
+
+Altitude_True					= CreateGauge("parameter")
+Altitude_True.arg_number		= 501
+Altitude_True.input				= {0, 25000}
+Altitude_True.output			= {-1, 1}
+Altitude_True.parameter_name	= "ALTITUDE_FT_TRUE"
+--[[
+GearHandle					= CreateGauge()
+GearHandle.arg_number		= 8
+GearHandle.input			= {0, 1}
+GearHandle.output			= {0, 1}
+GearHandle.controller		= controllers.gear_handle_animation
+]]--
 
 
 
