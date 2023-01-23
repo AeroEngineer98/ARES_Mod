@@ -12,7 +12,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	{
 	case DLL_PROCESS_ATTACH:
 #ifdef _DEBUG
-		
+		/*
 		if (AllocConsole())
 		{
 			FILE* fpstdin = stdin, * fpstdout = stdout, * fpstderr = stderr;
@@ -23,7 +23,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 
 			fprintf(stderr, "%s \n", "Worked in dllmain");
-		}
+		}*/
 #endif
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:

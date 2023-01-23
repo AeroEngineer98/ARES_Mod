@@ -159,12 +159,13 @@ ARES =  {
 		ViewSettings = {
 			Cockpit = {
 				[1] = {-- player slot 1
-					CockpitLocalPoint      = {3.25426,1.11609,0.000000},--front/back,up/down,left/right
-					CameraViewAngleLimits  = {20.000000,120.000000},
-					CameraAngleRestriction = {true,50.000000,0.400000},
-					CameraAngleLimits      = {80.000000,-75.000000,90.000000},
-					EyePoint               = {0.0,0.2,0.000000},--front/back,up/down,left/right
-					limits_6DOF            = {x = {-0.050000,0.450000},y ={-0.200000,0.200000},z = {-0.220000,0.220000},roll = 90.000000},
+					CockpitLocalPoint      = {3.15426,1.11609,0.0},--front/back,up/down,left/right -- was {3.25426,1.11609,0.000000}
+					CameraViewAngleLimits  = {20.0,140.0},
+					CameraAngleRestriction = {false,90.0,0.5},
+					CameraAngleLimits      = {200,-90.0,90.0},--move head = left right, down, up
+					EyePoint               = {0.0,0.0,0.0},--front/back,up/down,left/right
+					limits_6DOF            = {x = {-0.05,0.45},y ={-0.20,0.20},z = {-0.22,0.22},roll = 90.0},
+					Allow360rotation	   = false,
 				},
 			}, -- Cockpit 
 			
