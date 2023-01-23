@@ -5,3 +5,6 @@ Shapes/archive/
 Textures/archive/
 Textures/ARES/archive/
 FlightModel/Basic-custom-flight-model-for-ARES/x64/
+*.exp
+*.lib
+*.pdb
