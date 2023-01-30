@@ -4,6 +4,56 @@ mount_vfs_model_path	(current_mod_path.."/Shapes")
 mount_vfs_liveries_path (current_mod_path.."/Liveries")
 mount_vfs_sound_path    (current_mod_path.."/Sounds")
 
+
+local function coltMK12(tbl)
+
+		tbl.category = CAT_GUN_MOUNT
+		tbl.name      = "coltMK12"
+		tbl.supply      =
+		{
+			shells = {"20x110mm HE-I", "20x110mm AP-I", "20x110mm AP-T"},
+			mixes  = {
+				{1,2,1,3},
+				{1,1,1,1,1,3},
+				{3},
+			},   -- 50% HE-i, 25% AP-I, 25% AP-T
+			count  = 100,
+		}
+		if tbl.mixes then
+		   tbl.supply.mixes = tbl.mixes
+		   tbl.mixes        = nil
+		end
+		tbl.gun =
+		{
+			max_burst_length    = 100000,
+			rates               = {1000},
+			recoil_coeff        = 0.7*1.3,
+			barrels_count       = 1,
+		}
+		if tbl.rates then
+		   tbl.gun.rates        =  tbl.rates
+		   tbl.rates            = nil
+		end
+		tbl.ejector_pos             = tbl.ejector_pos or {0, 0, 0}
+		tbl.ejector_pos_connector   = tbl.ejector_pos_connector     or  "Gun_point"
+		tbl.ejector_dir             = {-1, -6, 0} -- left/right; back/front;?/?
+		tbl.supply_position         = tbl.supply_position   or {0,  0.3, -0.3}
+		tbl.aft_gun_mount           = false
+		tbl.effective_fire_distance = 1500
+		tbl.drop_cartridge          = 204
+		tbl.muzzle_pos              = tbl.muzzle_pos            or  {0,0,0}     -- all position from connector
+		tbl.muzzle_pos_connector    = tbl.muzzle_pos_connector  or  "Gun_point" -- all position from connector
+		tbl.azimuth_initial         = tbl.azimuth_initial       or  0
+		tbl.elevation_initial       = tbl.elevation_initial     or  0
+		if  tbl.effects == nil then
+			tbl.effects = {{ name = "FireEffect"     , arg = tbl.effect_arg_number or 436 },
+						   { name = "HeatEffectExt"  , shot_heat = 7.823, barrel_k = 0.462 * 2.7, body_k = 0.462 * 14.3 },
+						   { name = "SmokeEffect"}}
+		end
+		return declare_weapon(tbl)
+	end
+	
+	
 ARES =  {
 	Name 				=   'ARES',
 	DisplayName			= _('ARES'),
@@ -191,6 +241,75 @@ ARES =  {
 			minFrequency = 225.000,
 			maxFrequency = 399.975,
 			modulation = MODULATION_AM
+		},
+		
+		panelRadio = {
+			[1] = {
+				name = _("AN/ARC-150(V)-2"), --UHF
+				range = {
+					{min = 225.0, max = 399.975}
+				},
+				channels = {
+					[1] = { name = _("Channel 1"), default = 225.0, modulation = _("AM")}, -- default
+					[2] = { name = _("Channel 2"), default = 258.0, modulation = _("AM")},
+					[3] = { name = _("Channel 3"), default = 260.0, modulation = _("AM")},
+					[4] = { name = _("Channel 4"), default = 270.0, modulation = _("AM")},
+					[5] = { name = _("Channel 5"), default = 255.0, modulation = _("AM")},
+					[6] = { name = _("Channel 6"), default = 259.0, modulation = _("AM")},
+					[7] = { name = _("Channel 7"), default = 262.0, modulation = _("AM")},
+					[8] = { name = _("Channel 8"), default = 257.0, modulation = _("AM")},
+					[9] = { name = _("Channel 9"), default = 253.0, modulation = _("AM")},
+					[10] = { name = _("Channel 10"), default = 263.0, modulation = _("AM")},
+					[11] = { name = _("Channel 11"), default = 267.0, modulation = _("AM")},
+					[12] = { name = _("Channel 12"), default = 254.0, modulation = _("AM")},
+					[13] = { name = _("Channel 13"), default = 264.0, modulation = _("AM")},
+					[14] = { name = _("Channel 14"), default = 266.0, modulation = _("AM")},
+					[15] = { name = _("Channel 15"), default = 265.0, modulation = _("AM")},
+					[16] = { name = _("Channel 16"), default = 252.0, modulation = _("AM")},
+					[17] = { name = _("Channel 17"), default = 268.0, modulation = _("AM")},
+					[18] = { name = _("Channel 18"), default = 269.0, modulation = _("AM")},
+					[19] = { name = _("Channel 19"), default = 268.0, modulation = _("AM")},
+					[20] = { name = _("Channel 20"), default = 269.0, modulation = _("AM")},
+				}
+			},
+			[2] = {
+				name = _("SRT-651/N"), --VHF/UHF
+				range = {{min = 30.0, max = 88.0},
+						 {min = 108.0, max = 174.0},
+						 {min = 225.0, max = 399.975}},
+				channels = {
+					[1] = { name = _("Channel 1"), default = 225.0, connect = true}, -- default
+					[2] = { name = _("Channel 2"), default = 258.0},
+					[3] = { name = _("Channel 3"), default = 260.0},
+					[4] = { name = _("Channel 4"), default = 270.0},
+					[5] = { name = _("Channel 5"), default = 255.0},
+					[6] = { name = _("Channel 6"), default = 259.0},
+					[7] = { name = _("Channel 7"), default = 262.0},
+					[8] = { name = _("Channel 8"), default = 257.0},
+					[9] = { name = _("Channel 9"), default = 253.0},
+					[10] = { name = _("Channel 10"), default = 263.0},
+					[11] = { name = _("Channel 11"), default = 267.0},
+					[12] = { name = _("Channel 12"), default = 254.0},
+					[13] = { name = _("Channel 13"), default = 264.0},
+					[14] = { name = _("Channel 14"), default = 266.0},
+					[15] = { name = _("Channel 15"), default = 265.0},
+					[16] = { name = _("Channel 16"), default = 252.0},
+					[17] = { name = _("Channel 17"), default = 268.0},
+					[18] = { name = _("Channel 18"), default = 269.0},
+					[19] = { name = _("Channel 19"), default = 268.0},
+					[20] = { name = _("Channel 20"), default = 269.0},
+					[21] = { name = _("Channel 21"), default = 225.0},
+					[22] = { name = _("Channel 22"), default = 258.0},
+					[23] = { name = _("Channel 23"), default = 260.0},
+					[24] = { name = _("Channel 24"), default = 270.0},
+					[25] = { name = _("Channel 25"), default = 255.0},
+					[26] = { name = _("Channel 26"), default = 259.0},
+					[27] = { name = _("Channel 27"), default = 262.0},
+					[28] = { name = _("Channel 28"), default = 257.0},
+					[29] = { name = _("Channel 29"), default = 253.0},
+					[30] = { name = _("Channel 30"), default = 263.0},
+				}
+			},
 		},
 		
 		-- Countermeasures
@@ -681,6 +800,19 @@ ARES =  {
 	--	MG_20({muzzle_pos = {4.228,0.248, 0.699},_connector =  "Point_Gun",rates = {1025},effect_arg_number = 350,mixes = {{1,2,2,3,3}},azimuth_initial = 0.0,elevation_initial = 0,supply_position = {4.5,0.22, 0.3}})-- MITRAIL AVR 1 
 	--}, -- 3dsmax X, Z, -Y
 	
+	
+	
+	
+	Guns = {coltMK12({muzzle_pos_connector = "Point_Gun",
+                rates = {1020},
+                --mixes = {{2,1,1,1,1,1}},
+                effect_arg_number = 434,
+                supply_position = {2, -0.3, -0.4},
+                --ejector_pos_connector = "GUN_EJECT_1",
+                }),
+			}
+	
+	--[[
 	Guns = {gun_mount("M_61", {
 			count = 725,
 			_connector =  "Point_Gun",
@@ -693,6 +825,9 @@ ARES =  {
 			 }
 			)
 			},
+			
+			]]--
+			
 }
 
 add_aircraft(ARES)

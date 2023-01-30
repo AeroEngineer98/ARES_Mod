@@ -210,6 +210,7 @@ namespace PlaneFM // I tried to convert the imperial units to metric, but it res
 	double		yawRate_world = 0.0;	// Yaw rate relative to the Earth.
 	double		omegax_world = 0;
 	double		omegaz_world = 0;
+	double		heading = 0;
 
 	int			alt_hold = 0;			// Autopilot altitude hold
 	int			altroll_hold = 0;		// Autopilot altitude and bank hold
@@ -344,7 +345,7 @@ void ed_fm_simulate(double dt)
 
 	PlaneFM::Forward_Velocity = airspeed.x; // Total forward speed (m/s)
 	PlaneFM::Airspeed_True = airspeed.x * 1.94384; // Convert to knots
-	PlaneFM::Airspeed_Ind = PlaneFM::Airspeed_True;
+	PlaneFM::Airspeed_Ind = PlaneFM::Airspeed_True; // Need to add math to make it indicated
 
 	// Call the atmosphere model to get mach and dynamic pressure
 	// This was originally programmed with imperial units, so LB/FT^2 for the pressure.
@@ -780,12 +781,46 @@ compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_total
 		}
 		free(temp);
 
-	// Output airspeed to EFM_Data_Bus.lua
-	void* Airspeed_True_Out = cockpitAPI.getParamHandle("TAS_knots");
-	cockpitAPI.setParamNumber(Airspeed_True_Out, PlaneFM::Airspeed_True);
+	// Output to EFM_Data_Bus.lua
 
-	void* Altitude_True_Out = cockpitAPI.getParamHandle("ALTITUDE_FT_TRUE");
-	cockpitAPI.setParamNumber(Altitude_True_Out, PlaneFM::altitude_FT);
+	//FDAI
+	void* Roll_DEG_Out = cockpitAPI.getParamHandle("ROLL_DEG_FDAI");
+	cockpitAPI.setParamNumber(Roll_DEG_Out, PlaneFM::roll_angle);
+
+	void* Pitch_DEG_Out = cockpitAPI.getParamHandle("PITCH_DEG_FDAI");
+	cockpitAPI.setParamNumber(Pitch_DEG_Out, PlaneFM::pitch_angle);
+
+	void* Heading_DEG_Out = cockpitAPI.getParamHandle("HEADING_DEG_FDAI");
+	cockpitAPI.setParamNumber(Heading_DEG_Out, PlaneFM::heading);
+
+	//Airspeed
+	void* Ind_Airspeed_Out = cockpitAPI.getParamHandle("AIRSPEED_IND");
+	cockpitAPI.setParamNumber(Ind_Airspeed_Out, PlaneFM::Airspeed_Ind);
+
+	void* Ind_Mach_Out = cockpitAPI.getParamHandle("MACH_NUM");
+	cockpitAPI.setParamNumber(Ind_Mach_Out, PlaneFM::mach);
+
+	//AoA
+	void* AoA_Out = cockpitAPI.getParamHandle("AOA_DEG");
+	double AoA_Value_Out = limit(PlaneFM::alpha_DEG, -2, 20);
+	cockpitAPI.setParamNumber(AoA_Out, AoA_Value_Out);
+
+	// Altimeter
+	void* Altitude_Ones_Out = cockpitAPI.getParamHandle("ALTITUDE_FT_ONES");
+	double Altitude_Ones_Value_Out = ticker(PlaneFM::altitude_FT, 0, 1000);
+	cockpitAPI.setParamNumber(Altitude_Ones_Out, Altitude_Ones_Value_Out);
+
+	void* Altitude_Thou_Out = cockpitAPI.getParamHandle("ALTITUDE_FT_THOU");
+	double Altitude_Thou_Value_Out = ticker(PlaneFM::altitude_FT, 0, 10000);
+	cockpitAPI.setParamNumber(Altitude_Thou_Out, Altitude_Thou_Value_Out);
+
+	void* Altitude_Tens_Out = cockpitAPI.getParamHandle("ALTITUDE_FT_TENS");
+	double Altitude_Tens_Value_Out = ticker(PlaneFM::altitude_FT, 0, 100000);
+	cockpitAPI.setParamNumber(Altitude_Tens_Out, Altitude_Tens_Value_Out);
+
+	// Console Log start
+	//fprintf(stderr, "%s %f\n", "AoA_Value_Out", AoA_Value_Out);
+	// Console Log End
 
 }
 
@@ -909,6 +944,8 @@ void ed_fm_set_current_state_body_axis(
 
 	pitch_angle = (pitch * radiansToDegrees)-1;
 	roll_angle = (roll * radiansToDegrees);
+
+	heading = 360-(yaw * radiansToDegrees);
 	
 
 	//-------------------------------

@@ -31,17 +31,7 @@ local RADIANS_TO_DEGREES = 57.2958
 
 
 
-Airspeed_True					= CreateGauge("parameter")
-Airspeed_True.arg_number		= 500
-Airspeed_True.input				= {0, 500}
-Airspeed_True.output			= {-1, 1}
-Airspeed_True.parameter_name	= "TAS_knots"
 
-Altitude_True					= CreateGauge("parameter")
-Altitude_True.arg_number		= 501
-Altitude_True.input				= {0, 25000}
-Altitude_True.output			= {-1, 1}
-Altitude_True.parameter_name	= "ALTITUDE_FT_TRUE"
 --[[
 GearHandle					= CreateGauge()
 GearHandle.arg_number		= 8
@@ -49,6 +39,65 @@ GearHandle.input			= {0, 1}
 GearHandle.output			= {0, 1}
 GearHandle.controller		= controllers.gear_handle_animation
 ]]--
+
+-- FDAI
+Roll_FDAI						= CreateGauge("parameter")
+Roll_FDAI.arg_number			= 32
+Roll_FDAI.input					= {-180, 180}
+Roll_FDAI.output				= {-1, 1}
+Roll_FDAI.parameter_name		= "ROLL_DEG_FDAI"
+
+Pitch_FDAI						= CreateGauge("parameter")
+Pitch_FDAI.arg_number			= 31
+Pitch_FDAI.input				= {-90, 90}
+Pitch_FDAI.output				= {1, -1}
+Pitch_FDAI.parameter_name		= "PITCH_DEG_FDAI"
+
+Heading_FDAI					= CreateGauge("parameter")
+Heading_FDAI.arg_number			= 30
+Heading_FDAI.input				= {0, 360}
+Heading_FDAI.output				= {-1, 1}
+Heading_FDAI.parameter_name		= "HEADING_DEG_FDAI"
+
+
+-- Airspeed Indicator
+Airspeed_Ind					= CreateGauge("parameter")
+Airspeed_Ind.arg_number			= 48
+Airspeed_Ind.input				= {0, 600}
+Airspeed_Ind.output				= {-1, 1}
+Airspeed_Ind.parameter_name		= "AIRSPEED_IND"
+
+Mach_Ind						= CreateGauge("parameter")
+Mach_Ind.arg_number				= 49
+Mach_Ind.input					= {0, 1.2}
+Mach_Ind.output					= {-1, 1}
+Mach_Ind.parameter_name			= "MACH_NUM"
+
+-- Alpha/AoA Indicator
+Alpha_Ind						= CreateGauge("parameter")
+Alpha_Ind.arg_number			= 53
+Alpha_Ind.input					= {-2, 20}
+Alpha_Ind.output				= {-1, 1}
+Alpha_Ind.parameter_name		= "AOA_DEG"
+
+-- Altimeter
+Altitude_Ones					= CreateGauge("parameter")
+Altitude_Ones.arg_number		= 40
+Altitude_Ones.input				= {0, 1000}
+Altitude_Ones.output			= {-1, 1}
+Altitude_Ones.parameter_name	= "ALTITUDE_FT_ONES"
+
+Altitude_Thou					= CreateGauge("parameter")
+Altitude_Thou.arg_number		= 41
+Altitude_Thou.input				= {0, 10000}
+Altitude_Thou.output			= {-1, 1}
+Altitude_Thou.parameter_name	= "ALTITUDE_FT_THOU"
+
+Altitude_Tens					= CreateGauge("parameter")
+Altitude_Tens.arg_number		= 42
+Altitude_Tens.input				= {0, 100000}
+Altitude_Tens.output			= {-1, 1}
+Altitude_Tens.parameter_name	= "ALTITUDE_FT_TENS"
 
 
 

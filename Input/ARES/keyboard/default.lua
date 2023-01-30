@@ -286,6 +286,12 @@ join(res.keyCommands,{
 -- mirrors
 {combos = {{key = 'M' }},                                               down = iCommandToggleMirrors,                                                                   name = _('Toggle Mirrors'),                                     category = {_('View Cockpit')}},
 
+-- Comms Menu
+--{combos = {{key = '\\' }},                                              down = iCommandToggleCommandMenu,                                                               name = _('Command Menu'),                                     category = {_('Communications')}},
+
+
+
+
 
 -- {combos = {{key = 'Space'}},							down = hotas_commands.STICK_TRIGGER_2ND_DETENT,		up = hotas_commands.STICK_TRIGGER_2ND_DETENT,		cockpit_device_id = devices.HOTAS,	value_down =  1.0,		value_up = 0.0,	name = _('Gun Trigger - SECOND DETENT (Press to shoot)'),				category = {_('Stick'), _('HOTAS')}},
 -- {combos = {{key = ';',		reformers = {'RCtrl'}}},	pressed = hotas_commands.STICK_TRIMMER_DOWN,		up = hotas_commands.STICK_TRIMMER_DOWN,				cockpit_device_id = devices.HOTAS,	value_pressed =  1.0,	value_up = 0.0,	name = _('Trimmer Switch - PUSH(DESCEND)'),								category = {_('Stick'), _('Flight Control'), _('HOTAS')}},

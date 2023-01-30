@@ -54,7 +54,7 @@ local wheel_side_friction_factor_NOSE           = 0.45 --0.45
 local wheel_roll_friction_factor_NOSE           = 0.1 --was 0.05
 local wheel_glide_friction_factor_NOSE          = 0.6 --Sliding aircraft --this needs to be low to go from standstill to moving smoothly -- was 0.6
 
-local brake_moment_main                         = 10000.0
+local brake_moment_main                         = 30000.0
 
 local wheel_radius_factor                       = 1.0
 

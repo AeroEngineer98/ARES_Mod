@@ -1,13 +1,53 @@
 
-local fm_airspeed_true = get_param_handle("TAS_knots")
-local fm_altitude_true = get_param_handle("ALTITUDE_FT_TRUE")
+-- FDAI Handles
+local fm_FDAI_roll = get_param_handle("ROLL_DEG_FDAI")
+local fm_FDAI_pitch = get_param_handle("PITCH_DEG_FDAI")
+local fm_FDAI_hdg = get_param_handle("HEADING_DEG_FDAI")
 
-function fm_setTrueAirspeed(value)
-    return fm_airspeed_true:set(value)
+-- Airspeed Indicator Handles
+local fm_airspeed_ind = get_param_handle("AIRSPEED_IND")
+local fm_mach = get_param_handle("MACH_NUM")
+
+local fm_altitude_ones = get_param_handle("ALTITUDE_FT_ONES")
+local fm_altitude_thou = get_param_handle("ALTITUDE_FT_THOU")
+local fm_altitude_tens = get_param_handle("ALTITUDE_FT_TENS")
+
+
+-- FDAI Functions
+function fm_setRoll_deg(value)
+    return fm_FDAI_roll:set(value)
 end
 
-function fm_setTrueAltitude(value)
-    return fm_altitude_true:set(value)
+function fm_setPitch_deg(value)
+    return fm_FDAI_pitch:set(value)
+end
+
+function fm_setHeading_deg(value)
+    return fm_FDAI_hdg:set(value)
+end
+
+
+-- Airspeed Indicator Functions
+function fm_setIndAirspeed(value)
+    return fm_airspeed_ind:set(value)
+end
+
+function fm_setMach(value)
+    return fm_mach:set(value)
+end
+
+
+-- Altimeter Functions
+function fm_setAltitudeOnes(value)
+    return fm_altitude_ones:set(value)
+end
+
+function fm_setAltitudeThou(value)
+    return fm_altitude_thou:set(value)
+end
+
+function fm_setAltitudeTens(value)
+    return fm_altitude_tens:set(value)
 end
 
 
@@ -16,8 +56,19 @@ end
 function get_efm_data_bus()
     local efm_data_bus = {}
 	
-	efm_data_bus.fm_setTrueAirspeed = fm_setTrueAirspeed
-	efm_data_bus.fm_setTrueAltitude = fm_setTrueAltitude
+	--FDAI
+	efm_data_bus.fm_setRoll_deg = fm_setRoll_deg
+	efm_data_bus.fm_setPitch_deg = fm_setPitch_deg
+	efm_data_bus.fm_setHeading_deg = fm_setHeading_deg
+	
+	--Airspeed
+	efm_data_bus.fm_setIndAirspeed = fm_setIndAirspeed
+	efm_data_bus.fm_setMach = fm_setMach
+	
+	--Altimeter
+	efm_data_bus.fm_setAltitudeOnes = fm_setAltitudeOnes
+	efm_data_bus.fm_setAltitudeThou = fm_setAltitudeThou
+	efm_data_bus.fm_setAltitudeTens = fm_setAltitudeTens
 
     return efm_data_bus
    

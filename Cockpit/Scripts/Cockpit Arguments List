@@ -1,0 +1,89 @@
+==========================================================================
+
+Cockpit Animation List
+
+==========================================================================
+
+Format:
+X. PANEL NUMBER & NAME
+#yy: argument number for animation and description of animated object
+** prefix indicates not yet animated (may indicate not yet present in model too)
+= prefix indicates anim arg has been tied to code to make it work in-game too (does not imply fully functional)
+
+==========================================================================
+
+
+==========================================================================
+BASE OBJECTS
+==========================================================================
+
+#1 Canopy
+#2 Stick Bank
+#3 Stick Pitch
+#4 Rudder Pedals
+#5 Throttle
+#8 Landing Gear Handle
+#10 Hook Handle
+
+
+==========================================================================
+FWD PANEL
+==========================================================================
+
+--FDAI--
+#30 Yaw
+#31 Pitch
+#32 Roll
+#33 Coordinator ball
+#34 FD Pitch
+#35 FD Yaw
+#36 Adjust knob
+
+--Altimeter--
+#40 Hundreds
+#41 Thousands
+#42 Ten-Thousands
+#43 Adjustment knob
+#44 Pressure setting
+
+--Vertical Speed Indicator--
+#46 Needle
+
+--Airspeed Indicator--
+#48 Main needle
+#49 Mach ring
+
+--G-Meter--
+#51 Needle
+
+--AoA Indicator-
+#53 AoA Line
+
+--Compass--
+#55 Heading ring
+#56 Adjust
+
+--N1 Gauge--
+#67 Needle
+
+--N2 Gauge--
+#69 Needle
+
+--ITT Gauge--
+#71 Needle
+
+--Backup Attitude Indicator--
+#73 Pitch
+#74 Roll
+#75 Knob
+
+--Fuel Flow--
+#77 Needle
+
+
+
+
+
+
+
+

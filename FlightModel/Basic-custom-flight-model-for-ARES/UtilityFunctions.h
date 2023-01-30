@@ -7,6 +7,8 @@
 #ifndef __UtilFunctions__
 #define __UtilFunctions__
 
+
+
 // Start of Utility Functions
 
 // Struct to define a set of data with a given number of dimenions and points
@@ -257,4 +259,50 @@ double limit(double input, double lower_limit, double upper_limit)
 		return input;
 	}
 }
+
+double findMod(double input1, double input2)
+{
+	double mod;
+
+	// Handling negative numbers
+	if (input1 < 0)
+	{
+		mod = -input1;
+	}
+	else {
+		mod = input1;
+	}
+	if (input2 < 0)
+	{
+		input2 = -input2;
+	}
+
+	// Finding mod by repeated subtraction
+	while (mod >= input2)
+	{
+		mod = mod - input2;
+	}
+
+	// Sign of result typically depends on sign of input1
+	if (input1 < 0)
+	{
+		return -mod;
+	}
+	else {
+		return mod;
+	}
+}
+
+double ticker(double input, double lower_limit, double upper_limit)
+{
+	if (input > upper_limit || input < lower_limit)
+	{
+		return findMod(input, upper_limit);
+	}
+	else 
+	{
+		return input;
+	}
+}
+
 #endif

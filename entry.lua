@@ -74,6 +74,6 @@ local FM =
 
 
 ----------------------------------------------------------------------------------------
-make_flyable('ARES', current_mod_path..'/Cockpit/Scripts/', FM, nil)
+make_flyable('ARES', current_mod_path..'/Cockpit/Scripts/', FM, current_mod_path..'/comm.lua')
 ----------------------------------------------------------------------------------------
 plugin_done()

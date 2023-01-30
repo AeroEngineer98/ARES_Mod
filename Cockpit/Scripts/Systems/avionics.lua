@@ -14,8 +14,20 @@ make_default_activity(update_time_step)
 
 function update()
 	
-	efm_data_bus.fm_setTrueAirspeed
-	efm_data_bus.fm_setTrueAltitude
-
+	--[[
+	--FDAI
+	efm_data_bus.fm_setRoll_deg
+	efm_data_bus.fm_setPitch_deg
+	efm_data_bus.fm_setHeading_deg
+	
+	--Airspeed
+	efm_data_bus.fm_setIndAirspeed
+	efm_data_bus.fm_setMach
+	
+	--Altimeter
+	efm_data_bus.fm_setAltitudeOnes
+	efm_data_bus.fm_setAltitudeThou
+	efm_data_bus.fm_setAltitudeTens
+	]]--
 
 end
