@@ -5,6 +5,10 @@ local function __custom_counter()
 	return __count_custom
 end
 
+Axes =
+{
+	JoystickThrottle				= 2004,
+}
 
 Keys =
 {
@@ -46,24 +50,24 @@ Keys =
 	PlaneFlapsOn                    = 145, -- Fully down
 	PlaneFlapsOff                   = 146, -- Fully up
     	
-	PlaneGear                       = 68,						-- Шасси
-	PlaneGearUp	                    = 430,
-	PlaneGearDown                   = 431,
+	--PlaneGear                       = 68,						-- Шасси
+	--PlaneGearUp	                    = 430,
+	--PlaneGearDown                   = 431,
     
    
-	LeftEngineStart = 311,			-- ?????? ?????? ?????????
-	RightEngineStart = 312,			-- ?????? ??????? ?????????
+	LeftEngineStart 				= 311,			-- ?????? ?????? ?????????
+	RightEngineStart 				= 312,			-- ?????? ??????? ?????????
 
-	LeftEngineStop = 313,				-- ?????????? ?????? ?????????
-    RightEngineStop = 314,			-- ?????????? ??????? ?????????
+	LeftEngineStop 					= 313,				-- ?????????? ?????? ?????????
+    RightEngineStop 				= 314,			-- ?????????? ??????? ?????????
     
 
 
 	PowerOnOff                      = 315,
 
-    AltimeterPressureIncrease = 316,  
-    AltimeterPressureDecrease = 317,
-    AltimeterPressureStop = 318,       
+    AltimeterPressureIncrease 		= 316,  
+    AltimeterPressureDecrease 		= 317,
+    AltimeterPressureStop 			= 318,       
 
     PlaneLightsOnOff                = 175,
     PlaneHeadlightOnOff             = 328,
@@ -79,8 +83,6 @@ Keys =
 
     ---- A-29B
     EngineStart                     = __custom_counter(),
-    EngineStartCenter               = __custom_counter(),
-    EngineStartInterrupt            = __custom_counter(),
 
     Engine_Stop                     = __custom_counter(),
 
@@ -91,45 +93,45 @@ Keys =
 
 
     -- Stick
-    StickStep		    	 = __custom_counter(),
-    StickDesignate        	     = __custom_counter(),
-    StickUndesignate      	     = __custom_counter(),
-    MasterModeSw      	     = __custom_counter(),
-    APDisengage      	     = __custom_counter(),
-    APOvrd      	     = __custom_counter(),
-    Call      	     = __custom_counter(),
-    Trigger      	     = __custom_counter(),
+    StickStep						= __custom_counter(),
+    StickDesignate					= __custom_counter(),
+    StickUndesignate				= __custom_counter(),
+    MasterModeSw					= __custom_counter(),
+    APDisengage						= __custom_counter(),
+    APOvrd							= __custom_counter(),
+    Call							= __custom_counter(),
+    Trigger							= __custom_counter(),
 
 
     -- Throttle
-    GunSelDist        	     = __custom_counter(),
-    GunRearm        	     = __custom_counter(),
-    Cage        	     = __custom_counter(),
-    TDCX        	     = __custom_counter(),
-    TDCY        	     = __custom_counter(),
-    AirBrake           = __custom_counter(),
-    Cutoff            = __custom_counter(),
+    GunSelDist						= __custom_counter(),
+    GunRearm						= __custom_counter(),
+    Cage							= __custom_counter(),
+    TDCX        	     			= __custom_counter(),
+    TDCY        	     			= __custom_counter(),
+    AirBrake           				= __custom_counter(),
+    Cutoff            				= __custom_counter(),
 
-    AviMdp1                     = __custom_counter(),
-    AviMdp2                     = __custom_counter(),
-    AviMst                     = __custom_counter(),
-    AviSms                     = __custom_counter(),
-    AviVuhf                     = __custom_counter(),
+    AviMdp1                     	= __custom_counter(),
+    AviMdp2                     	= __custom_counter(),
+    AviMst                     		= __custom_counter(),
+    AviSms                     		= __custom_counter(),
+    AviVuhf                     	= __custom_counter(),
 
-    ElecBatt                     = __custom_counter(),
-    ElecGen                     = __custom_counter(),
-    ElecAcftIntc                 = __custom_counter(),
-    ElecExtPwr                     = __custom_counter(),
-    ElecBkp                     = __custom_counter(),
-    ElecEmer                     = __custom_counter(),
+    ElecBatt                     	= __custom_counter(),
+    ElecGen                     	= __custom_counter(),
+    ElecAcftIntc                 	= __custom_counter(),
+    ElecExtPwr                     	= __custom_counter(),
+    ElecBkp                     	= __custom_counter(),
+    ElecEmer                     	= __custom_counter(),
 
-    COM1                     = __custom_counter(),
-    COM2                     = __custom_counter(),
-    COM3                     = __custom_counter(),
+    COM1                     		= __custom_counter(),
+    COM2                     		= __custom_counter(),
+    COM3                     		= __custom_counter(),
 
 }
 
-start_command   = 3000
+start_command   = 3024
 local __count = start_command-1
 local function __counter()
 	__count = __count + 1
@@ -138,46 +140,48 @@ end
 
 device_commands =
 {
-    Button_Test                     = __counter(),
-    arm_gun                         = __counter(),
+    Button_Test                     = 3000,
+    arm_gun                         = 3001,
 
-    gunpod_l                        = __counter(),
-    gunpod_c                        = __counter(),
-    gunpod_r                        = __counter(),
-    gunpod_chargeclear              = __counter(),
+    gunpod_l                        = 3002,
+    gunpod_c                        = 3003,
+    gunpod_r                        = 3004,
+    gunpod_chargeclear              = 3005,
 
-    Gear                            = __counter(),
-    Hook                            = __counter(),
+    Gear                            = 3006,
+    Hook                            = 3007,
 
-    speedbrake                      = __counter(),
+    speedbrake                      = 3008,
 
-    emer_gear_release               = __counter(),
-
-
-
-
-    rudder_trim                     = __counter(),
-    throttle_axis                   = __counter(),
-    throttle_click                  = __counter(),
+    emer_gear_release               = 3009,
+	
+	Dimmer_Day						= 3010,
 
 
-    clock_stopwatch                 = __counter(),
+
+
+    rudder_trim                     = 3011,
+    throttle_axis                   = 3012,
+    throttle_click                  = 3013,
+
+
+    clock_stopwatch                 = 3014,
 
 	
-	throttle_axis_mod               = __counter(),
+	throttle_axis_mod               = 3015,
 	
 	
-	pitch_axis_mod 	                = __counter(),
-	roll_axis_mod 	                = __counter(),
-	rudder_axis_mod                 = __counter(),
-	wheelbrake_AXIS 	            = __counter(),
+	pitch_axis_mod 	                = 3016,
+	roll_axis_mod 	                = 3017,
+	rudder_axis_mod                 = 3018,
+	wheelbrake_AXIS 	            = 3019,
 
     
-    cabin_pressure                  = __counter(),
-    windshield_defrost              = __counter(),
-    cabin_temp                      = __counter(),
+    cabin_pressure                  = 3020,
+    windshield_defrost              = 3021,
+    cabin_temp                      = 3022,
 
-    man_flt_control_override        = __counter(),
+    man_flt_control_override        = 3023,
     
     shrike_selector                 = __counter(),
     oxygen_switch                   = __counter(),
@@ -227,47 +231,48 @@ device_commands =
     ElecAcftIntc                    = __counter(),
 
 
-    Salvo                     = __counter(),
-    LndGear                     = __counter(),
+    Salvo                     		= __counter(),
+    LndGear                     	= __counter(),
     LndGearBeep                     = __counter(),
-    LndGearOvr                     = __counter(),
+    LndGearOvr                     	= __counter(),
     LndGearEmer                     = __counter(),
-    FuelMain                     = __counter(),
-    FuelAux                     = __counter(),
-    FuelXfr                     = __counter(),
-    SeatAdj                     = __counter(),
-    EmerSpdBrk                  = __counter(),
-    FuelHydBleed                = __counter(),
-    AntiG                       = __counter(),
-    TrimEmerAil                 = __counter(),
-    TrimEmerElev                = __counter(),
-    AutoRudder                  = __counter(),
-    Flaps                       = __counter(),
-    Friction                    = __counter(),
+    FuelMain                     	= __counter(),
+    FuelAux                     	= __counter(),
+    FuelXfr                     	= __counter(),
+    SeatAdj                     	= __counter(),
+    EmerSpdBrk                  	= __counter(),
+    FuelHydBleed                	= __counter(),
+    AntiG                       	= __counter(),
+    TrimEmerAil                 	= __counter(),
+    TrimEmerElev                	= __counter(),
+    AutoRudder                  	= __counter(),
+    Flaps                       	= __counter(),
+    Friction                    	= __counter(),
 
-    EmerParkBrake               = __counter(),
-
-    
-
-    AudioNormal               = __counter(),
-
-
-    ClockSel                      = __counter(),
-    ClockCtrl                      = __counter(),
-    
-    WARNING_PRESS                      = __counter(),
-    CAUTION_PRESS                      = __counter(),
+    EmerParkBrake               	= __counter(),
 
     
-    STICK_WEAPON_RELEASE                    = __counter(),
-    STICK_TRIGGER_2ND_DETENT                    = __counter(),
+
+    AudioNormal               		= __counter(),
 
 
-    STICK_WEAPON_RELEASE_OFF                = __counter(),
-    WPN_AG_LAUNCH_OP_STEP                    = __counter(),
+    ClockSel                     	= __counter(),
+    ClockCtrl                      	= __counter(),
+    
+    WARNING_PRESS                   = __counter(),
+    CAUTION_PRESS                   = __counter(),
+
+    
+    STICK_WEAPON_RELEASE			= __counter(),
+    STICK_TRIGGER_2ND_DETENT		= __counter(),
+
+
+    STICK_WEAPON_RELEASE_OFF		= __counter(),
+    WPN_AG_LAUNCH_OP_STEP			= __counter(),
 	
-    ThrottleAxis                        = __counter(),
-    ThrottleClick                        = __counter(),
+    ThrottleAxis					= __counter(),
+    ThrottleClick					= __counter(),
+
 
 }
 

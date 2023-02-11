@@ -19,8 +19,9 @@ creators                          	= {}
 creators[devices.ELECTRIC_SYSTEM] 	= {"avSimpleElectricSystem",LockOn_Options.script_path.."Systems/electric_system.lua"}
 creators[devices.AVIONICS] 			= {"avLuaDevice",LockOn_Options.script_path.."Systems/avionics.lua"}
 creators[devices.GEAR] 				= {"avLuaDevice",LockOn_Options.script_path.."Systems/gear.lua"}
---creators[devices.HUD]             	= {"avLuaDevice"           ,LockOn_Options.script_path.."Systems/hud.lua"}
+creators[devices.THROTTLE_QUAD] 	= {"avLuaDevice",LockOn_Options.script_path.."Systems/throttle_quad.lua"}
 creators[devices.WEAPON_SYSTEM]   	= {"avSimpleWeaponSystem"  ,LockOn_Options.script_path.."Systems/weapon_system.lua"}
+--creators[devices.HUD]             	= {"avLuaDevice"           ,LockOn_Options.script_path.."Systems/hud.lua"}
 
 
 --indicators                  = {}

@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>CustomFM</TargetName>
-    <OutDir>..\..\Output</OutDir>
+    <TargetName>Custom_FM</TargetName>
+    <OutDir>..\..\bin</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -135,6 +135,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;ED_FM_TEMPLATE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,6 +144,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>GeneralFilter.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>./lib/x64/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ImportLibrary />
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -150,6 +152,7 @@
     <ClInclude Include="Aerodynamics\PlaneFMAero.h" />
     <ClInclude Include="Aerodynamics\PlaneFMAeroData.h" />
     <ClInclude Include="Atmosphere\PlaneFMAtmosphere.h" />
+    <ClInclude Include="CockpitInteraction\CockpitInteraction.h" />
     <ClInclude Include="Engine\PlaneFMEngine.h" />
     <ClInclude Include="EquationsOfMotion\F16EquationsOfMotion.h" />
     <ClInclude Include="FlightControls\FlightControls.h" />

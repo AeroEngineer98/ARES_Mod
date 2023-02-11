@@ -31,14 +31,28 @@ local RADIANS_TO_DEGREES = 57.2958
 
 
 
+-- Throttle Lever
+ThrottleLever					= CreateGauge("parameter")
+ThrottleLever.arg_number		= 5
+ThrottleLever.input				= {0, 100}
+ThrottleLever.output			= {-1, 1}
+ThrottleLever.parameter_name	= "THROTTLE_AXIS_POS"
 
---[[
-GearHandle					= CreateGauge()
-GearHandle.arg_number		= 8
-GearHandle.input			= {0, 1}
-GearHandle.output			= {0, 1}
-GearHandle.controller		= controllers.gear_handle_animation
-]]--
+-- Gear Handle
+GearHandle						= CreateGauge("parameter")
+GearHandle.arg_number			= 8
+GearHandle.input				= {0, 1}
+GearHandle.output				= {0, 1}
+GearHandle.parameter_name		= "GEAR_HANDLE_POS"
+
+-- Splaps Lever
+SplapsLever						= CreateGauge("parameter")
+SplapsLever.arg_number			= 9
+SplapsLever.input				= {0, 1}
+SplapsLever.output				= {-1, 1}
+SplapsLever.parameter_name		= "SPLAPS_HANDLE_POS"
+
+
 
 -- FDAI
 Roll_FDAI						= CreateGauge("parameter")
@@ -98,6 +112,95 @@ Altitude_Tens.arg_number		= 42
 Altitude_Tens.input				= {0, 100000}
 Altitude_Tens.output			= {-1, 1}
 Altitude_Tens.parameter_name	= "ALTITUDE_FT_TENS"
+
+-- G Meter
+Nz_Gee							= CreateGauge("parameter")
+Nz_Gee.arg_number				= 51
+Nz_Gee.input					= {-4, 10}
+Nz_Gee.output					= {-1, 1}
+Nz_Gee.parameter_name			= "NZ_GEE"
+
+-- Vertical Speed Indicator
+VSI_gauge						= CreateGauge("parameter")
+VSI_gauge.arg_number			= 46
+VSI_gauge.input					= {-6000, 6000}
+VSI_gauge.output				= {-1, 1}
+VSI_gauge.parameter_name		= "VERT_SPEED"
+
+-- Heading Indicator
+Heading_Ind						= CreateGauge("parameter")
+Heading_Ind.arg_number			= 55
+Heading_Ind.input				= {0, 360}
+Heading_Ind.output				= {-1, 1}
+Heading_Ind.parameter_name		= "HEADING_DEG_FDAI"
+
+-- Gear Lamps
+NGLamp							= CreateGauge("parameter")
+NGLamp.arg_number				= 100
+NGLamp.input					= {-1, 1}
+NGLamp.output					= {-1, 1}
+NGLamp.parameter_name			= "GEAR_N_LAMP"
+
+MLLamp							= CreateGauge("parameter")
+MLLamp.arg_number				= 101
+MLLamp.input					= {-1, 1}
+MLLamp.output					= {-1, 1}
+MLLamp.parameter_name			= "GEAR_ML_LAMP"
+
+MRLamp							= CreateGauge("parameter")
+MRLamp.arg_number				= 102
+MRLamp.input					= {-1, 1}
+MRLamp.output					= {-1, 1}
+MRLamp.parameter_name			= "GEAR_MR_LAMP"
+
+Gear_U_Lamp						= CreateGauge("parameter")
+Gear_U_Lamp.arg_number			= 103
+Gear_U_Lamp.input				= {-1, 1}
+Gear_U_Lamp.output				= {-1, 1}
+Gear_U_Lamp.parameter_name		= "GEAR_U_LAMP"
+
+NGLamp_Day						= CreateGauge("parameter")
+NGLamp_Day.arg_number			= 104
+NGLamp_Day.input				= {-1, 1}
+NGLamp_Day.output				= {-1, 1}
+NGLamp_Day.parameter_name		= "GEAR_N_LAMP_DAY"
+
+MLLamp_Day						= CreateGauge("parameter")
+MLLamp_Day.arg_number			= 105
+MLLamp_Day.input				= {-1, 1}
+MLLamp_Day.output				= {-1, 1}
+MLLamp_Day.parameter_name		= "GEAR_ML_LAMP_DAY"
+
+MRLamp_Day						= CreateGauge("parameter")
+MRLamp_Day.arg_number			= 106
+MRLamp_Day.input				= {-1, 1}
+MRLamp_Day.output				= {-1, 1}
+MRLamp_Day.parameter_name		= "GEAR_MR_LAMP_DAY"
+
+Gear_U_Lamp_Day					= CreateGauge("parameter")
+Gear_U_Lamp_Day.arg_number		= 107
+Gear_U_Lamp_Day.input			= {-1, 1}
+Gear_U_Lamp_Day.output			= {-1, 1}
+Gear_U_Lamp_Day.parameter_name	= "GEAR_U_LAMP_DAY"
+
+DayNightDimmer					= CreateGauge("parameter")
+DayNightDimmer.arg_number		= 200
+DayNightDimmer.input			= {0, 1}
+DayNightDimmer.output			= {0, 1}
+DayNightDimmer.parameter_name	= "DIMMER_DAY"
+
+Splaps_Lamp						= CreateGauge("parameter")
+Splaps_Lamp.arg_number			= 110
+Splaps_Lamp.input				= {-1, 1}
+Splaps_Lamp.output				= {-1, 1}
+Splaps_Lamp.parameter_name		= "SP_LAMP"
+
+Splaps_Lamp_Day					= CreateGauge("parameter")
+Splaps_Lamp_Day.arg_number		= 111
+Splaps_Lamp_Day.input			= {-1, 1}
+Splaps_Lamp_Day.output			= {-1, 1}
+Splaps_Lamp_Day.parameter_name	= "SP_LAMP_DAY"
+
 
 
 

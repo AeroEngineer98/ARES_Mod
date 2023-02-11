@@ -65,6 +65,7 @@
 #include "FlightControls/FlightControls.h"	//Flight Controls model functions
 #include "Engine/PlaneFMEngine.h"					//Engine model functions
 #include "param_functions.h"
+#include "CockpitInteraction/CockpitInteraction.h"
 
 using namespace PlaneFM;
 
@@ -165,7 +166,9 @@ namespace PlaneFM // I tried to convert the imperial units to metric, but it res
 	double		mach					= 0.0;			// Air speed in Mach; 1 is the local speed of sound.
 	double		ps_LBFT2				= 0.0;			// Ambient calculated pressure (lb/ft^2)
 	bool		simInitialized			= false;		// Has the simulation gone through it's first run frame?
-	double		gearDown				= 0.0;			// Is the gear currently down?
+	double		gearDown				= 0.0;			// State of the gear
+	double		gearUnsafe				= 0.0;			// Is the gear handle up but the gear isn't?
+	double		gearSafe				= 1.0;			// Is the gear down and locked?
 	double		gforce					= 0.0;			// This is the G force felt by the pilot, acting out the bottom of the aircraft (m/s^2), 1 is Earth's gravity.
 	double		az						= 0.0;			// This is the G force felt by the pilot, acting out the bottom of the aircraft (m/s^2), 1 is Earth's gravity.
 	double		ay						= 0.0;			// Ay (per normal direction convention) out the right wing (m/s^2)
@@ -487,6 +490,10 @@ void ed_fm_simulate(double dt)
 
 	PlaneFM::gearDown = PlaneFM::ACTUATORS::gear_actuator(PlaneFM::GearCommand, dt);
 
+	PlaneFM::gearUnsafe = PlaneFM::ACTUATORS::gear_unsafe_check(PlaneFM::GearCommand, PlaneFM::gearDown);
+
+	PlaneFM::gearSafe = PlaneFM::ACTUATORS::gear_safe_check(PlaneFM::gearDown);
+
 	PlaneFM::airbrakes = PlaneFM::ACTUATORS::airbrake_actuator(PlaneFM::airbrake_command, dt);
 
 	PlaneFM::flaps = PlaneFM::ACTUATORS::flaps_actuator(PlaneFM::flap_command, dt);
@@ -765,23 +772,31 @@ compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_total
 		add_local_force(thrust_force, thrust_force_pos);
 	};
 
-		// Tell the simulation that it has gone through the first frame
-		PlaneFM::simInitialized = true;
-		PlaneFM::ACTUATORS::simInitialized = true;
-		PlaneFM::FLIGHTCONTROLS::simInitialized = true;
+	// Tell the simulation that it has gone through the first frame
+	PlaneFM::simInitialized = true;
+	PlaneFM::ACTUATORS::simInitialized = true;
+	PlaneFM::FLIGHTCONTROLS::simInitialized = true;
 
 	// This is a fairly complex check to see if the aircraft is on the ground. I've yet to figure out altitude above ground.
-		if ((PlaneFM::ay_world < 0.5) && (PlaneFM::pitch_angle < 1) && (PlaneFM::vy_world < 0.1) && (mach < 0.5) && (altitude_m < 4000) && (PlaneFM::ACTUATORS::gear_state >= 0.9))
-		{
-			PlaneFM::weight_on_wheels = true;
-		}
-		else 
-		{ 
-			PlaneFM::weight_on_wheels = false;
-		}
-		free(temp);
+	if ((PlaneFM::ay_world < 0.5) && (PlaneFM::pitch_angle < 1) && (PlaneFM::vy_world < 0.1) && (mach < 0.5) && (altitude_m < 4000) && (PlaneFM::ACTUATORS::gear_state >= 0.9))
+	{
+		PlaneFM::weight_on_wheels = true;
+	}
+	else 
+	{ 
+		PlaneFM::weight_on_wheels = false;
+	}
+	free(temp);
+
 
 	// Output to EFM_Data_Bus.lua
+	//Throttle Quadrant
+	void* Throttle_Axis_Out = cockpitAPI.getParamHandle("FM_THROTTLE_AXIS_POS");
+	cockpitAPI.setParamNumber(Throttle_Axis_Out, PlaneFM::throttleInput);
+
+	void* Splaps_Axis_Out = cockpitAPI.getParamHandle("FM_SPLAPS_AXIS_POS");
+	cockpitAPI.setParamNumber(Splaps_Axis_Out, PlaneFM::airbrake_command);
+
 
 	//FDAI
 	void* Roll_DEG_Out = cockpitAPI.getParamHandle("ROLL_DEG_FDAI");
@@ -793,6 +808,7 @@ compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_total
 	void* Heading_DEG_Out = cockpitAPI.getParamHandle("HEADING_DEG_FDAI");
 	cockpitAPI.setParamNumber(Heading_DEG_Out, PlaneFM::heading);
 
+
 	//Airspeed
 	void* Ind_Airspeed_Out = cockpitAPI.getParamHandle("AIRSPEED_IND");
 	cockpitAPI.setParamNumber(Ind_Airspeed_Out, PlaneFM::Airspeed_Ind);
@@ -800,10 +816,12 @@ compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_total
 	void* Ind_Mach_Out = cockpitAPI.getParamHandle("MACH_NUM");
 	cockpitAPI.setParamNumber(Ind_Mach_Out, PlaneFM::mach);
 
+
 	//AoA
 	void* AoA_Out = cockpitAPI.getParamHandle("AOA_DEG");
 	double AoA_Value_Out = limit(PlaneFM::alpha_DEG, -2, 20);
 	cockpitAPI.setParamNumber(AoA_Out, AoA_Value_Out);
+
 
 	// Altimeter
 	void* Altitude_Ones_Out = cockpitAPI.getParamHandle("ALTITUDE_FT_ONES");
@@ -818,8 +836,46 @@ compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_total
 	double Altitude_Tens_Value_Out = ticker(PlaneFM::altitude_FT, 0, 100000);
 	cockpitAPI.setParamNumber(Altitude_Tens_Out, Altitude_Tens_Value_Out);
 
+
+	// G-Meter
+	void* Nz_Gee_Out = cockpitAPI.getParamHandle("FM_NZ_GEE");
+	cockpitAPI.setParamNumber(Nz_Gee_Out, PlaneFM::gforce);
+
+
+	// Vertical Speed Indicator
+	void* VSI_Out = cockpitAPI.getParamHandle("FM_VERT_SPEED");
+	cockpitAPI.setParamNumber(VSI_Out, PlaneFM::vy_world);
+
+
+	// Gear Indicators
+	void* Gear_Lamp_N_Out = cockpitAPI.getParamHandle("FM_GEAR_N_LAMP");
+	cockpitAPI.setParamNumber(Gear_Lamp_N_Out, PlaneFM::gearSafe);
+
+	void* Gear_Lamp_ML_Out = cockpitAPI.getParamHandle("FM_GEAR_ML_LAMP");
+	cockpitAPI.setParamNumber(Gear_Lamp_ML_Out, PlaneFM::gearSafe);
+
+	void* Gear_Lamp_MR_Out = cockpitAPI.getParamHandle("FM_GEAR_MR_LAMP");
+	cockpitAPI.setParamNumber(Gear_Lamp_MR_Out, PlaneFM::gearSafe);
+
+	void* Gear_Lamp_U_Out = cockpitAPI.getParamHandle("FM_GEAR_U_LAMP");
+	cockpitAPI.setParamNumber(Gear_Lamp_U_Out, PlaneFM::gearUnsafe);
+
+	void* Gear_Command_Out = cockpitAPI.getParamHandle("FM_GEAR_COMMAND");
+	cockpitAPI.setParamNumber(Gear_Command_Out, PlaneFM::GearCommand);
+
+
+	// Splaps Indicator
+	void* Airbrake_Lamp_Out = cockpitAPI.getParamHandle("FM_SPLAPS_LAMP");
+	cockpitAPI.setParamNumber(Airbrake_Lamp_Out, PlaneFM::airbrakes);
+
+
+	// Cockpit Switches
+	void* Dimmer_SW_Out = cockpitAPI.getParamHandle("FM_DIMMER_SW");
+	cockpitAPI.setParamNumber(Dimmer_SW_Out, PlaneFM::COCKPITIO::Dimmer_SW);
+	
+
 	// Console Log start
-	//fprintf(stderr, "%s %f\n", "AoA_Value_Out", AoA_Value_Out);
+	//fprintf(stderr, "%s: %f  ", "gear_state", PlaneFM::ACTUATORS::gear_state);
 	// Console Log End
 
 }
@@ -1241,6 +1297,9 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 	case geartoggle:
 		if (PlaneFM::ACTUATORS::gear_state > 0.5) PlaneFM::GearCommand = 0.0;
 		else if (PlaneFM::ACTUATORS::gear_state < 0.5) PlaneFM::GearCommand = 1.0;
+	case gearHandle:
+		if (PlaneFM::ACTUATORS::gear_state > 0.5) PlaneFM::GearCommand = 0.0;
+		else if (PlaneFM::ACTUATORS::gear_state < 0.5) PlaneFM::GearCommand = 1.0;
 	case WheelBrakeOn:
 		PlaneFM::rolling_friction = 0.165;
 		PlaneFM::WheelBrakeCommand = 1.0 * weight_on_wheels;
@@ -1296,6 +1355,16 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		PlaneFM::pitchTrim = 0.0;
 		PlaneFM::rollTrim = 0.0;
 		PlaneFM::yawTrim = 0.0;
+		break;
+
+
+	case Dimmer_SW:
+		if (PlaneFM::COCKPITIO::Dimmer_SW) {
+			PlaneFM::COCKPITIO::Dimmer_SW = 0;
+		}
+		else {
+			PlaneFM::COCKPITIO::Dimmer_SW = 1;
+		}
 		break;
 
 	};

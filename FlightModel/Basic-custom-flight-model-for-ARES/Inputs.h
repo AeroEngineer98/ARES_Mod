@@ -44,8 +44,8 @@ enum InputCommands
 	ruddertrimRight = 99,
 
 	//throttle,
-	throttle = 3002,
-	throttleAxis = 3006,
+	throttle = 3013,
+	throttleAxis = 3012,
 	throttleupLeft = 161,
 	throttleupRight = 163,
 	throttledownLeft = 162,
@@ -56,6 +56,7 @@ enum InputCommands
 
 	//gear commands
 	geartoggle = 68,
+	gearHandle = 3006,
 	gearup = 430,
 	geardown = 431,
 	WheelBrakeOn = 74,
@@ -80,14 +81,14 @@ enum InputCommands
 	JoystickThrottle = 2004,
 
 	// modes
-	nav		= 105,
-	bvr		= 106,
-	vs		= 107,
-	bore	= 108,
-	helm	= 109,
-	fi0		= 110,
-	a2g		= 111,
-	gun		= 113,
+	nav = 105,
+	bvr = 106,
+	vs = 107,
+	bore = 108,
+	helm = 109,
+	fi0 = 110,
+	a2g = 111,
+	gun = 113,
 
 	// autopilot modes
 	//autopilot = 62, // [A]
@@ -97,5 +98,11 @@ enum InputCommands
 	autopilot_alt_roll = 387,  // [H]
 	autopilot_reset = 408,  // [Left alt + 9]
 
-	Reserved // placeholder
+	Reserved, // placeholder
+
+
+
+	// Cockpit Switches
+	Dimmer_SW = 3010,
+
 };

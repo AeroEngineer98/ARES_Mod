@@ -20,6 +20,8 @@ namespace PlaneFM
 		double	throttle_state = 0.0;
 		double	throttle_rate = 0.0;
 		double	gear_state = 0.0;
+		double	gear_unsafe = 0.0;
+		double	gear_safe = 0.0;
 		double	gear_rate = 0.0;
 		double	airbrake_state = 0.0;
 		double	airbrake_rate = 0.0;
@@ -137,6 +139,33 @@ namespace PlaneFM
 
 			return gear_state;
 		}
+
+		double gear_unsafe_check(double GearCommand, double GearState)
+		{	
+			if (GearCommand <= 0.01 && GearState >= 0.01)
+			{
+				gear_unsafe = 1;
+			}
+			else {
+				gear_unsafe = 0;
+			}
+			return gear_unsafe;
+		
+		}
+
+		double gear_safe_check(double GearState)
+		{
+			if (GearState > 0.99)
+			{
+				gear_safe = 1;
+			}
+			else {
+				gear_safe = 0;
+			}
+			return gear_safe;
+		}
+
+
 		double  flaps_actuator(double flap_command, double frameTime)
 		{
 			if (!simInitialized)

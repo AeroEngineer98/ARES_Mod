@@ -36,6 +36,9 @@
     <ClInclude Include="Actuators\PlaneFMActuators.h">
       <Filter>Actuators</Filter>
     </ClInclude>
+    <ClInclude Include="CockpitInteraction\CockpitInteraction.h">
+      <Filter>CockpitInteraction</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Aerodynamics">
@@ -55,6 +58,9 @@
     </Filter>
     <Filter Include="FlightControls">
       <UniqueIdentifier>{a631e22a-a48d-4b68-8446-701e99146567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CockpitInteraction">
+      <UniqueIdentifier>{5385c065-5b58-41e8-b5d8-956e384b70d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

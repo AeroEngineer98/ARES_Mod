@@ -23,6 +23,7 @@ BASE OBJECTS
 #4 Rudder Pedals
 #5 Throttle
 #8 Landing Gear Handle
+#9 Splaps Handle/Switch
 #10 Hook Handle
 
 
@@ -61,7 +62,7 @@ FWD PANEL
 
 --Compass--
 #55 Heading ring
-#56 Adjust
+--#56 Adjust
 
 --N1 Gauge--
 #67 Needle
@@ -84,6 +85,29 @@ FWD PANEL
 
 
 
+==========================================================================
+Left FWD PANEL
+==========================================================================
+
+-- Gear
+#100 Landing Gear Light - N - Night
+#101 Landing Gear Light - L - Night
+#102 Landing Gear Light - R - Night
+#103 Landing Gear Light - Unsafe - Night
+#104 Landing Gear Light - N - Day
+#105 Landing Gear Light - L - Day
+#106 Landing Gear Light - R - Day
+#107 Landing Gear Light - Unsafe - Day
+
+-- Splaps
+#110 Splaps light - Night
+#111 Splaps light - Day
 
 
 
+==========================================================================
+Right Side PANEL
+==========================================================================
+
+#200 Day/Night Dimmer Switch
+#201 Variable Dimmer
