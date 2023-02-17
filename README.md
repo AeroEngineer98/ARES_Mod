@@ -13,17 +13,13 @@ This mod is my first foray into the modding world of DCS. I've created the 3D mo
 ### ARES Contributers
 - Andrew Barth
 
-### February 10, 2023 Commit
-- Added more instruments
-- Textured those instruments
-- Added an "include" folder to try to fix Darren's issue of the flight model not loading
-- Added a gear and speedbrake "splaps" handle, as well as a throttle
-- Added a day/night dimmer switch for cockpit indicator lights
-- The gun now works! It works all the time though; no logic stops the gun from firing.
+### February 17, 2023 Commit
+- Added a HUD that shows a very basic pitch ladder
+- The gun works all the time
 
-### Bunch of Commits
-- Added stuff (sorry I don't remember)
-- Added some instrument frames, including an attitude indicator that moves
+## Inbetween Commits
+- More cockpit textures
+- Clickable cockpit starting objects
 
 ### January 15, 2023 Commit
 - Separated the cockpit model from the rest of the plane for future cockpit work

@@ -232,7 +232,8 @@ ARES =  {
 
 		Sensors = {
 			RWR = "Abstract RWR", -- RWR type
-			RADAR = "AN/APQ-120", -- Radar type
+			--RADAR = "AN/APQ-120", -- Radar type
+			RADAR = "AN/APQ-159",
 		},
 
 		HumanRadio = {

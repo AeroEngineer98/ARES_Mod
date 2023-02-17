@@ -18,7 +18,7 @@ draw_pilot					 = false
 
 external_model_canopy_arg	 = 38
 
-use_external_views = true
+--use_external_views = true -- Must be set to false or removed for HUD collimation to work
 
 day_texture_set_value   = 0.0
 night_texture_set_value = 0.1

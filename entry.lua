@@ -56,6 +56,7 @@ LogBook =
 
 mount_vfs_texture_path  (current_mod_path ..  "/Theme/ME")--for simulator loading window
 mount_vfs_texture_path  (current_mod_path ..  "/Textures/ARES")
+mount_vfs_texture_path  (current_mod_path ..  "/Cockpit/Textures")
 mount_vfs_model_path    (current_mod_path ..  "/Shapes")
 
 dofile(current_mod_path..'/ARES.lua')
