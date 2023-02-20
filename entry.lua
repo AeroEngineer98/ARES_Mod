@@ -68,7 +68,7 @@ local FM =
 {
 	[1] = self_ID,
 	[2] = "Custom_FM",
-	center_of_mass		=	{ 0.183 , 0.261 , 0.0},		-- center of mass position relative to object 3d model center for empty aircraft
+	center_of_mass		=	{ 0.183 , 0.261 , 0.0},		-- center of mass position relative to object 3d model center for empty aircraft {-STA, WL, BL}
 	moment_of_inertia  	= 	{12874.0, 85552.1, 75673.6},   	-- moment of inertia of empty aircraft
 	suspension   = suspension, -- gear posts initialization
 } 

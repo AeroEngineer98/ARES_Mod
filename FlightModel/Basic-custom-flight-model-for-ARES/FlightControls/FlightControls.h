@@ -70,7 +70,7 @@ namespace PlaneFM
 		double fcs_yaw_controller(double pedInput, double pedTrim)
 		{
 			double rudderCommand = pedInput;
-			rudderCommand = limit(rudderCommand, -30.0, 30.0);
+
 			double finalRudderCommand = rudderCommand;
 
 			return finalRudderCommand;
@@ -162,6 +162,7 @@ namespace PlaneFM
 		// Controller for pitch
 		double fcs_pitch_controller(double longStickInput, double pitchTrim, double angle_of_attack_ind, double pitch_rate, double az, double differentialCommand, double dynPressure_LBFT2, double dt)
 		{
+			/*
 			if(!(simInitialized))
 			{
 				double numerators[2] = {1.0,0.0};
@@ -184,9 +185,11 @@ namespace PlaneFM
 				denominators[0] = 1.0; denominators[1] = 15.0;
 				accelFilter.InitFilter(numerators,denominators,1,dt);
 			}
+			*/
 
-			double stickCommandPos =  fcs_pitch_controller_force_command(longStickInput, pitchTrim, dt);
+			double stickCommandPos = longStickInput; // fcs_pitch_controller_force_command(longStickInput, pitchTrim, dt);
 
+			/*
 			double dynamicPressureScheduled = dynamic_pressure_schedule(dynPressure_LBFT2);	
 
 			azFiltered = accelFilter.Filter(!(simInitialized),dt,az-1.0);
@@ -210,6 +213,8 @@ namespace PlaneFM
 
 			double finalPitchCommandTotal = pitchPreActuatorFilter.Filter(!(simInitialized),dt,finalCombinedCommandFilteredLimited);
 			finalPitchCommandTotal += (0.5 * alphaFiltered);
+			*/
+			double finalPitchCommandTotal = stickCommandPos;
 
 			return finalPitchCommandTotal;
 

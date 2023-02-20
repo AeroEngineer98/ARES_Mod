@@ -20,7 +20,3 @@ pages =
 	 INDICATION
 	 },
 }
-
---collimator_default_distance_factor = {auto_collimator_default_distance_factor[1], 0, 0}
-
---dofile(LockOn_Options.script_path.."materials.lua")

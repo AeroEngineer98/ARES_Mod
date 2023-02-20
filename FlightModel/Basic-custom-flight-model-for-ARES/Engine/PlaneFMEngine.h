@@ -1,7 +1,10 @@
 #include "../stdafx.h"
 
 
+double limitedThrottleInput = 0;
+
 double PLA_array[] = { //Power lever angle
+	0,
 	20.4,
 	24.7,
 	30.5,
@@ -17,6 +20,7 @@ double PLA_array[] = { //Power lever angle
 	85.2 };
 
 double thrust_array[] = { // Thrust at 0 alt
+	0,
 	466,
 	1028,
 	2753,
@@ -31,7 +35,40 @@ double thrust_array[] = { // Thrust at 0 alt
 	12626,
 	12696 };
 
+double N2_array[] = {
+	0,
+	49.4,
+	53.5,
+	57.5,
+	61.6,
+	65.7,
+	69.7,
+	73.8,
+	77.9,
+	81.9,
+	86.0,
+	90.1,
+	94.1,
+	98.2 };
+
+double N1_array[] = {
+	0,
+	22.9,
+	29.5,
+	36.0,
+	42.6,
+	49.1,
+	55.7,
+	62.2,
+	68.8,
+	75.4,
+	81.9,
+	88.5,
+	95.0,
+	101.6 };
+
 double input_array[] = {
+	0,
 	1 * 100 / 13,
 	2 * 100 / 13,
 	3 * 100 / 13,
@@ -59,103 +96,63 @@ namespace PlaneFM
 		double throttlePositionLastTime = 0;
 		double engine_damage;
 		double fuel; 
+		double N1 = 0;
+		double N2 = 0;
 
 
 		
-	
-		double engine_dynamics(double throttleInput, double mach, double alt, double frameTime)
-		{
+		double Get_N2(double throttleInput, double frameTime, double engineCutoff)
+		{	
+			double N2_rate = 1;
 
-			double thrust_lb = lerp(input_array, thrust_array, sizeof(thrust_array) / sizeof(double), throttleInput);
+			if (!engineCutoff) {
+				throttleInput = limit(throttleInput, 100 / 13, 100);
+			}
+			else {
+				throttleInput = 0; //limit(throttleInput, 0, 100);
+			}
+			
+			double N2_table_val = lerp(input_array, N2_array, sizeof(N2_array) / sizeof(double), throttleInput);
+
+			N2 += (N2_table_val - N2) * N2_rate * frameTime;
+
+			return N2;
+		}
+
+		double Get_N1(double N2, double frameTime, double engineCutoff)
+		{	
+			double N1_rate = 2;
+
+			if (!engineCutoff) {
+				N2 = limit(N2, 100 / 13, 100);
+			}
+			else {
+				N2 = 0; //limit(throttleInput, 0, 100);
+			}
+
+			double N1_table_val = lerp(N2_array, N1_array, sizeof(N1_array) / sizeof(double), N2);
+
+			N1 += (N1_table_val - N1) * N1_rate * frameTime;
+
+			if (N1 > 99.5 && N2 == 100) {
+				N1 = 100;
+			}
+			else if (N1 < 0.05 && N2 == 0) {
+				N1 = 0;
+			}
+
+			return N1;
+		}
+
+
+		double engine_dynamics(double N1, double mach, double alt, double frameTime, double engineCutoff)
+		{
+			double thrust_lb = lerp(N1_array, thrust_array, sizeof(thrust_array) / sizeof(double), N1);
 			double thrust = thrust_lb * 4.4482189159;	// convert lb to N
 
-			/*
-			if (throttleInput < 90.0)
-			{
-				percentPower = throttleInput * 0.6923;
-			}
-			else
-			{
-				percentPower = throttleInput * 4.5455 - 354.55;
-			}
+			thrust = limit(thrust, 0.0, 150000.0)/ (1 + engine_damage * 100);
 
-				EDPARAM cockpitAPI;
-
-				percentPower = limit(percentPower, 0.0, 100.0);
-				double power1 = percentPower;
-				double power2 = 0.0;
-				double power3rate = 0.0;
-
-				//if(!(PlaneFM::simInitialized))
-				//{
-				//	power3 = power1;
-				//}
-				if (power1 < 50.0)
-				{
-					if (power3 < 50.0)
-					{
-						power2 = power1;
-						if ((power2 - power3) < 40.0)
-						{
-							power3rate = 1.0 * (power2 - power3);
-						}
-						else
-						{
-							power3rate = 0.1 * (power2 - power3);
-						}
-					}
-					else
-					{
-						power2 = 40.0;
-						power3rate = 5.0 * (power2 - power3);
-					}
-				}
-				else
-				{
-					if (power3 < 50.0)
-					{
-						power2 = 60.0;
-						if ((power2 - power3) < 40.0)
-						{
-							power3rate = 1.0 * (power2 - power3);
-						}
-						else
-						{
-							power3rate = 0.1 * (power2 - power3);
-						}
-					}
-					else
-					{
-						power2 = power1;
-						power3rate = 5.0 * (power2 - power3);
-					}
-				}
-
-				power3 += (power3rate * frameTime);
-				power3 = limit(power3, 0.0, 100.0);
-
-				//From Simulator Study document (use 0 altitude values for now)
-				//TODO: This should really be a look-up table per the document reference but this is sufficient for now...
-				double machLimited = limit(mach, 0.2, 1.0);
-				double Tidle = (-24976.0 * machLimited + 9091.5) + ((alt / 55000) * 12000.0);
-				double Tmil = (-25958.0 * pow(machLimited, 3.0) + 34336.0 * pow(machLimited, 2.0) - 14575.0 * machLimited + 58137.0) + ((alt / 50000.0) * -42000.0);
-				double Tmax = (26702.0 * pow(machLimited, 2.0) + 8661.4 * machLimited + 92756.0) + ((alt / 50000.0) * -100000.0);
-
-				double thrust = 0.0;
-				if (power3 < 50.0)
-				{
-					thrust = Tidle + (Tmil - Tidle) * (power3 / 50.0);
-				}
-				else
-				{
-					thrust = Tmil + (Tmax - Tmil) * (power3 - 50.0) / 50.0;
-				}
-				//thrust = limit(thrust, 0.0, 129000.0);
-				*/
-
-				thrust = limit(thrust, 0.0, 150000.0)/ (1 + engine_damage * 100);
-
-				return thrust;
+			return thrust;
 		}
 	}
 }
