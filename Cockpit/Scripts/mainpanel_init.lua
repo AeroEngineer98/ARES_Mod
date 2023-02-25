@@ -8,7 +8,7 @@ ambient_color_from_devices   = {50, 50, 40}
 ambient_color_from_panels	 = {35, 25, 25}
 -- fc3_cockpit_draw_args = true
 -- ed_fm_set_fc3_cockpit_draw_args_v2
--- use_external_shape=flase
+--use_external_shape=true
 local ft_to_meter = 0.3048
 
 
@@ -38,12 +38,14 @@ ThrottleLever.input				= {0, 100}
 ThrottleLever.output			= {-1, 1}
 ThrottleLever.parameter_name	= "THROTTLE_AXIS_POS"
 
+
 -- Gear Handle
 GearHandle						= CreateGauge("parameter")
 GearHandle.arg_number			= 8
 GearHandle.input				= {0, 1}
 GearHandle.output				= {0, 1}
 GearHandle.parameter_name		= "GEAR_HANDLE_POS"
+
 
 -- Splaps Lever
 SplapsLever						= CreateGauge("parameter")
@@ -87,12 +89,14 @@ Mach_Ind.input					= {0, 1.2}
 Mach_Ind.output					= {-1, 1}
 Mach_Ind.parameter_name			= "MACH_NUM"
 
+
 -- Alpha/AoA Indicator
 Alpha_Ind						= CreateGauge("parameter")
 Alpha_Ind.arg_number			= 53
 Alpha_Ind.input					= {-2, 20}
 Alpha_Ind.output				= {-1, 1}
 Alpha_Ind.parameter_name		= "AOA_DEG"
+
 
 -- Altimeter
 Altitude_Ones					= CreateGauge("parameter")
@@ -113,12 +117,14 @@ Altitude_Tens.input				= {0, 100000}
 Altitude_Tens.output			= {-1, 1}
 Altitude_Tens.parameter_name	= "ALTITUDE_FT_TENS"
 
+
 -- G Meter
 Nz_Gee							= CreateGauge("parameter")
 Nz_Gee.arg_number				= 51
 Nz_Gee.input					= {-4, 10}
 Nz_Gee.output					= {-1, 1}
 Nz_Gee.parameter_name			= "NZ_GEE"
+
 
 -- Vertical Speed Indicator
 VSI_gauge						= CreateGauge("parameter")
@@ -127,12 +133,28 @@ VSI_gauge.input					= {-6000, 6000}
 VSI_gauge.output				= {-1, 1}
 VSI_gauge.parameter_name		= "VERT_SPEED"
 
+
+-- Engine N1 and N2 Gauges
+N1_gauge						= CreateGauge("parameter")
+N1_gauge.arg_number				= 67
+N1_gauge.input					= {0, 105}
+N1_gauge.output					= {-1, 1}
+N1_gauge.parameter_name			= "FM_ENG_N1"
+
+N2_gauge						= CreateGauge("parameter")
+N2_gauge.arg_number				= 69
+N2_gauge.input					= {0, 105}
+N2_gauge.output					= {-1, 1}
+N2_gauge.parameter_name			= "FM_ENG_N2"
+
+
 -- Heading Indicator
 Heading_Ind						= CreateGauge("parameter")
 Heading_Ind.arg_number			= 55
 Heading_Ind.input				= {0, 360}
 Heading_Ind.output				= {-1, 1}
 Heading_Ind.parameter_name		= "HEADING_DEG_FDAI"
+
 
 -- Gear Lamps
 NGLamp							= CreateGauge("parameter")

@@ -44,6 +44,15 @@ namespace PlaneFM
 		double		longStickForce			= 0.0;
 		double		latStickInput			= 0.0;
 
+		
+		double PitchCommand_DEG = 0;
+		double PitchCommand_norm = 0.0;
+		double stickCommandPos = 0;
+		double FinalStickCommand = 0;
+		double PrevFinalStickCommand = 0;
+
+
+
 		// Controller for the leading edge flaps
 		double leading_edge_flap_controller(double alpha_DEG, double dynamicPressure_FTLB, double staticPressure_FTLB, double frameTime)
 		{
@@ -150,83 +159,100 @@ namespace PlaneFM
 			return scheduleOutput;
 		}
 
-		// Angle of attack limiter logic, doesn't seem to do anything!
-		double angle_of_attack_limiter(double alphaFiltered, double pitchRateCommand)
-		{
-			double topLimit = (alphaFiltered) + 10;
-			double bottomLimit = (alphaFiltered) - 10;
+		double fcs_pitch_limiter(double stickcommand, double pitchTrim, double aoa, double Nz, double airspeed) {
+			double aoaPLimit = 10;
+			double aoaNLimit = -3;
+			double aoaP_PGain = 0.1;
+			double aoaN_PGain = 0.1;
+			double NzPLimit = 6;
+			double NzNLimit = -0.5;
+			double NzP_PGain = 0.1;
+			double NzN_PGain = 0.5;
 
-			return (topLimit + bottomLimit);
+			PrevFinalStickCommand = FinalStickCommand;
+
+			if (airspeed > 150) {
+				stickcommand = limit(stickcommand / pow(airspeed/150,2), -1, 1);
+			}
+
+			NzP_PGain = limit(NzP_PGain / (airspeed / 150), 0, NzP_PGain);
+			NzN_PGain = limit(NzN_PGain / (airspeed / 150), 0, NzN_PGain);
+
+			
+
+			//fprintf(stderr, "stickcommand: %f   ", stickcommand);
+
+			if (airspeed <= 150) {
+				fprintf(stderr, "Airspeed <= 200  ");
+				//FinalStickCommand = stickcommand;
+				if (aoa <= aoaPLimit && aoa >= aoaNLimit)
+				{
+					//fprintf(stderr, "aoa <= aoaPLimit && aoa >= aoaNLimit  ");
+					FinalStickCommand = stickcommand;
+				} else if (aoa > aoaPLimit) {
+					//fprintf(stderr, "aoa > aoaPLimit  ");
+					FinalStickCommand = stickcommand + aoaP_PGain * (aoa - aoaPLimit);
+				} else if (aoa < aoaNLimit) {
+					//fprintf(stderr, "aoa < aoaNLimit  ");
+					FinalStickCommand = stickcommand - aoaN_PGain * (aoaNLimit - aoa);
+				}
+			}
+			else {
+				//fprintf(stderr, "Airspeed > 200  ");
+				
+				//FinalStickCommand = stickcommand;
+				if (Nz <= NzPLimit && Nz >= NzNLimit)
+				{
+					//fprintf(stderr, "Nz <= NzPLimit && Nz >= NzNLimit  ");
+					FinalStickCommand = stickcommand;
+				} else if (Nz > NzPLimit) {
+					//fprintf(stderr, "Nz > NzPLimit  ");
+					FinalStickCommand = stickcommand + NzP_PGain * (Nz - NzPLimit);
+				} else if (Nz < NzNLimit) {
+					//fprintf(stderr, "Nz < NzNLimit  ");
+					FinalStickCommand = stickcommand - NzN_PGain * (NzNLimit - Nz);
+				}
+			}
+			
+
+			FinalStickCommand = limit(FinalStickCommand + pitchTrim, -1, 1);
+			//fprintf(stderr, "FinalStickCommand: %f\n", FinalStickCommand);
+			return FinalStickCommand;
+
 		}
 
 		// Controller for pitch
-		double fcs_pitch_controller(double longStickInput, double pitchTrim, double angle_of_attack_ind, double pitch_rate, double az, double differentialCommand, double dynPressure_LBFT2, double dt)
+		double fcs_pitch_controller(double longStickInput, double pitchTrim, double elevatorPosition_Limits[], double angle_of_attack_ind, double g_force, double ind_airspeed, double dt)
 		{
-			/*
-			if(!(simInitialized))
-			{
-				double numerators[2] = {1.0,0.0};
-				double denominators[2] = {1.0,1.0};
-				pitchRateWashout.InitFilter(numerators,denominators,1,dt);
-
-				numerators[0] = 0.0; numerators[1] = 2.5;
-				denominators[0] = 1.0; denominators[1] = 0.0;
-				pitchIntegrator.InitFilter(numerators,denominators,1,dt);
-
-				numerators[0] = 3.0; numerators[1] = 15;
-				denominators[0] = 1.0; denominators[1] = 15.0;
-				pitchPreActuatorFilter.InitFilter(numerators,denominators,1,dt);
-
-				double numerators2[3] = { 0.0, 0.0, pow(52.0,2.0)};
-				double denomiantors2[3] = { 1.0, 2.0*0.7*999.0, pow(52.0,2.0)};
-				pitchActuatorDynamicsFilter.InitFilter(numerators2,denomiantors2,2,dt);
-
-				numerators[0] = 0.0; numerators[1] = 15.0;
-				denominators[0] = 1.0; denominators[1] = 15.0;
-				accelFilter.InitFilter(numerators,denominators,1,dt);
+			if (!(simInitialized)) {
+				stickCommandPos = 0;
+				PitchCommand_DEG = 0;
 			}
-			*/
+			
 
-			double stickCommandPos = longStickInput; // fcs_pitch_controller_force_command(longStickInput, pitchTrim, dt);
 
-			/*
-			double dynamicPressureScheduled = dynamic_pressure_schedule(dynPressure_LBFT2);	
+			stickCommandPos = longStickInput;
 
-			azFiltered = accelFilter.Filter(!(simInitialized),dt,az-1.0);
+			stickCommandPos = fcs_pitch_limiter(stickCommandPos, pitchTrim, angle_of_attack_ind, g_force, ind_airspeed);
 
-			double alphaLimited = limit(angle_of_attack_ind,-5.0, 30.0);
-			double alphaLimitedRate = 10.0 * (alphaLimited - alphaFiltered);
-			alphaFiltered += (alphaLimitedRate * dt);
 
-			double pitchRateWashedOut = pitchRateWashout.Filter(!(simInitialized),dt,pitch_rate);
-			double pitchRateCommand = pitchRateWashedOut * 0.7 * dynamicPressureScheduled;		
+			if (stickCommandPos >= 0) {
+				PitchCommand_DEG = stickCommandPos * abs(elevatorPosition_Limits[1]);
+			}
+			else {
+				PitchCommand_DEG = stickCommandPos * abs(elevatorPosition_Limits[0]);
+			}
+			
+			PitchCommand_DEG = limit(PitchCommand_DEG, elevatorPosition_Limits[0], elevatorPosition_Limits[1]);
 
-			double 
-				Command = angle_of_attack_limiter(-alphaFiltered, pitchRateCommand);
-
-			double gLimiterCommand = -(azFiltered +  (pitchRateWashedOut * 0.2));	
-
-			double finalCombinedCommand = dynamicPressureScheduled * (2.5 * (stickCommandPos + gLimiterCommand));
-
-			double finalCombinedCommandFilteredLimited = limit(pitchIntegrator.Filter(!(simInitialized),dt,finalCombinedCommand),-25.0,25.0);
-			finalCombinedCommandFilteredLimited = finalCombinedCommandFilteredLimited + finalCombinedCommand;
-
-			double finalPitchCommandTotal = pitchPreActuatorFilter.Filter(!(simInitialized),dt,finalCombinedCommandFilteredLimited);
-			finalPitchCommandTotal += (0.5 * alphaFiltered);
-			*/
-			double finalPitchCommandTotal = stickCommandPos;
-
-			return finalPitchCommandTotal;
-
-			// TODO: There are problems with flutter with the servo dynamics...needs to be nailed down!
-			//double actuatorDynamicsResult = pitchActuatorDynamicsFilter.Filter(!(simInitialized),dt,finalPitchCommandTotal);
-			//return actuatorDynamicsResult;	
+			return PitchCommand_DEG;
 		}
 
 		// Controller for roll
 		double fcs_roll_controller(double latStickInput, double longStickForce, double ay, double roll_rate, double roll_rate_trim,double dynPressure_LBFT2, double dt)
 		{
-			if(!(simInitialized))
+			/*
+			if (!(simInitialized))
 			{
 				double numerators[2] = {0.0,60.0};
 				double denominators[2] = {1.0,60.0};
@@ -324,11 +350,13 @@ namespace PlaneFM
 			{
 				pressureGain = 0.1;
 			}
-
+			
 			double rollCommandGained = limit(rollRateCommandCombined * pressureGain, -21.5, 21.5);
-
+			*/
 			// Mechanical servo dynamics
-			double rollActuatorCommand = rollActuatorDynamicsFilter.Filter(!(simInitialized),dt,rollCommandGained);	
+			double rollRange = 25.0;
+			
+			double rollActuatorCommand = -latStickInput * rollRange; //= rollActuatorDynamicsFilter.Filter(!(simInitialized),dt,rollCommandGained);	
 			return rollActuatorCommand;
 		}		
 

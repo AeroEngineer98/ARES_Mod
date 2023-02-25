@@ -5,19 +5,19 @@ mount_vfs_liveries_path (current_mod_path.."/Liveries")
 mount_vfs_sound_path    (current_mod_path.."/Sounds")
 
 
-local function coltMK12(tbl)
+local function M61A1_gun(tbl)
 
 		tbl.category = CAT_GUN_MOUNT
-		tbl.name      = "coltMK12"
+		tbl.name      = "M61A1"
 		tbl.supply      =
 		{
-			shells = {"20x110mm HE-I", "20x110mm AP-I", "20x110mm AP-T"},
+			shells = {"M61_20_HE_gr", "20x110mm AP-I", "20x110mm AP-T"},
 			mixes  = {
 				{1,2,1,3},
 				{1,1,1,1,1,3},
 				{3},
 			},   -- 50% HE-i, 25% AP-I, 25% AP-T
-			count  = 100,
+			count  = 2000,
 		}
 		if tbl.mixes then
 		   tbl.supply.mixes = tbl.mixes
@@ -26,7 +26,7 @@ local function coltMK12(tbl)
 		tbl.gun =
 		{
 			max_burst_length    = 100000,
-			rates               = {1000},
+			rates               = {6000},
 			recoil_coeff        = 0.7*1.3,
 			barrels_count       = 1,
 		}
@@ -92,23 +92,23 @@ ARES =  {
 	attribute  	= {wsType_Air, wsType_Airplane, wsType_Fighter, WSTYPE_PLACEHOLDER , ARES,"Fighters", "Refuelable",},
 	Categories	= {"{78EFB7A2-FD52-4b57-A6A6-3BF0E1D6555F}", "Interceptor",},	
 	
-	    M_empty									=	5120,  -- kg
-		M_nominal								=	6400,  -- kg  -- kg ~ %50 fuel, combat load
-		M_max									=	9930,  -- kg
-		M_fuel_max								=   640, -- utilizável 495 --509 + 239 + 249*2 + 231,   -- kg Asas, Fuselage, Subalar, Ventral,
+	    M_empty									=	5120/2.2,  -- kg
+		M_nominal								=	6400/2.2,  -- kg  -- kg ~ %50 fuel, combat load
+		M_max									=	9930/2.2,  -- kg
+		M_fuel_max								=   1500/2.2, -- utilizável 495 --509 + 239 + 249*2 + 231,   -- kg Asas, Fuselage, Subalar, Ventral,
         --M_fuel_per_tank 						= 	{320, 320}, -- kg
 		H_max									=	15000 , -- m
 
 		average_fuel_consumption 	= 0.4, -- this is highly relative, but good estimates are 36-40l/min = 28-31kg/min = 0.47-0.52kg/s -- 45l/min = 35kg/min = 0.583kg/s
 		CAS_min 					= 53, -- if this is not OVERAL FLIGHT TIME, but just LOITER TIME, than it sholud be 10-15 minutes.....CAS capability in minute (for AI)
-		V_opt 						= 250,-- Cruise speed (for AI) –- Assume Mach 0.80 at 20000 ft as optimal. See -- http://www.nasa.gov/centers/dryden/pdf/87789main_H-636.pdf and		–- http://www.hochwarth.com/misc/AviationCalculator.html 		–- Mach 0.8 at 20000 = XXX kts TAS = XXX m / s
-		V_take_off 					= 120, -- Take off speed in m/s (for AI)
-		V_land 						= 125, -- Land speed in m/s (for AI)
+		V_opt 						= 320,-- Cruise speed (for AI) –- Assume Mach 0.80 at 20000 ft as optimal. See -- http://www.nasa.gov/centers/dryden/pdf/87789main_H-636.pdf and		–- http://www.hochwarth.com/misc/AviationCalculator.html 		–- Mach 0.8 at 20000 = XXX kts TAS = XXX m / s
+		V_take_off 					= 150, -- Take off speed in m/s (for AI)
+		V_land 						= 130, -- Land speed in m/s (for AI)
 		V_max_sea_level 			= 500, -- Max speed at sea level in m/s (for AI)
 		V_max_h 					= 300, -- Max speed at max altitude in m/s (for AI)
 		Vy_max 						= 100, -- Max climb speed in m/s (for AI)
 		Mach_max 					= 0.9, -- Max speed in Mach (for AI)
-		Ny_min 						= -4, -- Min G (for AI)
+		Ny_min 						= -3, -- Min G (for AI)
 		Ny_max 						= 8.0,  -- Max G (for AI)
 		Ny_max_e 					= 8.0,  -- Max G (for AI)
 		AOA_take_off 				= math.rad(9.0), -- AoA in take off (for AI) -- in radians
@@ -175,7 +175,7 @@ ARES =  {
 				{	pilot_name            = "pilot_f86",
 					ejection_seat_name	=	17,
 					drop_canopy_name	=	'A-29B CANOPY', -- Create new canopy object and rename to ARES CANOPY
-					pos = 	{0,	0.3,	0}, -- location of your pilot ejecting,
+					pos = 	{15426,	1.11609,	0}, -- location of your pilot ejecting,
 					can_be_playable 	 = true,
 					role 				 = "pilot",
 					role_display_name    = _("Pilot"),
@@ -804,8 +804,8 @@ ARES =  {
 	
 	
 	
-	Guns = {coltMK12({muzzle_pos_connector = "Point_Gun",
-                rates = {1020},
+	Guns = {M61A1_gun({muzzle_pos_connector = "Point_Gun",
+                rates = {6000},
                 --mixes = {{2,1,1,1,1,1}},
                 effect_arg_number = 434,
                 supply_position = {2, -0.3, -0.4},

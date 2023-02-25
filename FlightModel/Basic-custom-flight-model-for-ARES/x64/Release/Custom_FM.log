@@ -1,17 +1,16 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(496,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
   PlaneFM.cpp
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(400,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(417,59): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(426,56): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(431,28): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(432,29): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(435,28): warning C4305: '+=': truncation from '__int64' to 'int'
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(439,29): warning C4305: '-=': truncation from '__int64' to 'int'
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(448,55): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(450,59): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(452,58): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(464,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(1923,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(493,59): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(504,56): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(509,28): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(510,29): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(513,28): warning C4305: '+=': truncation from '__int64' to 'int'
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(517,29): warning C4305: '-=': truncation from '__int64' to 'int'
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(528,55): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(530,59): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(532,58): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(544,57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Projects\DCS Mods\Planes\Scaled Composites ARES EFM\FlightModel\Basic-custom-flight-model-for-ARES\PlaneFM.cpp(2075,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   GeneralFilter.lib(general_filter.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
      Creating library ..\..\bin\Custom_FM.lib and object ..\..\bin\Custom_FM.exp
   Generating code

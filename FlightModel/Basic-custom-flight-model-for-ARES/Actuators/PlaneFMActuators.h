@@ -13,8 +13,10 @@ namespace PlaneFM
 	{
 		double	elevatorPosition_DEG = 0.0;
 		double	elevatorRate_DEGPERSEC = 0.0;
-		double	aileronPosition_DEG = 0.0;
+		
+		double aileronPosition_DEG = 0.0;
 		double	aileronRate_DEGPERSEC = 0.0;
+
 		double	flapPosition_DEG = 0.0;
 		double	flapRate_DEGPERSEC = 0.0;
 		double	throttle_state = 0.0;
@@ -29,18 +31,13 @@ namespace PlaneFM
 
 		// Set limits for rates and positions on the flight controls
 		//*** Need to update with ARES numbers!!*************************************
-		double elevatorRate_Limit = 90;
-		double elevatorPosition_Limits[2] = { -20.0, 20.0 };
-		double aileronRate_Limit = 90.0;
-		double aileronPosition_Limits[2] = { -15.0, 15.0 };
-		double rudderRate_Limit = 90.0;
-		double rudderPosition_Limits[2] = { -5, 5 };
-		double airbrakeRate_Limit = 3.0; // Original is 0.75
 
 
 		bool	simInitialized = false;
 
-		double  elevator_actuator(double elevator_DEG_commanded, double frameTime)
+
+		// Elevator actuator takes commanded elevator position (in deg) and outputs final elevator position (in deg)
+		double  elevator_actuator(double elevator_DEG_commanded, double elevatorPosition_Limits[], double elevatorRate_Limit, double frameTime)
 		{
 			if (!simInitialized)
 			{
@@ -48,7 +45,7 @@ namespace PlaneFM
 				return elevatorPosition_DEG;
 			}
 
-			elevatorRate_DEGPERSEC = 20.2 * (elevator_DEG_commanded - elevatorPosition_DEG);
+			elevatorRate_DEGPERSEC = 20 * (elevator_DEG_commanded - elevatorPosition_DEG);
 
 			elevatorRate_DEGPERSEC = limit(elevatorRate_DEGPERSEC, -elevatorRate_Limit, elevatorRate_Limit);
 
@@ -59,7 +56,8 @@ namespace PlaneFM
 			return elevatorPosition_DEG;
 		}
 
-		double  aileron_actuator(double roll_cmd, double frameTime)
+
+		double  aileron_actuator(double roll_cmd, double aileronPosition_Limits[], double aileronRate_Limit, double frameTime)
 		{
 			if (!simInitialized)
 			{
@@ -81,7 +79,7 @@ namespace PlaneFM
 		double	rudderPosition_DEG = 0.0;
 		double	rudderRate_DEGPERSEC = 0.0;
 
-		double  rudder_actuator(double rudderCommanded_DEG, double frameTime)
+		double  rudder_actuator(double rudderCommanded_DEG, double rudderPosition_Limits[], double rudderRate_Limit, double frameTime)
 		{
 			if (!simInitialized)
 			{
@@ -100,7 +98,7 @@ namespace PlaneFM
 			return rudderPosition_DEG;
 		}
 
-		double  throttle_actuator(double throttleInput, double frameTime)
+		double  throttle_actuator(double throttleInput, double throttleRate_Limit, double frameTime)
 		{
 			if (!simInitialized)
 			{
@@ -200,7 +198,7 @@ namespace PlaneFM
 			return elev_pos;
 		}
 
-		double  airbrake_actuator(double airbrake_command, double frameTime)
+		double  airbrake_actuator(double airbrake_command, double airbrakeRate_Limit, double frameTime)
 		{
 			if (!simInitialized)
 			{

@@ -145,7 +145,7 @@ namespace PlaneFM
 		}
 
 
-		double engine_dynamics(double N1, double mach, double alt, double frameTime, double engineCutoff)
+		double Get_Engine_Thrust(double N1, double mach, double alt, double frameTime, double engineCutoff)
 		{
 			double thrust_lb = lerp(N1_array, thrust_array, sizeof(thrust_array) / sizeof(double), N1);
 			double thrust = thrust_lb * 4.4482189159;	// convert lb to N

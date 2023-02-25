@@ -31,6 +31,7 @@ Add(HUD_Static_base)
 
 HUD_Ind_base             	= CreateElement "ceSimple"
 HUD_Ind_base.name			= "HUD_Ind_base"
+HUD_Ind_base.init_pos		= {0, -1*Deg_to_MR}  --Initial coordinates (positioning) of the tx centre
 HUD_Ind_base.element_params = {"H_SHIFT_HUD", "V_SHIFT_HUD", "ROLL_HUD"}  --Parameters that are controlling the element
 HUD_Ind_base.controllers    = {{"move_up_down_using_parameter", 1, -1}, {"move_left_right_using_parameter", 0, 1}, {"rotate_using_parameter", 2, 1}} -- type of transformation, parameter index in "element_params", control ratio
 HUD_Ind_base.collimated 	= true

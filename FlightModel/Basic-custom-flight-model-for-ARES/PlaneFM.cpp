@@ -94,145 +94,205 @@ Vec3	velocity_world_cs;
 //-------------------------------------------------------
 namespace PlaneFM // I tried to convert the imperial units to metric, but it resulted in very bizarre behaviour.
 {
-	double		meterToFoot	= 3.28084;					// Meter to foot conversion factor
+
+	//================================================================//
+	//                    Parameter/Variable Setup                    //
+	//================================================================//
+	
+
+
+	//--------- Unit Conversion Parameters ---------//
+
+	double		meterToFoot = 3.28084;					// Meter to foot conversion factor
+	double		pi = acos(-1.0);	// Pi (3.14159....)
+	double		radiansToDegrees = 180.0 / pi;			// Conversion factor from radians to degrees
+
+	
+	//--------- General Sim Parameters ---------//
+
+	// World Setup
 	double		ambientTemperature_DegK = 0.0;			// Ambient temperature (kelvin)
-	double		ambientDensity_KgPerM3	= 0.0;			// Ambient density (kg/m^3)
-	double		wingSpan_FT				= 32.667;		// F-16 wing-span (ft)
-	double		wingArea_FT2			= 300.0;		// F-16 wing area (ft^2)
-	double		meanChord_FT			= 11.32;		// F-16 mean aerodynamic chord (ft)
-	double		referenceCG_PCT			= 0.35;			// Reference center of mass as a % of wing chord
-	double		actualCG_PCT			= 0.30;			// Actual center of mass as a % of wing chord
-	double		pi						= acos(-1.0);	// Pi (3.14159....)
-	double		radiansToDegrees		= 180.0/pi;		// Conversion factor from radians to degrees
-	double		inertia_Ix_KGM2			= 12874.0;		// Reference moment of inertia (kg/m^2)
-	double		inertia_Iy_KGM2			= 75673.6;		// Reference moment of inertia (kg/m^2)
-	double		inertia_Iz_KGM2			= 85552.1;		// Reference moment of inertia (kg/m^2)
+	double		ambientDensity_KgPerM3 = 0.0;			// Ambient density (kg/m^3)
 	double		temp[9];								// Temporary array for holding look-up table results
-	double		altitude_m				= 0.0;			// Absolute altitude above sea level (metres)
-	double		altitude_FT				= 0.0;			// Absolute altitude above sea level (ft)
-	double		totalVelocity_FPS		= 0.0;			// Total velocity (always positive) (ft/s)
-	double		totalVelocity_MS		= 0.0;			// Total velocity (m/s)
-	double		Forward_Velocity		= 0.0;			// Total forward velocity (m/s)
-	double		alpha_DEG				= 0.0;			// Angle of attack (deg)
-	double		beta_DEG				= 0.0;			// Slideslip angle (deg)
-	double		rollRate_RPS			= 0.0;			// Body roll rate (rad/sec)
-	double		rollspeed				= 0.0;			// Absolute roll rate
-	double		pitchRate_RPS			= 0.0;			// Body pitch rate (rad/sec)
-	double		yawRate_RPS				= 0.0;			// Body yaw rate (rad/sec)
-	double		thrust_N				= 0.0;			// Engine thrust (Newtons)
-	double		N1						= 0.0;			// Engine N1
-	double		N2						= 0.0;			// Engine N2
+	bool		simInitialized = false;					// Has the simulation gone through it's first run frame?
+	double		DeltaTime = 0.0;						// Delta time of the simulation, in seconds. I still haven't figured out how this works exactly
 
-	double		elevator_DEG			= 0.0;			// Elevator deflection (deg)
-	double		aileron_DEG				= 0.0;			// Aileron deflection (deg)
-	double		rudder_DEG				= 0.0;			// Rudder deflection (deg)
-	double		elevator_DEG_commanded	= 0.0;			// Commanded elevator deflection from control system (deg)
-	double		aileron_DEG_commanded	= 0.0;			// Commanded aileron deflection from control system (deg)
-	double		rudder_DEG_commanded	= 0.0;			// Commanded rudder deflection from control system (deg)
-	double		pitchTrim				= 0.0;			// Pitch trim
-	double		rollTrim				= 0.0;			// Roll trim
-	double		yawTrim					= 0.0;			// Yaw trim
-	double		pitch_cmd				= 0.0;			// Elevator/stabilator command
-	double		roll_cmd				= 0.0;			// Aileron command
-	double		yaw_cmd					= 0.0;			// Rudder command
-	double		throttle_state			= 0.0;			// Engine power state
-	double		pedInput				= 0.0;			// Rudder pedal input command normalized (-1 to 1)
-	double		throttleInput			= 0.2;			// Throttle input command normalized (-1 to 1)
-	double		flap_DEG				= 0.0;			// Trailing edge flap deflection (deg)
-	double		flap_PCT				= 0.0;			// Trailing edge flap deflection (0 to 1)
-	double		aileron_PCT				= 0.0;			// Aileron deflection as a percent of maximum (-1 to 1)
-	double		rudder_PCT				= 0.0;			// Rudder deflection as a percent of maximum (-1 to 1)
-	double		elevator_PCT			= 0.0;			// Elevator deflection as a percent of maximum (-1 to 1)
-	float		elev_pos				= 0.0;			// Elevator/stabilator deflection
-	double		leadingEdgeFlap_DEG		= 0.0;			// Leading edge slat deflection (deg)
-	double		leadingEdgeFlap_PCT		= 0.0;			// Leading edge slat deflection as a percent of maximum (0 to 1)
+	// Aircraft Setup
+	double		altitude_m = 0.0;						// Absolute altitude above sea level (metres)
+	double		altitude_FT = 0.0;						// Absolute altitude above sea level (ft)
+	double		pitch_angle = 0.0;						// Pitch angle relateive to the horizon in degrees, -90 to +90.
+	double		roll_angle = 0.0;						// Roll angle relateive to the horizon in degrees, -90 to +90.
+	double		heading = 0;
+	double		alpha_DEG = 0.0;						// Angle of attack (deg)
+	double		beta_DEG = 0.0;							// Slideslip angle (deg)
 
-	float roll_pos = 0.0;
-	float pitch_filter = 0.0;
-	float roll_filter = 0.0;
-	float yaw_filter = 0.0;
-	int yaw_left = 0;
-	int yaw_right = 0;
-	int yaw_reversing = 0; // Is yaw going against input?
-
-	double		pitch_cmd_discrete = 0.0;		// Discrete Elevator/stabilator command input (button)
-	double		roll_cmd_discrete = 0.0;		// Discrete Aileron command input (button)
-	double		yaw_cmd_discrete = 0.0;			// Discrete Rudder command input (button)
-	double		yaw_combined = 0.0;
-	double		yaw_cmd_axis = 0.0;				// Continuous rudder command (analog)
-	double		pitch_cmd_axis = 0.0;			// Continuous elevator/stabilator command (analog)
-	double		roll_cmd_axis = 0.0;			// Continuous aileron command (analog)
-	double		roll_cmd_axis_norm = 0.0;		// Normalised continuous aileron command (analog)
-
-	double		dynamicPressure_LBFT2	= 0.0;			// Dynamic pressure (lb/ft^2)
-	double		mach					= 0.0;			// Air speed in Mach; 1 is the local speed of sound.
-	double		ps_LBFT2				= 0.0;			// Ambient calculated pressure (lb/ft^2)
-	bool		simInitialized			= false;		// Has the simulation gone through it's first run frame?
-	double		gearDown				= 0.0;			// State of the gear
-	double		gearUnsafe				= 0.0;			// Is the gear handle up but the gear isn't?
-	double		gearSafe				= 1.0;			// Is the gear down and locked?
-	double		gforce					= 0.0;			// This is the G force felt by the pilot, acting out the bottom of the aircraft (m/s^2), 1 is Earth's gravity.
-	double		az						= 0.0;			// This is the G force felt by the pilot, acting out the bottom of the aircraft (m/s^2), 1 is Earth's gravity.
-	double		ay						= 0.0;			// Ay (per normal direction convention) out the right wing (m/s^2)
-	double		weight_N				= 0.0;			// Weight force of aircraft (N)
-	double		ay_world				= 0.0;			// World referenced up/down acceleration (m/s^2)
-	double		vy_world				= 0.0;			// World referenced up/down velocity (m/s), in orther words, vertical speed
-	double		weight_on_wheels		= 0.0;			// Is there weight on the wheels? This checks if the plane is on the ground.
-
-	double		rolling_friction		= 0.015;			// Wheel friction amount, I don't know what units. I don't know what this is exactly.
-	double		WheelBrakeCommand		= 0.0;			// Commanded wheel brake
-	double		GearCommand				= 0.0;			// Commanded gear lever
-	double		airbrake_command		= 0.0;			// Air brakes/spoiler command
-	double		airbrakes				= 0.0;			// Are the air brakes/spoilers deployed?
-	double		flap_command			= 0.0;			// flaps command
-	double		flaps					= 0.0;			// Are the flaps down?
-	double		starter_state			= 0.0;			// Engine starter
-	double		starter_command			= 0.0;			// Engine starter
-	float		rudder_pos				= 0.0;			// Rudder(s) deflection
-	float		misc_cmd				= 0.0;			// Misc actuator command either for tail hooks or weapon bays (F-22, Su-57, etc.)
-	float		misc_state				= 0.0;
-
-	double engine_damage = 0;			// Combined left and right engine damage
-	double Lwing_damage = 0;			// Left wing damage
-	double Rwing_damage = 0;			// Right wing damage
-	double wing_damage = (Rwing_damage + Lwing_damage); // Combined wing damage
-	double tail_damage = 0;				// Tail(s) and rudder(s) damage
-	double cockpit_damage = 0;			// Cockpit avionics and pilot damage	
-	float total_damage = 0;				// Combined damage, because individual damage effects don't seem to work.
-
-	double		pitch_angle = 0.0;		// Pitch angle relateive to the horizon in degrees, -90 to +90.
-	double		roll_angle = 0.0;		// Roll angle relateive to the horizon in degrees, -90 to +90.
-	double		vspeed = 0.0;			// Vertical speed in metres per second.
 	double		vx_world = 0;
+	double		vy_world = 0;
 	double		vz_world = 0;
-	double		ax_body = 0;
-	double		ay_body = 0;
-	double		az_body = 0;
 	double		vx_body = 0;
 	double		vy_body = 0;
 	double		vz_body = 0;
-	double		roll_acc = 0.0;
-	double		yawRate_world = 0.0;	// Yaw rate relative to the Earth.
+	double		Forward_Velocity = 0.0;					// Total forward velocity (m/s)
+	double		totalVelocity_FPS = 0.0;				// Total velocity (always positive) (ft/s)
+	double		totalVelocity_MS = 0.0;					// Total velocity (m/s)
+	double		vspeed = 0.0;							// Vertical speed in metres per second.
+	double		mach = 0.0;								// Air speed in Mach; 1 is the local speed of sound.
+
+	double		az = 0.0;								// This is the G force felt by the pilot, acting out the bottom of the aircraft (m/s^2), 1 is Earth's gravity.
+	double		ay = 0.0;								// Ay (per normal direction convention) out the right wing (m/s^2)
+	double		gforce = 0.0;							// This is the G force felt by the pilot, acting out the bottom of the aircraft (m/s^2), 1 is Earth's gravity.
+	double		ay_world = 0;
+	double		ax_body = 0;
+	double		ay_body = 0;
+	double		az_body = 0;
+
+	double		rollRate_RPS = 0.0;						// Body roll rate (rad/sec)
+	double		rollspeed = 0.0;						// Absolute roll rate
+	double		pitchRate_RPS = 0.0;					// Body pitch rate (rad/sec)
+	double		yawRate_RPS = 0.0;						// Body yaw rate (rad/sec)
+	double		yawRate_world = 0.0;					// Yaw rate relative to the Earth.
 	double		omegax_world = 0;
 	double		omegaz_world = 0;
-	double		heading = 0;
 
-	int			alt_hold = 0;			// Autopilot altitude hold
-	int			altroll_hold = 0;		// Autopilot altitude and bank hold
-	int			horiz_hold = 0;			// Autopilot horizon hold
+	double		roll_acc = 0.0;
 	
-	double		DeltaTime				= 0.0;			// Delta time of the simulation, in seconds. I still haven't figured out how this works exactly
-	bool		engineswitch			= false;		// Is the engine(s) on? If there are two engines they are treated as one.
-	float		starter_switch			= 0.0;
+	double		dynamicPressure_LBFT2 = 0.0;			// Dynamic pressure (lb/ft^2)
+	double		ps_LBFT2 = 0.0;							// Ambient calculated pressure (lb/ft^2)
+	double		weight_N = 0.0;							// Weight force of aircraft (N)
+
+
+
+	//--------- Vehicle Configuration Parameters ---------//
+
+	double		wingSpan_FT = 32.667;					// F-16 wing-span (ft)
+	double		wingArea_FT2 = 300.0;					// F-16 wing area (ft^2)
+	double		meanChord_FT = 11.32;					// F-16 mean aerodynamic chord (ft)
+	double		referenceCG_PCT = 0.35;					// Reference center of mass as a % of wing chord
+	double		actualCG_PCT = 0.30;					// Actual center of mass as a % of wing chord
+	double		inertia_Ix_KGM2 = 12874.0;				// Reference moment of inertia (kg/m^2)
+	double		inertia_Iy_KGM2 = 75673.6;				// Reference moment of inertia (kg/m^2)
+	double		inertia_Iz_KGM2 = 85552.1;				// Reference moment of inertia (kg/m^2)
+
+	bool		engineswitch = false;					// Is the engine(s) on? If there are two engines they are treated as one.
+	float		starter_switch = 0.0;
 	double		fuel_consumption_since_last_time = 0;
 	double		internal_fuel;
 	double		external_fuel;
 
-	double		Airspeed_True			= 0.0;
-	double		Airspeed_Ind			= 0.0;
-	double		Airspeed_Cal			= 0.0;
 
-	//double test_force = 0.0; //test downwards pitch or "nose down" force
+
+	//--------- Flight Controls Parameters ---------//
+
+	// Elevators
+	double		pitch_cmd_axis = 0.0;					// Continuous elevator/stabilator command (analog)
+	double		pitch_cmd = 0.0;						// Elevator/stabilator command
+	double		pitch_cmd_discrete = 0.0;				// Discrete Elevator/stabilator command input (button)
+	double		pitchTrim = 0.0;						// Pitch trim
+	double		elevator_DEG_commanded = 0.0;			// Commanded elevator deflection from control system (deg)
+	double		elevator_DEG = 0.0;						// Elevator deflection (deg)
+	double		elevator_PCT = 0.0;						// Elevator deflection as a percent of maximum (-1 to 1)
+	double		elevator_norm = 0.0;					// Normalized after-controls but pre-actuator elevator value
+	float		elev_pos = 0.0;							// Elevator/stabilator deflection
+	float		pitch_filter = 0.0;
+	double		elevatorPosition_Limits[2] = { -25.0, 20.0 };
+	double		elevatorRate_Limit = 90;
+	
+	// Ailerons
+	double		roll_cmd_axis = 0.0;					// Continuous aileron command (analog)
+	double		roll_cmd_axis_norm = 0.0;				// Normalised continuous aileron command (analog)
+	double		roll_cmd = 0.0;							// Aileron command
+	double		roll_cmd_discrete = 0.0;				// Discrete Aileron command input (button)
+	double		rollTrim = 0.0;							// Roll trim
+	double		aileron_DEG_commanded = 0.0;			// Commanded aileron deflection from control system (deg)
+	double		aileron_DEG = 0.0;						// Aileron deflection (deg)
+	double		aileron_PCT = 0.0;						// Aileron deflection as a percent of maximum (-1 to 1)
+	float		roll_pos = 0.0;
+	float		roll_filter = 0.0;
+	double		aileronPosition_Limits[2] = { -30.0, 30.0 };
+	double		aileronRate_Limit = 90.0;
+
+	// Rudders
+	double		yaw_cmd_axis = 0.0;						// Continuous rudder command (analog)
+	double		pedInput = 0.0;							// Rudder pedal input command normalized (-1 to 1)
+	double		yaw_cmd = 0.0;							// Rudder command
+	double		yaw_cmd_discrete = 0.0;					// Discrete Rudder command input (button)
+	double		yawTrim = 0.0;							// Yaw trim
+	double		rudder_DEG_commanded = 0.0;				// Commanded rudder deflection from control system (deg)
+	double		rudder_DEG = 0.0;						// Rudder deflection (deg)
+	double		rudder_PCT = 0.0;						// Rudder deflection as a percent of maximum (-1 to 1)
+	float		rudder_pos = 0.0;						// Rudder(s) deflection
+	float		yaw_filter = 0.0;
+	double		yaw_combined = 0.0;
+	int			yaw_left = 0;
+	int			yaw_right = 0;
+	int			yaw_reversing = 0;						// Is yaw going against input?
+	double		rudderPosition_Limits[2] = { -20.0, 20.0 };
+	double		rudderRate_Limit = 90.0;
+	
+	// Flaps	
+	double		flap_command = 0.0;						// flaps command
+	double		flaps = 0.0;							// Are the flaps down?
+	double		flap_DEG = 0.0;							// Trailing edge flap deflection (deg)
+	double		flap_PCT = 0.0;							// Trailing edge flap deflection (0 to 1)
+	double		leadingEdgeFlap_DEG = 0.0;				// Leading edge slat deflection (deg)
+	double		leadingEdgeFlap_PCT = 0.0;				// Leading edge slat deflection as a percent of maximum (0 to 1)
+
+	// Splaps
+	double		airbrake_command = 0.0;					// Air brakes/spoiler command
+	double		airbrakes = 0.0;						// Are the air brakes/spoilers deployed?
+	double		airbrakeRate_Limit = 2.0;				// Original is 0.75
+
+
+
+	//--------- Systems Parameters ---------//
+
+	// Propulsion System
+	double		starter_command = 0.0;					// Engine starter
+	double		starter_state = 0.0;					// Engine starter
+	double		throttleInput = 0.0;					// Throttle input command normalized (-1 to 1)
+	double		throttle_state = 0.0;					// Engine power state
+	double		N1 = 0.0;								// Engine N1
+	double		N2 = 0.0;								// Engine N2
+	double		thrust_N = 0.0;							// Engine thrust (Newtons)
+	double		throttleRate_Limit = 90;
+	
+	// Landing Gear System
+	double		rolling_friction = 0.015;				// Wheel friction amount, I don't know what units. I don't know what this is exactly.
+	double		GearCommand = 0.0;						// Commanded gear lever
+	double		WheelBrakeCommand = 0.0;				// Commanded wheel brake
+	double		gearDown = 0.0;							// State of the gear
+	double		gearUnsafe = 0.0;						// Is the gear handle up but the gear isn't?
+	double		gearSafe = 1.0;							// Is the gear down and locked?
+	double		weight_on_wheels = 0.0;					// Is there weight on the wheels? This checks if the plane is on the ground.
+
+	// Autopilot System
+	int			alt_hold = 0;							// Autopilot altitude hold
+	int			altroll_hold = 0;						// Autopilot altitude and bank hold
+	int			horiz_hold = 0;							// Autopilot horizon hold
+
+	// Misc.
+	float		misc_cmd = 0.0;							// Misc actuator command either for tail hooks or weapon bays (F-22, Su-57, etc.)
+	float		misc_state = 0.0;
+
+
+
+	//--------- Instrumentation Parameters ---------//
+	
+	double		Airspeed_True = 0.0;
+	double		Airspeed_Ind = 0.0;
+	double		Airspeed_Cal = 0.0;
+
+
+	//--------- Damage Parameters ---------//
+	
+	double		engine_damage = 0;						// Combined left and right engine damage
+	double		Lwing_damage = 0;						// Left wing damage
+	double		Rwing_damage = 0;						// Right wing damage
+	double		wing_damage = (Rwing_damage + Lwing_damage); // Combined wing damage
+	double		tail_damage = 0;						// Tail(s) and rudder(s) damage
+	double		cockpit_damage = 0;						// Cockpit avionics and pilot damage	
+	float		total_damage = 0;						// Combined damage, because individual damage effects don't seem to work.
+
 	
 	EDPARAM cockpitAPI;
 	param_stuff param_class;
@@ -363,13 +423,11 @@ void ed_fm_simulate(double dt)
 
 
 
-	//---------------------------------------------
-	//-----CONTROL DYNAMICS------------------------
-	//---------------------------------------------
-	// 
+	//================================//
+	//        CONTROL DYNAMICS        //
+	//================================//
 
 	//	Fuel system
-
 	if (engine_damage < 1)
 		PlaneFM::fuel_consumption_since_last_time = ((PlaneFM::thrust_N / 40000) * dt * (engine_damage / 2));
 	else
@@ -377,9 +435,6 @@ void ed_fm_simulate(double dt)
 
 	PlaneFM::internal_fuel -= (PlaneFM::fuel_consumption_since_last_time)*PlaneFM::param_class.fuelvalue;
 
-	// Leading edge flap/slat dynamics controller, this controller is based on dynamic pressure and angle of attack and is completely automatic
-	//PlaneFM::leadingEdgeFlap_DEG = PlaneFM::FLIGHTCONTROLS::leading_edge_flap_controller(PlaneFM::alpha_DEG, PlaneFM::dynamicPressure_LBFT2, PlaneFM::ps_LBFT2, dt);
-	//PlaneFM::leadingEdgeFlap_PCT = limit(PlaneFM::leadingEdgeFlap_DEG / 25.0, 0.0, 1.0);
 	PlaneFM::leadingEdgeFlap_PCT = 0.0;
 
 	// These controls take the following inputs:
@@ -394,13 +449,26 @@ void ed_fm_simulate(double dt)
 	double roll_axis_boost = (((sin(roll_cmd_axis_norm * 2) * 2) / (25 * roll_cmd_axis_norm) * 15) / roll_cmd_axis_norm * 2) / 5;
 	double roll_combined = (pow((PlaneFM::roll_cmd_discrete + roll_cmd_axis), 2) / 4);
 
-	 yaw_combined = (pow((PlaneFM::yaw_cmd_discrete + (PlaneFM::yaw_cmd_axis * 2)), 2) / 4);
+	yaw_combined = (pow((PlaneFM::yaw_cmd_discrete + (PlaneFM::yaw_cmd_axis * 2)), 2) / 4);
 
+
+
+	//---------- Pitch Control ----------//
+	// The general flow for this is:
+	// 1) Control input is read into the EFM
+	// 2) The unfiltered control input is fed into the flight controller (under FlightControls.h)
+	// 3) The flight controller outputs a commanded flight control position, which is fed into the actuator (under PlaneFMActuators.h)
+	// 4) The actuator function gives true actuator position based on rate and position limits
+	// 5) Flight control position percent (_PCT) is fed into the dynamics equations
+
+	/*
 	if (pitch_combined < 0.25 && wing_damage < 0.5)
 		pitch_filter = (pitchRate_RPS * 25) * (1 - pitch_combined);
 	else pitch_filter = 0;
 
+
 	PlaneFM::elevator_DEG_commanded = -(PlaneFM::FLIGHTCONTROLS::fcs_pitch_controller(PlaneFM::FLIGHTCONTROLS::longStickInput, -1.0, PlaneFM::alpha_DEG, PlaneFM::pitchRate_RPS * PlaneFM::radiansToDegrees, (PlaneFM::az / 9.81), 0.0, PlaneFM::dynamicPressure_LBFT2, dt));
+	//PlaneFM::elevator_DEG = PlaneFM::elevator_DEG_commanded;
 	if (PlaneFM::FLIGHTCONTROLS::longStickInput >= 0.01) // Pitch down
 	// This is to make the controls a bit more responsive, especially when pitching the nose down.
 		PlaneFM::elevator_DEG = PlaneFM::elevator_DEG_commanded + (PlaneFM::pitchTrim + (PlaneFM::FLIGHTCONTROLS::longStickInput * 25)) + pitch_filter - (PlaneFM::ACTUATORS::flapPosition_DEG * 5);
@@ -409,19 +477,29 @@ void ed_fm_simulate(double dt)
 		PlaneFM::elevator_DEG = PlaneFM::elevator_DEG_commanded + (PlaneFM::pitchTrim + (PlaneFM::FLIGHTCONTROLS::longStickInput * 15)) + pitch_filter - (PlaneFM::ACTUATORS::flapPosition_DEG * 5);
 	if (PlaneFM::FLIGHTCONTROLS::longStickInput < 0.01 && gforce > 0) // Pitch up
 		PlaneFM::elevator_DEG = PlaneFM::elevator_DEG_commanded + (PlaneFM::pitchTrim + (PlaneFM::FLIGHTCONTROLS::longStickInput * 15) / (1 + PlaneFM::gforce / 5)) + pitch_filter - (PlaneFM::ACTUATORS::flapPosition_DEG * 5);
+	*/
 
-	//{ For some reason, changing this causes DCS to crash.
-	PlaneFM::elevator_DEG = limit(PlaneFM::elevator_DEG, -12.0, 12.0);
+	//fcs_pitch_controller(double longStickInput, double pitchTrim, double elevatorPosition_Limits[], double angle_of_attack_ind, double g_force, double dt)
+	PlaneFM::elevator_DEG_commanded = PlaneFM::FLIGHTCONTROLS::fcs_pitch_controller(PlaneFM::FLIGHTCONTROLS::longStickInput, PlaneFM::pitchTrim, PlaneFM::elevatorPosition_Limits, PlaneFM::alpha_DEG, PlaneFM::gforce, PlaneFM::Airspeed_Ind, dt);
 
+	//elevator_actuator(double elevator_DEG_commanded, double elevatorPosition_Limits[], double elevatorRate_Limit, double frameTime)
+	PlaneFM::elevator_DEG = PlaneFM::ACTUATORS::elevator_actuator(PlaneFM::elevator_DEG_commanded, elevatorPosition_Limits, elevatorRate_Limit, dt);
+
+
+
+
+	//---------- Roll Control ----------//
 	if (roll_cmd_discrete < 0.5 && roll_cmd_axis_norm < 0.1 && cockpit_damage < 1)
 		roll_filter = (rollRate_RPS * 30) / (1 + roll_combined) + (roll_cmd_axis * 100);
 	else
 		roll_filter = 0.0;
 
 	PlaneFM::aileron_DEG_commanded = (PlaneFM::FLIGHTCONTROLS::fcs_roll_controller(PlaneFM::FLIGHTCONTROLS::latStickInput, PlaneFM::FLIGHTCONTROLS::longStickForce, PlaneFM::ay / 9.81, PlaneFM::rollRate_RPS * PlaneFM::radiansToDegrees, 0.0, PlaneFM::dynamicPressure_LBFT2, dt)) + (total_damage * 18446744073709551615);
-	PlaneFM::aileron_DEG = PlaneFM::aileron_DEG_commanded + PlaneFM::rollTrim + roll_filter + (wing_damage);
+	PlaneFM::aileron_DEG = PlaneFM::aileron_DEG_commanded + PlaneFM::rollTrim;// +roll_filter + (wing_damage);
 	PlaneFM::aileron_DEG = limit(PlaneFM::aileron_DEG, -30, 30);
 
+
+	//---------- Yaw Control ----------//
 	if (yaw_combined < 0.25 && tail_damage == 0.0)
 		yaw_filter = (yawRate_RPS * 30) * (1 - yaw_combined) + (beta_DEG + yawRate_RPS);
 	else yaw_filter = 0;
@@ -443,13 +521,15 @@ void ed_fm_simulate(double dt)
 	PlaneFM::rudder_DEG = PlaneFM::rudder_DEG_commanded;
 	//PlaneFM::rudder_DEG = limit(PlaneFM::rudder_DEG, -5 * (1 + wing_damage), 5 * (1 + wing_damage));
 
+
+
 	PlaneFM::flap_DEG = PlaneFM::FLIGHTCONTROLS::fcs_flap_controller(PlaneFM::totalVelocity_FPS);
 
-	PlaneFM::elev_pos = PlaneFM::ACTUATORS::elev_actuator(PlaneFM::FLIGHTCONTROLS::longStickInput + (PlaneFM::pitchTrim / 15), dt);
+	PlaneFM::elev_pos = PlaneFM::ACTUATORS::elev_actuator(PlaneFM::FLIGHTCONTROLS::longStickInput + (PlaneFM::pitchTrim / 15), dt); //elevator_actuator(PlaneFM::FLIGHTCONTROLS::longStickInput + (PlaneFM::pitchTrim / 15), PlaneFM::elevatorPosition_Limits, dt);
 
-	PlaneFM::rudder_pos = PlaneFM::ACTUATORS::rudder_actuator(PlaneFM::pedInput, dt);
+	PlaneFM::rudder_pos = PlaneFM::ACTUATORS::rudder_actuator(PlaneFM::pedInput, PlaneFM::rudderPosition_Limits, rudderRate_Limit, dt);
 
-	PlaneFM::roll_pos = PlaneFM::ACTUATORS::aileron_actuator(PlaneFM::roll_cmd, dt);
+	PlaneFM::roll_pos = PlaneFM::ACTUATORS::aileron_actuator(PlaneFM::roll_cmd, PlaneFM::aileronPosition_Limits, aileronRate_Limit, dt);
 
 	PlaneFM::gearDown = PlaneFM::ACTUATORS::gear_actuator(PlaneFM::GearCommand, dt);
 
@@ -457,7 +537,7 @@ void ed_fm_simulate(double dt)
 
 	PlaneFM::gearSafe = PlaneFM::ACTUATORS::gear_safe_check(PlaneFM::gearDown);
 
-	PlaneFM::airbrakes = PlaneFM::ACTUATORS::airbrake_actuator(PlaneFM::airbrake_command, dt);
+	PlaneFM::airbrakes = PlaneFM::ACTUATORS::airbrake_actuator(PlaneFM::airbrake_command, airbrakeRate_Limit, dt);
 
 	PlaneFM::flaps = PlaneFM::ACTUATORS::flaps_actuator(PlaneFM::flap_command, dt);
 
@@ -477,28 +557,51 @@ void ed_fm_simulate(double dt)
 	};
 
 	//Throttle and thrust
-	PlaneFM::throttle_state = PlaneFM::ACTUATORS::throttle_actuator(PlaneFM::throttleInput, dt);
+	PlaneFM::throttle_state = PlaneFM::ACTUATORS::throttle_actuator(PlaneFM::throttleInput, throttleRate_Limit, dt);
 
 
 	PlaneFM::N2 = PlaneFM::ENGINE::Get_N2(PlaneFM::throttleInput, dt, 0);
 	PlaneFM::N1 = PlaneFM::ENGINE::Get_N1(PlaneFM::N2, dt, 0);
-	PlaneFM::thrust_N = PlaneFM::ENGINE::engine_dynamics(PlaneFM::N1, PlaneFM::mach, PlaneFM::altitude_FT, dt, 0);
+	PlaneFM::thrust_N = PlaneFM::ENGINE::Get_Engine_Thrust(PlaneFM::N1, PlaneFM::mach, PlaneFM::altitude_FT, dt, 0);
 
 	// Console Log start
 	//fprintf(stderr, "%s: %f  ", "throttleInput", PlaneFM::throttleInput);
-	//fprintf(stderr, "%s: %f	 ", "N2", PlaneFM::N2);
-	//fprintf(stderr, "%s: %f  ", "N1", PlaneFM::N1);
-	//fprintf(stderr, "%s: %f  \n", "thrust_N", PlaneFM::thrust_N);
 	// Console Log End
 	
 	if (PlaneFM::internal_fuel < 5.0)
 	PlaneFM::thrust_N = 0;
 
-	PlaneFM::aileron_PCT = (PlaneFM::aileron_DEG + ((Lwing_damage * 2) + (Rwing_damage * 2))) / (25.5 + wing_damage);
-	PlaneFM::elevator_PCT = PlaneFM::elevator_DEG / 25.0 / 1 + (wing_damage * 10);
-	PlaneFM::rudder_PCT = (PlaneFM::rudder_DEG - (tail_damage)) / (30.0 + (tail_damage * 10));
+	// Set aileron percent
+	if (PlaneFM::aileron_DEG >= 0) {
+		PlaneFM::aileron_PCT = PlaneFM::aileron_DEG / abs(aileronPosition_Limits[1]); //aileronPosition_Limits[2] = { -30.0, 30.0 }
+	}
+	else {
+		PlaneFM::aileron_PCT = PlaneFM::aileron_DEG / abs(aileronPosition_Limits[0]);
+	}
+
+	// Set elevator percent
+	if (PlaneFM::elevator_DEG >= 0) {
+		PlaneFM::elevator_PCT = PlaneFM::elevator_DEG / abs(elevatorPosition_Limits[1]); //elevatorPosition_Limits[2] = { -35.0, 20.0 };
+	}
+	else {
+		PlaneFM::elevator_PCT = PlaneFM::elevator_DEG / abs(elevatorPosition_Limits[0]);
+	}
+
+	// Set rudder percent
+	if (PlaneFM::rudder_DEG >= 0) {
+		PlaneFM::rudder_PCT = PlaneFM::rudder_DEG / abs(rudderPosition_Limits[1]); //rudderPosition_Limits[2] = { -20.0, 20.0 };
+	}
+	else {
+		PlaneFM::rudder_PCT = PlaneFM::rudder_DEG / abs(rudderPosition_Limits[0]);
+	}
+
+	//PlaneFM::aileron_PCT = (PlaneFM::aileron_DEG + ((Lwing_damage * 2) + (Rwing_damage * 2))) / (25.5 + wingdamage);
+	//PlaneFM::elevator_PCT = PlaneFM::elevator_DEG / 25.0 / 1 + (wing_damage * 10);
+	//PlaneFM::rudder_PCT = (PlaneFM::rudder_DEG - (tail_damage)) / (30.0 + (tail_damage * 10));
 	PlaneFM::flap_PCT = PlaneFM::flap_DEG / 20.0;
 
+
+	//fprintf(stderr, "%s: %f  \n", "elevator_PCT", PlaneFM::elevator_PCT);
 	// Aerodynamics stuff
 
 	double alpha1_DEG_Limited = limit(PlaneFM::alpha_DEG, -20.0, 90.0);
@@ -766,6 +869,14 @@ void ed_fm_simulate(double dt)
 	cockpitAPI.setParamNumber(VSI_Out, PlaneFM::vy_world);
 
 
+	// Engine Gauges
+	void* N1_Out = cockpitAPI.getParamHandle("FM_ENG_N1");
+	cockpitAPI.setParamNumber(N1_Out, PlaneFM::N1);
+
+	void* N2_Out = cockpitAPI.getParamHandle("FM_ENG_N2");
+	cockpitAPI.setParamNumber(N2_Out, PlaneFM::N2);
+
+
 	// Gear Indicators
 	void* Gear_Lamp_N_Out = cockpitAPI.getParamHandle("FM_GEAR_N_LAMP");
 	cockpitAPI.setParamNumber(Gear_Lamp_N_Out, PlaneFM::gearSafe);
@@ -837,6 +948,13 @@ void ed_fm_set_current_mass_state ( double mass,
 	inertia.z = moment_of_inertia_z;
 
 	PlaneFM::weight_N = mass * 9.98665002864;
+
+	// Console Log start
+	//fprintf(stderr, "%s: ", "COM");
+	//fprintf(stderr, "(%f, %f, %f)  ", center_of_mass_x, center_of_mass_y, center_of_mass_z);
+	//fprintf(stderr, "%s: %f  \n", "weight_N", PlaneFM::weight_N);
+	// Console Log End
+
 }
 /*
 called before simulation to set up your environment for the next step
@@ -1022,7 +1140,8 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		PlaneFM::pitch_cmd_discrete = 0;
 		break;
 	case trimUp:
-		PlaneFM::pitchTrim -= 0.01;
+		PlaneFM::pitchTrim -= 0.0005;
+		PlaneFM::pitchTrim = limit(PlaneFM::pitchTrim, -1, 1);
 		break;
 
 	case PitchDown:
@@ -1039,7 +1158,8 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		break;
 
 	case trimDown:
-		PlaneFM::pitchTrim += 0.01;
+		PlaneFM::pitchTrim += 0.0005;
+		PlaneFM::pitchTrim = limit(PlaneFM::pitchTrim, -1, 1);
 		break;
 
 		//Yaw
@@ -1416,12 +1536,6 @@ void ed_fm_set_draw_args(EdDrawArgument * drawargs, size_t size)
 	PlaneFM::weight_on_wheels = limit(drawargs[1].f + drawargs[4].f + drawargs[6].f, -1.0, 1.0);
 
 	//control surfaces
-
-
-
-	// Console Log start
-	//fprintf(stderr, "%s %f\n", "drawargs[0].f", PlaneFM::ACTUATORS::gear_state);
-	// Console Log End
 
 	
 
@@ -1827,6 +1941,8 @@ void ed_fm_unlimited_fuel(bool value)
 // What parameters should be set to what in a cold start?
 void ed_fm_cold_start() 
 {
+	PlaneFM::ACTUATORS::simInitialized = false;
+	PlaneFM::FLIGHTCONTROLS::simInitialized = false; 
 	PlaneFM::gearDown = 1;
 	PlaneFM::GearCommand = 1;
 	PlaneFM::throttleInput = 0;
@@ -1834,14 +1950,27 @@ void ed_fm_cold_start()
 	PlaneFM::flap_command = 0.0;
 	PlaneFM::flaps = 0.0;
 	PlaneFM::rolling_friction = 0.015;
+	PlaneFM::pitchTrim = -0.178;
 	PlaneFM::starter_command = 0.0;
 	PlaneFM::starter_state = 0.0;
 	PlaneFM::starter_switch = 0.0;
+	PlaneFM::FLIGHTCONTROLS::latStickInput = 0.0;
+	PlaneFM::FLIGHTCONTROLS::longStickInput = 0.0;
+	PlaneFM::FLIGHTCONTROLS::longStickForce = 0.0;
+	PlaneFM::airbrake_command = 0.0;
+	PlaneFM::airbrakes = 0.0;
+	PlaneFM::elevator_DEG_commanded = 0;
+	PlaneFM::elevator_DEG = 0;
+	PlaneFM::rudder_DEG_commanded = 0;
+	PlaneFM::rudder_DEG = 0;
+	PlaneFM::aileron_DEG = 0;
 } 
 
 // What parameters should be set to what in a hot start on the ground?
 void ed_fm_hot_start() 
 {
+	PlaneFM::ACTUATORS::simInitialized = false;
+	PlaneFM::FLIGHTCONTROLS::simInitialized = false; 
 	PlaneFM::gearDown = 1;
 	PlaneFM::GearCommand = 1;
 	PlaneFM::flap_command = 0;
@@ -1850,14 +1979,27 @@ void ed_fm_hot_start()
 	PlaneFM::flap_command = 0.0;
 	PlaneFM::flaps = 0.0;
 	PlaneFM::starter_command = 0.5;
-	PlaneFM::rolling_friction = 0.015; 
+	PlaneFM::rolling_friction = 0.015;
+	PlaneFM::pitchTrim = -0.178;
 	//PlaneFM::starter_state = 0.0;
 	//PlaneFM::ACTUATORS::starter_state = 0.5;
+	PlaneFM::FLIGHTCONTROLS::latStickInput = 0.0;
+	PlaneFM::FLIGHTCONTROLS::longStickInput = 0.0;
+	PlaneFM::FLIGHTCONTROLS::longStickForce = 0.0;
+	PlaneFM::airbrake_command = 0.0;
+	PlaneFM::airbrakes = 0.0;
+	PlaneFM::elevator_DEG_commanded = 0;
+	PlaneFM::elevator_DEG = 0;
+	PlaneFM::rudder_DEG_commanded = 0; 
+	PlaneFM::rudder_DEG = 0;
+	PlaneFM::aileron_DEG = 0;
 }
 
 // What parameters should be set to what in a hot start in the air?
 void ed_fm_hot_start_in_air() 
 {
+	PlaneFM::ACTUATORS::simInitialized = false;
+	PlaneFM::FLIGHTCONTROLS::simInitialized = false; 
 	PlaneFM::gearDown = 0;
 	PlaneFM::GearCommand = 0;
 	PlaneFM::throttleInput = 50.0;
@@ -1867,9 +2009,19 @@ void ed_fm_hot_start_in_air()
 	PlaneFM::flaps = 0.0;
 	PlaneFM::starter_command = 0.5;
 	PlaneFM::rolling_friction = 0.015;
-	PlaneFM::pitchTrim = -4.65;
+	PlaneFM::pitchTrim = -0.178;
 	//PlaneFM::starter_state = 0.0;
 	//PlaneFM::ACTUATORS::starter_state = 0.5;
+	PlaneFM::FLIGHTCONTROLS::latStickInput = 0.0;
+	PlaneFM::FLIGHTCONTROLS::longStickInput = 0.0;
+	PlaneFM::FLIGHTCONTROLS::longStickForce = 0.0;
+	PlaneFM::airbrake_command = 0.0;
+	PlaneFM::airbrakes = 0.0;
+	PlaneFM::elevator_DEG_commanded = 0;
+	PlaneFM::elevator_DEG = 0;
+	PlaneFM::rudder_DEG_commanded = 0;
+	PlaneFM::rudder_DEG = 0;
+	PlaneFM::aileron_DEG = 0;
 }
 
 //What should be fixed when repairs are complete?

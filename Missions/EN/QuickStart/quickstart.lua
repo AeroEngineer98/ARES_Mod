@@ -16,4 +16,13 @@ planes = {
         name = _("Landing at Kobuleti"),
         file = "ARES Landing.miz"
     },
+	
+	{
+        name = _("Empty Weight Test"),
+        file = "ARES Empty Test.miz"
+    },
 }
+
+
+
+
