@@ -10,8 +10,8 @@ local nose_amortizer_spring_force_factor_rate   = 2.0
 
 --nose_amortizer_static_force                   = 5e+4
 local nose_amortizer_static_force               = 9930.0 * 9.81 * 0.2
-local nose_damper_force                         = 2.0e+4
-local nose_amortizer_direct_damper_force_factor = nose_damper_force * 0.75
+local nose_damper_force                         = 3.0e+4
+local nose_amortizer_direct_damper_force_factor = nose_damper_force * 0.25
 local nose_amortizer_back_damper_force_factor   = nose_damper_force
 
 local nose_wheel_moment_of_inertia              = 0.6
@@ -34,27 +34,27 @@ local main_amortizer_spring_force_factor        = 7.0e+7
 local main_amortizer_spring_force_factor_rate   = 3.5
 
 --A static force that is there for countering gravity.
-local main_amortizer_static_force               = 9930.0 * 9.81 * 1.08
+local main_amortizer_static_force               = 9930.0 * 9.81 * .8
 
 local main_damper_force                         = 7.0e+4 --3e+4
-local main_amortizer_direct_damper_force_factor = main_damper_force * 0.75 --Damping force in the compress direction.
+local main_amortizer_direct_damper_force_factor = main_damper_force * 0.25 --Damping force in the compress direction.
 local main_amortizer_back_damper_force_factor   = main_damper_force --Damping force in the extend direction
 
-local main_damper_coeff                         = 100.0
+local main_damper_coeff                         = 10000.0
 
 local main_wheel_moment_of_inertia              = 2.65
 
-local wheel_static_friction_factor_COMMON       = 1.00	--Static friction when wheel is not moving (fully braked)
-local wheel_side_friction_factor_COMMON         = 0.43
-local wheel_roll_friction_factor_COMMON         = 0.1 --Rolling friction factor when wheel moving  --was 0.04
-local wheel_glide_friction_factor_COMMON        = 0.7 --Sliding aircraft --this needs to be low to go from standstill to moving smoothly -- was 0.2
+local wheel_static_friction_factor_COMMON       = 1.20	--Static friction when wheel is not moving (fully braked)
+local wheel_side_friction_factor_COMMON         = 1.5
+local wheel_roll_friction_factor_COMMON         = 0.15 --Rolling friction factor when wheel moving  --was 0.04
+local wheel_glide_friction_factor_COMMON        = 1.2 --Sliding aircraft --this needs to be low to go from standstill to moving smoothly -- was 0.2
 
 local wheel_static_friction_factor_NOSE         = 0.65
-local wheel_side_friction_factor_NOSE           = 0.45 --0.45
+local wheel_side_friction_factor_NOSE           = 1.5 --0.45
 local wheel_roll_friction_factor_NOSE           = 0.1 --was 0.05
 local wheel_glide_friction_factor_NOSE          = 0.6 --Sliding aircraft --this needs to be low to go from standstill to moving smoothly -- was 0.6
 
-local brake_moment_main                         = 10000.0
+local brake_moment_main                         = 200.0
 
 local wheel_radius_factor                       = 1.0
 
@@ -92,7 +92,7 @@ suspension =
 		wheel_side_friction_factor 				= wheel_side_friction_factor_NOSE,--affects the abillity to slide in turns - decrease for better turning
 		wheel_roll_friction_factor 				= wheel_roll_friction_factor_NOSE,
 		wheel_glide_friction_factor 			= wheel_glide_friction_factor_NOSE,
-		wheel_damage_force_factor 				= 250000.0,--/N/ 250 Su-25, damage to tires
+		wheel_damage_force_factor 				= 2500000.0,--/N/ 250 Su-25, damage to tires
 		wheel_damage_speed 						= 260.0,
 		wheel_brake_moment_max 					= 0.0,
 		wheel_moment_of_inertia					= nose_wheel_moment_of_inertia,
@@ -137,7 +137,7 @@ suspension =
 		wheel_side_friction_factor 				= wheel_side_friction_factor_COMMON,
 		wheel_roll_friction_factor 				= wheel_roll_friction_factor_COMMON,
 		wheel_glide_friction_factor				= wheel_glide_friction_factor_COMMON,
-		wheel_damage_force_factor 				= 250000.0,
+		wheel_damage_force_factor 				= 2500000.0,
 		wheel_damage_speed 						= 260.0, 
 		wheel_brake_moment_max 					= brake_moment_main,
 		wheel_moment_of_inertia 				= main_wheel_moment_of_inertia,
@@ -182,7 +182,7 @@ suspension =
 		wheel_side_friction_factor 				= wheel_side_friction_factor_COMMON,
 		wheel_roll_friction_factor 				= wheel_roll_friction_factor_COMMON,
 		wheel_glide_friction_factor 			= wheel_glide_friction_factor_COMMON,
-		wheel_damage_force_factor 				= 250000.0,
+		wheel_damage_force_factor 				= 2500000.0,
 		wheel_damage_speed 						= 260.0, 
 		wheel_brake_moment_max 					= brake_moment_main,
 		wheel_moment_of_inertia 				= main_wheel_moment_of_inertia,

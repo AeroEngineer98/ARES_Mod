@@ -81,7 +81,29 @@ FWD PANEL
 --Fuel Flow--
 #77 Needle
 
+--Master Arm Switch--
+#79 Master Arm
 
+---- Warning Lights ----
+#81 Master Warning Press
+#82 Master Warning Light
+#83 Engine Fire Press
+#84 Engine Fire Light
+
+
+---- Weapons Panel ----
+#86 Weapon Select Switch
+#87 Stores Jettison Select Switch
+#88 Stores Jettison Switch
+#89 Gun Arm Switch
+#90 L OB Arm Switch
+#91 L IB Arm Switch
+#92 R IB Arm Switch
+#93 R OB Arm Switch
+#94 Guns Ones
+#95 Guns Tens
+#96 Guns Hundreds
+#97 Guns Thousands
 
 
 
@@ -99,9 +121,28 @@ Left FWD PANEL
 #106 Landing Gear Light - R - Day
 #107 Landing Gear Light - Unsafe - Day
 
--- Splaps
-#110 Splaps light - Night
-#111 Splaps light - Day
+
+
+
+
+==========================================================================
+Right FWD PANEL
+==========================================================================
+---- Warning Lights ----
+#110 Canopy light
+#111 Bingo light
+#112 Hyd_Press light
+#113 Generator light
+#114 L_Fuel_Low light
+#115 R_Fuel_Low light
+#116 Motive light
+#117 Oil_Temp light
+#118 Oil_Pressure light
+#119 Batt light
+#120 Chem Trail light
+#121 Splaps light
+#122 Autopilot light
+#123 Hook light
 
 
 

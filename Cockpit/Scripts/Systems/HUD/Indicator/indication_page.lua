@@ -19,8 +19,8 @@ SetScale(MILLYRADIANS)
 
 
 -- Create Center Mark
-makeStaticLine(20, 1, {0,0}, {0}) -- Center Mark H Line
-makeStaticLine(20, 1, {0,0}, {90}) -- Center Mark V Line
+makeStaticLine(20, 1, {0,5*30/45*Deg_to_MR}, {0}) -- Center Mark H Line
+makeStaticLine(20, 1, {0,5*30/45*Deg_to_MR}, {90}) -- Center Mark V Line
 
 
 HUD_Static_base             	= CreateElement "ceSimple"

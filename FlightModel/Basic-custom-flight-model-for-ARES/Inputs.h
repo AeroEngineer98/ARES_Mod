@@ -2,107 +2,140 @@
 // Used in ed_fm_set_command() 
 enum InputCommands
 {
-	// commands from command_defs.lua
+	//------ - Keys from command_defs.lua(4000 - 5999) ---- -//
 
-	//General controls
-	resetTrim = 97,
-	FBW_switch = 121, //Toggle
+	//Test Keys
 
-	//Engine commands
-	EnginesOn = 309,
-	LeftEngineOn = 311,
-	RightEngineOn = 312,
-	/* left on is 311, right on is 312*/
+	// Default Commands
+	iCommandPlaneFire = 4084, //iCommandPlaneFire = FireBurst without burst limit
+	iCommandPlaneFireOff = 4085, //iCommandPlaneFireOff = Stop Burst
 
-	EnginesOff = 310,
-	LeftEngineOff = 313,
-	RightEngineOff = 314,
-	/* left off is 313, right off is 314*/
+	// Gear Keys(150 - 159)
+	GeartoggleKey = 4150,
+	WheelBrakeOnKey = 4074, //151, iCommandPlaneWheelBrakeOn = 74
+	WheelBrakeOffKey = 4075, //152, iCommandPlaneWheelBrakeOff = 75
 
-	//Pitch
-	PitchUp = 195,
-	PitchUpStop = 196,
-	PitchDown = 193,
-	PitchDownStop = 194,
-	trimUp = 95,
-	trimDown = 96,
+	//Splaps Keys(160 - 164)
+	PlaneAirBrakeKey = 4160,
+	PlaneAirBrakeOnKey = 4161,
+	PlaneAirBrakeOffKey = 4162,
 
-	//Roll
-	RollLeft = 197,
-	RollLeftStop = 198,
-	RollRight = 199,
-	RollRightStop = 200,
-	trimLeft = 93,
-	trimRight = 94,
+	//Hook Keys(165 - 169)
+	TailHookKey = 4165,
 
-	//Yaw
-	rudderleft = 201,
-	rudderleftend = 202,
-	rudderright = 203,
-	rudderrightend = 204,
-	ruddertrimLeft = 98,
-	ruddertrimRight = 99,
+	//Flight Controls Keys(170 - 179)
+	ResetTrimKey = 4170,
+	TrimUpKey = 4171,
+	TrimDownKey = 4172,
+	TrimLeftKey = 4173,
+	TrimRightKey = 4174,
+	RuddertrimLeftKey = 4175,
+	RuddertrimRightKey = 4176,
 
-	//throttle,
-	throttle = 3013,
-	throttleAxis = 3012,
-	throttleupLeft = 161,
-	throttleupRight = 163,
-	throttledownLeft = 162,
-	throttledownRight = 164,
-	ThrottleIncrease = 1032,
-	ThrottleDecrease = 1033,
-	ThrottleStop = 1034,
+	//Electrical System Keys(180 - 199)
 
-	//gear commands
-	geartoggle = 68,
-	gearHandle = 3006,
-	gearup = 430,
-	geardown = 431,
-	WheelBrakeOn = 74,
-	WheelBrakeOff = 75,
-	tailhook = 69,
 
-	//air brake commands
+	//Weapons System Keys(200 - 219)
+	PlaneFireOn = 4200,
+	PlaneFireOff = 4201,
+	PickleOn = 4202,
+	PickleOff = 4203,
+	MasterArmKey = 4204, //Toggles MasterArm
+	GunEnableKey = 4205,
+	SelectPylon1Key = 4206,
+	SelectPylon2Key = 4207,
+	SelectPylon3Key = 4208,
+	SelectPylon4Key = 4209,
+	AAModeKey = 4210,
+	AGModeKey = 4211,
 
-	AirBrakes = 73,
-	AirBrakesOn = 147,
-	AirBrakesOff = 148,
 
-	//flap commands
-	flapstoggle = 72,
-	flapsup = 145,
-	flapsdown = 146,
+	//Engine System Keys(220 - 229)
+	EngineStartKey = 4220,
+	Engine_StopKey = 4221,
+	EngineIgnitorKey = 4222,
 
-	// joystick axis commands
+
+
+
+
+
+
+
+	// ----- Axes from command_defs.lua (2000-2999) ----- //
 	JoystickPitch = 2001,
 	JoystickRoll = 2002,
 	JoystickYaw = 2003,
 	JoystickThrottle = 2004,
 
-	// modes
-	nav = 105,
-	bvr = 106,
-	vs = 107,
-	bore = 108,
-	helm = 109,
-	fi0 = 110,
-	a2g = 111,
-	gun = 113,
-
-	// autopilot modes
-	//autopilot = 62, // [A]
-	//route_follow = 429,// [Left alt + 6]
-	autopilot_horiz = 62,  // [A]
-	autopilot_alt = 59,  // [H]
-	autopilot_alt_roll = 387,  // [H]
-	autopilot_reset = 408,  // [Left alt + 9]
-
-	Reserved, // placeholder
 
 
 
-	// Cockpit Switches
-	Dimmer_SW = 3010,
+
+
+	// ----- Commands from command_defs.lua (3000-) ----- //
+
+	// Test Commands
+	Button_Test = 3000, 
+
+	// Gear Commands (3001 - 3009)
+	GearHandle = 3001,
+	Emer_gear_release = 3002,
+	EmerParkBrake = 3003,
+	Wheelbrake_AXIS = 3004,
+	Left_wheelbrake_AXIS = 3005,
+	Right_wheelbrake_AXIS = 3006,
+
+
+	// Splaps Commands (3010 - 3014)
+	PlaneAirBrake = 3010,
+
+
+	// Hook Commands (3015 - 3019)
+	TailHook = 3015,
+
+
+	// Flight Controls Commands  (3020 - 3029)
+
+
+	// Electrical System Commands  (3030 - 3049)
+	Warning_Press = 3030,
+	EngineFire_Press = 3031,
+
+
+
+	// Weapons System Commands (3050 - 3069)
+	MasterArm = 3050,
+	WpnSelect = 3051,
+	JettSelect = 3052,
+	GunArm = 3053,
+	SelectPylon1 = 3054,
+	SelectPylon2 = 3055,
+	SelectPylon3 = 3056,
+	SelectPylon4 = 3057,
+
+
+	// Engine System Commands (3070 - 3079)
+	EngineStart = 3070,
+	EngineIgnition = 3071,
+	ThrottleAxis = 3072, 
+	ThrottleClick = 3073,
+
+
+	// ECS Commands (3080 - 3089)
+
+
+	// Interior Lighting Commands (3090 - 3099)
+	Dimmer_Day = 3090,
+
+
+	// Comms Commands (3100 - 3119)
+	pilot_salute = 3100,
+
+
+
+	// Misc Commands (3120 - )
+	clock_stopwatch = 3120,
+
 
 };

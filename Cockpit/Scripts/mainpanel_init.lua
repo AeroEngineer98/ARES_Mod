@@ -51,7 +51,7 @@ GearHandle.parameter_name		= "GEAR_HANDLE_POS"
 SplapsLever						= CreateGauge("parameter")
 SplapsLever.arg_number			= 9
 SplapsLever.input				= {0, 1}
-SplapsLever.output				= {-1, 1}
+SplapsLever.output				= {0, 1}
 SplapsLever.parameter_name		= "SPLAPS_HANDLE_POS"
 
 
@@ -137,13 +137,13 @@ VSI_gauge.parameter_name		= "VERT_SPEED"
 -- Engine N1 and N2 Gauges
 N1_gauge						= CreateGauge("parameter")
 N1_gauge.arg_number				= 67
-N1_gauge.input					= {0, 105}
+N1_gauge.input					= {0, 110}
 N1_gauge.output					= {-1, 1}
 N1_gauge.parameter_name			= "FM_ENG_N1"
 
 N2_gauge						= CreateGauge("parameter")
 N2_gauge.arg_number				= 69
-N2_gauge.input					= {0, 105}
+N2_gauge.input					= {0, 110}
 N2_gauge.output					= {-1, 1}
 N2_gauge.parameter_name			= "FM_ENG_N2"
 
@@ -205,24 +205,147 @@ Gear_U_Lamp_Day.input			= {-1, 1}
 Gear_U_Lamp_Day.output			= {-1, 1}
 Gear_U_Lamp_Day.parameter_name	= "GEAR_U_LAMP_DAY"
 
+
+-- Warning Lights
+Canopy_Lamp						= CreateGauge("parameter")
+Canopy_Lamp.arg_number			= 110
+Canopy_Lamp.input				= {-1, 1}
+Canopy_Lamp.output				= {-1, 1}
+Canopy_Lamp.parameter_name		= "Canopy_Ind"
+
+Bingo_Lamp						= CreateGauge("parameter")
+Bingo_Lamp.arg_number			= 111
+Bingo_Lamp.input				= {-1, 1}
+Bingo_Lamp.output				= {-1, 1}
+Bingo_Lamp.parameter_name		= "Bingo_Ind"
+
+Hydro_Lamp						= CreateGauge("parameter")
+Hydro_Lamp.arg_number			= 112
+Hydro_Lamp.input				= {-1, 1}
+Hydro_Lamp.output				= {-1, 1}
+Hydro_Lamp.parameter_name		= "Hyd_Press_Ind"
+
+Generator_Lamp					= CreateGauge("parameter")
+Generator_Lamp.arg_number		= 113
+Generator_Lamp.input			= {-1, 1}
+Generator_Lamp.output			= {-1, 1}
+Generator_Lamp.parameter_name	= "Generator_Ind"
+
+L_Fuel_Lamp						= CreateGauge("parameter")
+L_Fuel_Lamp.arg_number			= 114
+L_Fuel_Lamp.input				= {-1, 1}
+L_Fuel_Lamp.output				= {-1, 1}
+L_Fuel_Lamp.parameter_name		= "L_Fuel_Low_Ind"
+
+R_Fuel_Lamp						= CreateGauge("parameter")
+R_Fuel_Lamp.arg_number			= 115
+R_Fuel_Lamp.input				= {-1, 1}
+R_Fuel_Lamp.output				= {-1, 1}
+R_Fuel_Lamp.parameter_name		= "R_Fuel_Low_Ind"
+
+Motive_Lamp						= CreateGauge("parameter")
+Motive_Lamp.arg_number			= 116
+Motive_Lamp.input				= {-1, 1}
+Motive_Lamp.output				= {-1, 1}
+Motive_Lamp.parameter_name		= "Motive_Ind"
+
+Oil_Temp_Lamp					= CreateGauge("parameter")
+Oil_Temp_Lamp.arg_number		= 117
+Oil_Temp_Lamp.input				= {-1, 1}
+Oil_Temp_Lamp.output			= {-1, 1}
+Oil_Temp_Lamp.parameter_name	= "Oil_Temp_Ind"
+
+Oil_Press_Lamp					= CreateGauge("parameter")
+Oil_Press_Lamp.arg_number		= 118
+Oil_Press_Lamp.input			= {-1, 1}
+Oil_Press_Lamp.output			= {-1, 1}
+Oil_Press_Lamp.parameter_name	= "Oil_Pressure_Ind"
+
+Batt_Low_Lamp					= CreateGauge("parameter")
+Batt_Low_Lamp.arg_number		= 119
+Batt_Low_Lamp.input				= {-1, 1}
+Batt_Low_Lamp.output			= {-1, 1}
+Batt_Low_Lamp.parameter_name	= "Batt_Ind"
+
+Chemtrail_Lamp					= CreateGauge("parameter")
+Chemtrail_Lamp.arg_number		= 120
+Chemtrail_Lamp.input			= {-1, 1}
+Chemtrail_Lamp.output			= {-1, 1}
+Chemtrail_Lamp.parameter_name	= "Chem_Ind"
+
+Splaps_Lamp						= CreateGauge("parameter")
+Splaps_Lamp.arg_number			= 121
+Splaps_Lamp.input				= {-1, 1}
+Splaps_Lamp.output				= {-1, 1}
+Splaps_Lamp.parameter_name		= "Splaps_Ind"
+
+Autopilot_Lamp					= CreateGauge("parameter")
+Autopilot_Lamp.arg_number		= 122
+Autopilot_Lamp.input			= {-1, 1}
+Autopilot_Lamp.output			= {-1, 1}
+Autopilot_Lamp.parameter_name	= "Autopilot_Ind"
+
+Hook_Lamp						= CreateGauge("parameter")
+Hook_Lamp.arg_number			= 123
+Hook_Lamp.input					= {-1, 1}
+Hook_Lamp.output				= {-1, 1}
+Hook_Lamp.parameter_name		= "Hook_Ind"
+
+
+-- Cockpit Switches
+MasterWarn						= CreateGauge("parameter")
+MasterWarn.arg_number			= 81
+MasterWarn.input				= {-1, 1}
+MasterWarn.output				= {-1, 1}
+MasterWarn.parameter_name		= "MasterWarn_Sw"
+
+MasterWarn_Lamp					= CreateGauge("parameter")
+MasterWarn_Lamp.arg_number		= 82
+MasterWarn_Lamp.input			= {-1, 1}
+MasterWarn_Lamp.output			= {-1, 1}
+MasterWarn_Lamp.parameter_name	= "MasterWarn_Ind"
+
+EngineFire						= CreateGauge("parameter")
+EngineFire.arg_number			= 83
+EngineFire.input				= {-1, 1}
+EngineFire.output				= {-1, 1}
+EngineFire.parameter_name		= "EngineFire_Sw"
+
+EngineFire_Lamp					= CreateGauge("parameter")
+EngineFire_Lamp.arg_number		= 84
+EngineFire_Lamp.input			= {-1, 1}
+EngineFire_Lamp.output			= {-1, 1}
+EngineFire_Lamp.parameter_name	= "EngineFire_Ind"
+
 DayNightDimmer					= CreateGauge("parameter")
 DayNightDimmer.arg_number		= 200
 DayNightDimmer.input			= {0, 1}
 DayNightDimmer.output			= {0, 1}
 DayNightDimmer.parameter_name	= "DIMMER_DAY"
 
-Splaps_Lamp						= CreateGauge("parameter")
-Splaps_Lamp.arg_number			= 110
-Splaps_Lamp.input				= {-1, 1}
-Splaps_Lamp.output				= {-1, 1}
-Splaps_Lamp.parameter_name		= "SP_LAMP"
+Guns_Amount_Ones				= CreateGauge("parameter")
+Guns_Amount_Ones.arg_number		= 94
+Guns_Amount_Ones.input			= {0, 10}
+Guns_Amount_Ones.output			= {1, 0}
+Guns_Amount_Ones.parameter_name	= "GUN_AMT_ONES"
 
-Splaps_Lamp_Day					= CreateGauge("parameter")
-Splaps_Lamp_Day.arg_number		= 111
-Splaps_Lamp_Day.input			= {-1, 1}
-Splaps_Lamp_Day.output			= {-1, 1}
-Splaps_Lamp_Day.parameter_name	= "SP_LAMP_DAY"
+Guns_Amount_Tens				= CreateGauge("parameter")
+Guns_Amount_Tens.arg_number		= 95
+Guns_Amount_Tens.input			= {0, 10}
+Guns_Amount_Tens.output			= {1, 0}
+Guns_Amount_Tens.parameter_name	= "GUN_AMT_TENS"
 
+Guns_Amount_Hund				= CreateGauge("parameter")
+Guns_Amount_Hund.arg_number		= 96
+Guns_Amount_Hund.input			= {0, 10}
+Guns_Amount_Hund.output			= {1, 0}
+Guns_Amount_Hund.parameter_name	= "GUN_AMT_HUND"
+
+Guns_Amount_Thou				= CreateGauge("parameter")
+Guns_Amount_Thou.arg_number		= 97
+Guns_Amount_Thou.input			= {0, 10}
+Guns_Amount_Thou.output			= {1, 0}
+Guns_Amount_Thou.parameter_name	= "GUN_AMT_THOU"
 
 
 

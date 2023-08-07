@@ -31,12 +31,17 @@ local fm_MRLamp = get_param_handle("FM_GEAR_MR_LAMP")
 local fm_ULamp = get_param_handle("FM_GEAR_U_LAMP")
 local fm_GearCommand = get_param_handle("FM_GEAR_COMMAND")
 
---Airbrake Indicator Handles
-local fm_Splaps_Lamp = get_param_handle("FM_SPLAPS_LAMP")
+
+--Warning Indicator Handles
+--local fm_Splaps_Lamp = get_param_handle("FM_Airbrake_Ind")
 
 
 -- Switches
 local fm_DimmerSw = get_param_handle("FM_DIMMER_SW")
+local fm_MasterArmSw = get_param_handle("FM_MASTER_ARM_SW")
+local fm_MasterWarnSw = get_param_handle("FM_WARN_SW")
+local fm_EngFireSw = get_param_handle("FM_ENG_FIRE_SW")
+local fm_WPNSelectSw = get_param_handle("FM_WPN_SELECT_SW")
 
 
 
@@ -74,14 +79,30 @@ function fm_get_GearCommand()
 end
 
 -- Airbrake Indicator Get Functions
-function fm_get_SplapsLamp()
-	return fm_Splaps_Lamp:get()
-end
+--function fm_get_SplapsLamp()
+--	return fm_Splaps_Lamp:get()
+--end
 
 
 -- Switch Get Functions
 function fm_get_Dimmer_SW()
 	return fm_DimmerSw:get()
+end
+
+function fm_get_MasterArm_SW()
+	return fm_MasterArmSw:get()
+end
+
+function fm_get_MasterWarn_SW()
+	return fm_MasterWarnSw:get()
+end
+
+function fm_get_EngFire_SW()
+	return fm_EngFireSw:get()
+end
+
+function fm_get_WPNSelect_SW()
+	return fm_WPNSelectSw:get()
 end
 
 
@@ -102,9 +123,13 @@ function get_efm_data_bus()
 	efm_data_bus.fm_get_ULamp = fm_get_ULamp()
 	efm_data_bus.fm_get_GearCommand = fm_get_GearCommand()
 	
-	efm_data_bus.fm_get_SplapsLamp = fm_get_SplapsLamp()
+	--efm_data_bus.fm_get_SplapsLamp = fm_get_SplapsLamp()
 	
 	efm_data_bus.fm_get_Dimmer_SW = fm_get_Dimmer_SW()
+	efm_data_bus.fm_get_MasterArm_SW = fm_get_MasterArm_SW()
+	efm_data_bus.fm_get_MasterWarn_SW = fm_get_MasterWarn_SW()
+	efm_data_bus.fm_get_EngFire_SW = fm_get_EngFire_SW()
+	efm_data_bus.fm_get_WPNSelect_SW = fm_get_WPNSelect_SW()
 
 	--print_message_to_user(efm_data_bus.fm_get_NGLamp)
 	

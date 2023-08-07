@@ -894,12 +894,22 @@ void ed_fm_simulate(double dt)
 	cockpitAPI.setParamNumber(Gear_Command_Out, PlaneFM::GearCommand);
 
 
-	// Splaps Indicator
-	void* Airbrake_Lamp_Out = cockpitAPI.getParamHandle("FM_SPLAPS_LAMP");
+	// Warning Indicators
+
+	void* Airbrake_Lamp_Out = cockpitAPI.getParamHandle("FM_Airbrake_Ind");
 	cockpitAPI.setParamNumber(Airbrake_Lamp_Out, PlaneFM::airbrakes);
 
 
 	// Cockpit Switches
+	void* MasterArm_SW_Out = cockpitAPI.getParamHandle("FM_MASTER_ARM_SW");
+	cockpitAPI.setParamNumber(MasterArm_SW_Out, PlaneFM::COCKPITIO::Master_Arm);
+
+	void* Warning_SW_Out = cockpitAPI.getParamHandle("FM_WARN_SW");
+	cockpitAPI.setParamNumber(Warning_SW_Out, PlaneFM::COCKPITIO::Master_Warn);
+
+	void* Eng_Fire_SW_Out = cockpitAPI.getParamHandle("FM_ENG_FIRE_SW");
+	cockpitAPI.setParamNumber(Eng_Fire_SW_Out, PlaneFM::COCKPITIO::Engine_Fire);
+
 	void* Dimmer_SW_Out = cockpitAPI.getParamHandle("FM_DIMMER_SW");
 	cockpitAPI.setParamNumber(Dimmer_SW_Out, PlaneFM::COCKPITIO::Dimmer_SW);
 	
@@ -1088,41 +1098,14 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		PlaneFM::roll_cmd_axis_norm = (limit(value, -1.0, 1.0) * limit(value, -1.0, 1.0)) * 100;
 		break;
 
-	case RollLeft:
-		//PlaneFM::FLIGHTCONTROLS::latStickInput = (-value - 0.25) - (PlaneFM::FLIGHTCONTROLS::latStickInput);
-		PlaneFM::FLIGHTCONTROLS::latStickInput = (-value - 1);
-		PlaneFM::roll_cmd = ((-value - 0.025) / 2.0 * 100.0);
-		PlaneFM::roll_cmd_discrete += 1;
-		break;
-
-	case RollLeftStop:
-		PlaneFM::FLIGHTCONTROLS::latStickInput = 0.0;
-		//PlaneFM::FLIGHTCONTROLS::latStickInput = rollspeed;
-		PlaneFM::roll_cmd = 0.0;
-		PlaneFM::roll_cmd_discrete = 0;
-		break;
-
-	case trimLeft:
+	case TrimLeftKey:
 		PlaneFM::rollTrim += 0.015;
 		break;
 
-	case RollRight:
-		//PlaneFM::FLIGHTCONTROLS::latStickInput = (-value + 0.25) + (PlaneFM::FLIGHTCONTROLS::latStickInput);
-		PlaneFM::FLIGHTCONTROLS::latStickInput = (-value + 1);	
-		PlaneFM::roll_cmd = ((-value + 0.025) / 2.0 * 100.0);
-		PlaneFM::roll_cmd_discrete += 1;
-		break;
-
-	case RollRightStop:
-		PlaneFM::FLIGHTCONTROLS::latStickInput = 0.0;
-		//PlaneFM::FLIGHTCONTROLS::latStickInput = rollspeed;
-		PlaneFM::roll_cmd = 0.0;
-		PlaneFM::roll_cmd_discrete = 0.0;
-		break;
-
-	case trimRight:
+	case TrimRightKey:
 		PlaneFM::rollTrim -= 0.015;
 		break;
+
 
 	case JoystickPitch:
 		//PlaneFM::FLIGHTCONTROLS::longStickInput = limit(-value, -1.0, 1.0);
@@ -1130,37 +1113,16 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		PlaneFM::pitch_cmd_axis = (limit(-value, -1.0, 1.0) * limit(-value, -1.0, 1.0));
 		break;
 
-	case PitchUp:
-		//PlaneFM::FLIGHTCONTROLS::longStickInput = -value - (((alpha_DEG) / (alpha_DEG * alpha_DEG + 5 * 5) / alpha_DEG) * 120);
-		PlaneFM::FLIGHTCONTROLS::longStickInput = -value - 1;
-		PlaneFM::pitch_cmd_discrete = 1;
-		break;
-	case PitchUpStop:
-		PlaneFM::FLIGHTCONTROLS::longStickInput = 0;
-		PlaneFM::pitch_cmd_discrete = 0;
-		break;
-	case trimUp:
+	case TrimUpKey:
 		PlaneFM::pitchTrim -= 0.0005;
 		PlaneFM::pitchTrim = limit(PlaneFM::pitchTrim, -1, 1);
 		break;
 
-	case PitchDown:
-		//PlaneFM::FLIGHTCONTROLS::longStickInput = -value + ((alpha_DEG) / (alpha_DEG * alpha_DEG + 5 * 10) / alpha_DEG) *1250;
-		//PlaneFM::FLIGHTCONTROLS::longStickInput = -value + ((alpha_DEG) / (alpha_DEG * alpha_DEG + 5 * 10) / alpha_DEG) *2500;
-		PlaneFM::FLIGHTCONTROLS::longStickInput = -value + 1;
-		PlaneFM::pitch_cmd_discrete = 1;
-		//PlaneFM::pitchTrim += 5;
-		break;
-	case PitchDownStop:
-		PlaneFM::FLIGHTCONTROLS::longStickInput = 0;
-		PlaneFM::pitch_cmd_discrete = 0;
-		//PlaneFM::pitchTrim -= 5;
-		break;
-
-	case trimDown:
+	case TrimDownKey:
 		PlaneFM::pitchTrim += 0.0005;
 		PlaneFM::pitchTrim = limit(PlaneFM::pitchTrim, -1, 1);
 		break;
+
 
 		//Yaw
 	case JoystickYaw:
@@ -1169,61 +1131,16 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		PlaneFM::yaw_cmd_axis = (limit(-value, -10.0, 10.0) * limit(-value, -10.0, 10.0));
 		break;
 
-	case rudderleft:
-		//PlaneFM::pedInput = -value + (((beta_DEG) / (beta_DEG * beta_DEG + 5 * 20) / beta_DEG) * 101);
-		PlaneFM::pedInput = -value + 1;
-		PlaneFM::yaw_cmd_discrete += 1;
-		break;
-	case rudderleftend:
-		PlaneFM::pedInput = 0.0;
-		PlaneFM::yaw_cmd_discrete = 0;
-		break;
-
-	case ruddertrimLeft:
+	case RuddertrimLeftKey:
 		PlaneFM::yawTrim += 0.05;
 		break;
 
-	case rudderright:
-		//PlaneFM::pedInput = -value - (((beta_DEG) / (beta_DEG * beta_DEG + 5 * 20) / beta_DEG) * 101);
-		PlaneFM::pedInput = -value - 1;
-		PlaneFM::yaw_cmd_discrete += 1;
-		break;
-	case rudderrightend:
-		PlaneFM::pedInput = 0.0;
-		PlaneFM::yaw_cmd_discrete = 0;
-		break;
-
-	case ruddertrimRight:
+	case RuddertrimRightKey:
 		PlaneFM::yawTrim -= 0.05;
 		break;
 
 	//Engine and throttle commands
-	case EnginesOff: //FIGURE THIS OUT!
-		//PlaneFM::engineswitch = 0;
-		PlaneFM::starter_command = 0;
-		//PlaneFM::throttleInput = 0;
-		PlaneFM::throttleInput = -100 + limit((value), 0.0, 0.0);
-		break;
-	case LeftEngineOff:
-		PlaneFM::starter_command = 0;
-		PlaneFM::throttleInput = -100 + limit((value), 0.0, 0.0);
-		break;
-	case RightEngineOff:
-		PlaneFM::starter_command = 0;
-		PlaneFM::throttleInput = -100 + limit((value), 0.0, 0.0);
-		break;
-
-	case EnginesOn:
-		//PlaneFM::engineswitch = 1;
-		PlaneFM::starter_command = 0.5;
-		//PlaneFM::throttleInput = 50;
-		//PlaneFM::throttleInput += 50;
-		//PlaneFM::throttleInput = (limit((value), 0.0, 100.0));
-		break;
-	case LeftEngineOn:
-		PlaneFM::starter_command = 0.5;
-		break;
-	case RightEngineOn:
+	case EngineStart:
 		PlaneFM::starter_command = 0.5;
 		break;
 	
@@ -1234,175 +1151,89 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		}
 		break;
 
-	case ThrottleIncrease:
-		if (PlaneFM::engineswitch == 1)
-		//if (PlaneFM::ACTUATORS::starter_state >= 50)
-		{
-			if (PlaneFM::internal_fuel >= 5.0)
-			{
-				if (PlaneFM::throttleInput < 100)
-				{
-					PlaneFM::throttleInput += 0.40;
-				}
-				if (PlaneFM::throttleInput <= 24.9)
-				{
-					PlaneFM::throttleInput = 25.0;
-				}
-			}
-			if (PlaneFM::internal_fuel < 5.0)
-			{
-				//PlaneFM::throttleInput -= 100.0;
-				PlaneFM::throttleInput = 0.0;
-				//PlaneFM::throttleInput = 0 + limit((value), 0.0, 0.01);
-			}
-		}
-		else
-		{
-			PlaneFM::throttleInput = 0;
-		}
-		break;
-
-	case ThrottleDecrease:
-		if (PlaneFM::engineswitch == 1)
-		//if (PlaneFM::ACTUATORS::starter_state >= 50)
-		{
-			if (PlaneFM::internal_fuel >= 5.0)
-			{
-				if (PlaneFM::throttleInput <= 24.9)
-				{
-					PlaneFM::throttleInput += 0.01;
-				}
-				if (PlaneFM::throttleInput > 25.0)
-				{
-					PlaneFM::throttleInput -= 0.50;
-				}
-			}
-			else
-			{
-				//PlaneFM::throttleInput -= 100.0;
-				PlaneFM::throttleInput = 0.0;
-				//PlaneFM::throttleInput = 0 + limit((value), 0.0, 0.01);
-			
-			}
-		}
-		else
-		{
-			PlaneFM::throttleInput = 0;
-		}
-		break;
-		
-
-		//flaps
-	case flapsdown:
-		PlaneFM::flap_command = 1.0;
-		PlaneFM::pitchTrim -= 1;
-		break;
-
-	case flapsup:
-		PlaneFM::flap_command = 0.0;
-		PlaneFM::pitchTrim += 1;
-		break;
-
-	case flapstoggle: //toggle
-		if (PlaneFM::ACTUATORS::flapPosition_DEG < 0.5)
-		{ PlaneFM::flap_command = 1.0;
-			PlaneFM::pitchTrim += 1; }
-		else if (PlaneFM::ACTUATORS::flapPosition_DEG > 0.51)
-		{ PlaneFM::flap_command = 0.0;
-			PlaneFM::pitchTrim -= 1; }
-		break;
-
 
 		//Air brakes
-	case AirBrakes: //toggle
+	case PlaneAirBrake: //toggle
 		if (PlaneFM::ACTUATORS::airbrake_state < 0.25) 
 			PlaneFM::airbrake_command = 1.0;
 		else if (PlaneFM::ACTUATORS::airbrake_state > 0.75) 
 			PlaneFM::airbrake_command = 0.0;
 		break;
-	case AirBrakesOff:
-		PlaneFM::airbrake_command = 0.0;
-	case AirBrakesOn:
-		PlaneFM::airbrake_command = 1.0;
-		break;
+	//case PlaneAirBrakeOffKey:
+	//	PlaneFM::airbrake_command = 0.0;
+	//case PlaneAirBrakeOnKey:
+	//	PlaneFM::airbrake_command = 1.0;
+	//	break;
 
 		// Gear commands
-	case geardown:
-		PlaneFM::GearCommand = 1.0;
-		break; 
-	case gearup:
-		PlaneFM::GearCommand = 0.0;
-		break;
-	case geartoggle:
+	case GeartoggleKey:
 		if (PlaneFM::ACTUATORS::gear_state > 0.5) PlaneFM::GearCommand = 0.0;
 		else if (PlaneFM::ACTUATORS::gear_state < 0.5) PlaneFM::GearCommand = 1.0;
-	case gearHandle:
+	case GearHandle:
 		if (PlaneFM::ACTUATORS::gear_state > 0.5) PlaneFM::GearCommand = 0.0;
 		else if (PlaneFM::ACTUATORS::gear_state < 0.5) PlaneFM::GearCommand = 1.0;
-	case WheelBrakeOn:
-		PlaneFM::rolling_friction = 0.165;
-		PlaneFM::WheelBrakeCommand = 1.0 * weight_on_wheels;
+	case WheelBrakeOnKey:
+		PlaneFM::rolling_friction = 5.0; // was 0.165
+		PlaneFM::WheelBrakeCommand = 1.0 *weight_on_wheels;
+		// Console Log start
+		fprintf(stderr, "%s: %f  \n", "rolling_friction", PlaneFM::rolling_friction);
+		// Console Log End
 		break;
-	case WheelBrakeOff:
+	case WheelBrakeOffKey:
 		PlaneFM::rolling_friction = 0.015;
-		PlaneFM::WheelBrakeCommand = 0.0 * weight_on_wheels;
+		PlaneFM::WheelBrakeCommand = 0.0 *weight_on_wheels;
+		// Console Log start
+		fprintf(stderr, "%s: %f  \n", "rolling_friction", PlaneFM::rolling_friction);
+		// Console Log End
 		break;
 
 		//Other commands
-	case tailhook:  
+	case TailHookKey:
 		if (misc_state < 0.5) PlaneFM::misc_cmd = 1.0;
 		if (misc_state > 0.5) PlaneFM::misc_cmd = 0.0;
 		break;
 
-		//Autopilot
-	case autopilot_alt:
 
-		horiz_hold = 0;
-		altroll_hold = 0;
-
-		if (alt_hold < 0.5) alt_hold = 1;
-		else if (alt_hold > 0.5) alt_hold = 0;
-		break;
-
-	case autopilot_horiz:
-
-		alt_hold = 0;
-		altroll_hold = 0;
-
-		if (horiz_hold < 0.5) horiz_hold = 1;
-		else if (horiz_hold > 0.5) horiz_hold = 0;
-		break;
-
-	case autopilot_alt_roll:
-
-		alt_hold = 0;
-		horiz_hold = 0;
-
-		if (altroll_hold < 0.5) altroll_hold = 1;
-		else if (altroll_hold > 0.5) altroll_hold = 0;
-		break;
-
-	case autopilot_reset:
-
-		horiz_hold = 0;
-		alt_hold = 0;
-		altroll_hold = 0;
-
-		break;
-
-	case resetTrim:
+	case ResetTrimKey:
 		PlaneFM::pitchTrim = 0.0;
 		PlaneFM::rollTrim = 0.0;
 		PlaneFM::yawTrim = 0.0;
 		break;
 
 
-	case Dimmer_SW:
+	case Dimmer_Day:
 		if (PlaneFM::COCKPITIO::Dimmer_SW) {
 			PlaneFM::COCKPITIO::Dimmer_SW = 0;
 		}
 		else {
 			PlaneFM::COCKPITIO::Dimmer_SW = 1;
+		}
+		break;
+
+	case MasterArm:
+		if (PlaneFM::COCKPITIO::Master_Arm) {
+			PlaneFM::COCKPITIO::Master_Arm = 0;
+		}
+		else {
+			PlaneFM::COCKPITIO::Master_Arm = 1;
+		}
+		break;
+
+	case Warning_Press:
+		if (PlaneFM::COCKPITIO::Master_Warn) {
+			PlaneFM::COCKPITIO::Master_Warn = 0;
+		}
+		else {
+			PlaneFM::COCKPITIO::Master_Warn = 1;
+		}
+		break;
+
+	case EngineFire_Press:
+		if (PlaneFM::COCKPITIO::Engine_Fire) {
+			PlaneFM::COCKPITIO::Engine_Fire = 0;
+		}
+		else {
+			PlaneFM::COCKPITIO::Engine_Fire = 1;
 		}
 		break;
 
@@ -1964,6 +1795,10 @@ void ed_fm_cold_start()
 	PlaneFM::rudder_DEG_commanded = 0;
 	PlaneFM::rudder_DEG = 0;
 	PlaneFM::aileron_DEG = 0;
+
+	// Cockpit Switches
+	PlaneFM::COCKPITIO::Dimmer_SW = 1;
+	PlaneFM::COCKPITIO::Master_Arm = 0;
 } 
 
 // What parameters should be set to what in a hot start on the ground?
@@ -1993,6 +1828,10 @@ void ed_fm_hot_start()
 	PlaneFM::rudder_DEG_commanded = 0; 
 	PlaneFM::rudder_DEG = 0;
 	PlaneFM::aileron_DEG = 0;
+
+	// Cockpit Switches
+	PlaneFM::COCKPITIO::Dimmer_SW = 1;
+	PlaneFM::COCKPITIO::Master_Arm = 0;
 }
 
 // What parameters should be set to what in a hot start in the air?
@@ -2022,6 +1861,10 @@ void ed_fm_hot_start_in_air()
 	PlaneFM::rudder_DEG_commanded = 0;
 	PlaneFM::rudder_DEG = 0;
 	PlaneFM::aileron_DEG = 0;
+
+	// Cockpit Switches
+	PlaneFM::COCKPITIO::Dimmer_SW = 1;
+	PlaneFM::COCKPITIO::Master_Arm = 0;
 }
 
 //What should be fixed when repairs are complete?

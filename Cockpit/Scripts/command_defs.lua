@@ -1,281 +1,144 @@
-start_custom_command   = 10000
-local __count_custom = start_custom_command-1
-local function __custom_counter()
-	__count_custom = __count_custom + 1
-	return __count_custom
-end
+-- Should be identical to the EFM inputs.h
 
-Axes =
-{
-	JoystickThrottle				= 2004,
-}
 
 Keys =
 {
-
-    --AutoStartDeviceRelated          = 414,
-	iCommandPlaneIncreaseBase_Distance= 412,
-
-    iCommandPlaneJettisonFuelTanks  = 178,
-    iCommandPlaneJettisonFuelTanksUp= 170,
-
-    iCommandPlaneFire               = 84,     -- PickleOn + iCommandPlaneFire = FireBurst without burst limit
-    iCommandPlaneFireOff            = 85,     -- PickleOn + iCommandPlaneFireOff = Stop Burst
-
-
-
-    iCommandSwitchMasterArm	        = 283,      --Toggles MasterArm
-
-	iCommandToggleCommandMenu		= 179,
-
-    PlanePickleOn	                = 350,
-	PlanePickleOff	                = 351,
-    
-    
-    PlaneChgWeapon                  = 101,
-    PlaneChgTargetNext              = 102,    -- iCommandPlaneChangeTarget
-    PlaneModeNAV                    = 105,
-    PlaneModeBVR                    = 106,
-    PlaneModeVS                     = 107,
-    PlaneModeBore                   = 108,
-    PlaneModeGround                 = 111,
-
-	Canopy                          = 71,
+	-- ----- Keys from command_defs.lua (4000-5999) -----//
 	
-	PlaneAirBrake                   = 73,
-	PlaneAirBrakeOn                 = 147,
-	PlaneAirBrakeOff                = 148,	
-	
-	PlaneFlaps                      = 72,
-	PlaneFlapsOn                    = 145, -- Fully down
-	PlaneFlapsOff                   = 146, -- Fully up
-    	
-	--PlaneGear                       = 68,						-- Шасси
-	--PlaneGearUp	                    = 430,
-	--PlaneGearDown                   = 431,
-    
-   
-	LeftEngineStart 				= 311,			-- ?????? ?????? ?????????
-	RightEngineStart 				= 312,			-- ?????? ??????? ?????????
+	-- Test Keys
 
-	LeftEngineStop 					= 313,				-- ?????????? ?????? ?????????
-    RightEngineStop 				= 314,			-- ?????????? ??????? ?????????
-    
+	-- Default Commands
+	iCommandPlaneFire = 4084, --iCommandPlaneFire = FireBurst without burst limit
+	iCommandPlaneFireOff = 4085, --iCommandPlaneFireOff = Stop Burst
 
+	-- Gear Keys (4150 - 4159)
+	GeartoggleKey = 4150,
+	WheelBrakeOnKey = 4074, --151, iCommandPlaneWheelBrakeOn = 74
+	WheelBrakeOffKey = 4075, --152, iCommandPlaneWheelBrakeOff = 75
 
-	PowerOnOff                      = 315,
+	-- Splaps Keys (4160 - 4164)
+	PlaneAirBrakeKey = 4160,
+	PlaneAirBrakeOnKey = 4161,
+	PlaneAirBrakeOffKey = 4162,
 
-    AltimeterPressureIncrease 		= 316,  
-    AltimeterPressureDecrease 		= 317,
-    AltimeterPressureStop 			= 318,       
+	-- Hook Keys (4165 - 4169)
+	TailHookKey = 4165,
 
-    PlaneLightsOnOff                = 175,
-    PlaneHeadlightOnOff             = 328,
+	-- Flight Controls Keys (4170 - 4179)
+	ResetTrimKey = 4170,
+	TrimUpKey = 4171,
+	TrimDownKey = 4172,
+	TrimLeftKey = 4173,
+	TrimRightKey = 4174,
+	RuddertrimLeftKey = 4175,
+	RuddertrimRightKey = 4176,
 
-    PowerGeneratorLeft              = 711,
-    PowerGeneratorRight             = 712,
-
-    BatteryPower                    = 1073,   -- iCommandBatteryPower
-
-    PlaneChgTargetPrev              = 1315,   -- iCommandPlaneUFC_STEER_DOWN
-
-    -- add custom commands here --
-
-    ---- A-29B
-    EngineStart                     = __custom_counter(),
-
-    Engine_Stop                     = __custom_counter(),
-
-	PlaneFireOn		                = __custom_counter(), -- replaces iCommandPlaneFire
-	PlaneFireOff	                = __custom_counter(), -- replaces iCommandPlaneFireOff
-    PickleOn                        = __custom_counter(), -- replaces iCommandPlanePickleOn
-    PickleOff                       = __custom_counter(), -- replaces iCommandPlanePickleOff
+	-- Electrical System Keys (4180 - 4199)
 
 
-    -- Stick
-    StickStep						= __custom_counter(),
-    StickDesignate					= __custom_counter(),
-    StickUndesignate				= __custom_counter(),
-    MasterModeSw					= __custom_counter(),
-    APDisengage						= __custom_counter(),
-    APOvrd							= __custom_counter(),
-    Call							= __custom_counter(),
-    Trigger							= __custom_counter(),
+	-- Weapons System Keys (4200 - 4219)
+	PlaneFireOn = 4200,
+	PlaneFireOff = 4201,
+	PickleOn = 4202,
+	PickleOff = 4203,
+	MasterArmKey = 4204, --Toggles MasterArm
+	GunEnableKey = 4205,
+	SelectPylon1Key = 4206,
+	SelectPylon2Key = 4207,
+	SelectPylon3Key = 4208,
+	SelectPylon4Key = 4209,
+	AAModeKey = 4210,
+	AGModeKey = 4211,
 
 
-    -- Throttle
-    GunSelDist						= __custom_counter(),
-    GunRearm						= __custom_counter(),
-    Cage							= __custom_counter(),
-    TDCX        	     			= __custom_counter(),
-    TDCY        	     			= __custom_counter(),
-    AirBrake           				= __custom_counter(),
-    Cutoff            				= __custom_counter(),
+	-- Engine System Keys (4220 - 4229)
+	EngineStartKey = 4220,
+	Engine_StopKey = 4221,
+	EngineIgnitorKey = 4222,
 
-    AviMdp1                     	= __custom_counter(),
-    AviMdp2                     	= __custom_counter(),
-    AviMst                     		= __custom_counter(),
-    AviSms                     		= __custom_counter(),
-    AviVuhf                     	= __custom_counter(),
-
-    ElecBatt                     	= __custom_counter(),
-    ElecGen                     	= __custom_counter(),
-    ElecAcftIntc                 	= __custom_counter(),
-    ElecExtPwr                     	= __custom_counter(),
-    ElecBkp                     	= __custom_counter(),
-    ElecEmer                     	= __custom_counter(),
-
-    COM1                     		= __custom_counter(),
-    COM2                     		= __custom_counter(),
-    COM3                     		= __custom_counter(),
 
 }
 
-start_command   = 3024
-local __count = start_command-1
-local function __counter()
-	__count = __count + 1
-	return __count
-end
+
+
+--
+Axes =
+{
+	-- ----- Axes from command_defs.lua (2000-2999) ----- //
+	
+	JoystickPitch = 2001,
+	JoystickRoll = 2002,
+	JoystickYaw = 2003,
+	JoystickThrottle = 2004,
+}
+
+
 
 device_commands =
 {
-    Button_Test                     = 3000,
-    arm_gun                         = 3001,
-
-    gunpod_l                        = 3002,
-    gunpod_c                        = 3003,
-    gunpod_r                        = 3004,
-    gunpod_chargeclear              = 3005,
-
-    Gear                            = 3006,
-    Hook                            = 3007,
-
-    speedbrake                      = 3008,
-
-    emer_gear_release               = 3009,
+	-- ----- Commands from command_defs.lua (3000-) ----- //
 	
-	Dimmer_Day						= 3010,
+	-- Test Commands
+	Button_Test = 3000, 
+
+	-- Gear Commands (3001 - 3009)
+	GearHandle = 3001,
+	Emer_gear_release = 3002,
+	EmerParkBrake = 3003,
+	Wheelbrake_AXIS = 3004,
+	Left_wheelbrake_AXIS = 3005,
+	Right_wheelbrake_AXIS = 3006,
+
+
+	-- Splaps Commands (3010 - 3014)
+	PlaneAirBrake = 3010,
+
+
+	-- Hook Commands (3015 - 3019)
+	TailHook = 3015,
+
+
+	-- Flight Controls Commands  (3020 - 3029)
+
+
+	-- Electrical System Commands  (3030 - 3049)
+	Warning_Press 	= 3030,
+	EngineFire_Press 	= 3031,
+
+
+	-- Weapons System Commands (3050 - 3069)
+	MasterArm = 3050,
+	WpnSelect = 3051,
+	JettSelect = 3052,
+	GunArm = 3053,
+	SelectPylon1 = 3054,
+	SelectPylon2 = 3055,
+	SelectPylon3 = 3056,
+	SelectPylon4 = 3057,
+
+	-- Engine System Commands (3070 - 3079)
+	EngineStart = 3070,
+	EngineIgnition = 3071,
+	ThrottleAxis = 3072, 
+	ThrottleClick = 3073,
+
+
+	-- ECS Commands (3080 - 3089)
+
+
+	-- Interior Lighting Commands (3090 - 3099)
+	Dimmer_Day = 3090,
+
+
+	-- Comms Commands (3100 - 3119)
+	pilot_salute = 3100,
 
 
 
-
-    rudder_trim                     = 3011,
-    throttle_axis                   = 3012,
-    throttle_click                  = 3013,
-
-
-    clock_stopwatch                 = 3014,
-
-	
-	throttle_axis_mod               = 3015,
-	
-	
-	pitch_axis_mod 	                = 3016,
-	roll_axis_mod 	                = 3017,
-	rudder_axis_mod                 = 3018,
-	wheelbrake_AXIS 	            = 3019,
-
+	-- Misc Commands (3120 - )
+	clock_stopwatch = 3120,
     
-    cabin_pressure                  = 3020,
-    windshield_defrost              = 3021,
-    cabin_temp                      = 3022,
-
-    man_flt_control_override        = 3023,
-    
-    shrike_selector                 = __counter(),
-    oxygen_switch                   = __counter(),
-    
-    COMPASS_set_heading             = __counter(),
-    COMPASS_push_to_sync            = __counter(),
-    COMPASS_free_slaved_switch      = __counter(),
-    COMPASS_latitude                = __counter(),
-    
-    ENGINE_wing_fuel_sw             = __counter(),
-    ENGINE_drop_tanks_sw            = __counter(),
-    ENGINE_fuel_control_sw          = __counter(),
-    ENGINE_manual_fuel_shutoff        = __counter(),
-    ENGINE_manual_fuel_shutoff_catch  = __counter(),
-
-
-    throttle_click_ITER             = __counter(),
-
-
-    GunsightElevationControl_AXIS   = __counter(),
-    pilot_salute                    = __counter(),
-
-    left_wheelbrake_AXIS            = __counter(),
-    right_wheelbrake_AXIS           = __counter(),
-
-
-    EngineStart                     = __counter(),
-    EnginePMU                       = __counter(),
-    EngineIgnition                  = __counter(),
-    EngineInnSep                    = __counter(),
-
-    ExtLightSearch                  = __counter(),
-    ExtLightBeacon                  = __counter(),
-    ExtLightStrobe                  = __counter(),
-    ExtLightInfrared                = __counter(),
-    ExtLightNormal                  = __counter(),
-    ExtLightNav                     = __counter(),
-    ExtLightTaxi                    = __counter(),
-    ExtLightLng                     = __counter(),
-
-    ElecBatt                        = __counter(),
-    ElecGen                         = __counter(),
-    ElecAC                          = __counter(),
-    ElecExtPwr                      = __counter(),
-    ElecBkp                         = __counter(),
-    ElecEmer                        = __counter(),
-    ElecAcftIntc                    = __counter(),
-
-
-    Salvo                     		= __counter(),
-    LndGear                     	= __counter(),
-    LndGearBeep                     = __counter(),
-    LndGearOvr                     	= __counter(),
-    LndGearEmer                     = __counter(),
-    FuelMain                     	= __counter(),
-    FuelAux                     	= __counter(),
-    FuelXfr                     	= __counter(),
-    SeatAdj                     	= __counter(),
-    EmerSpdBrk                  	= __counter(),
-    FuelHydBleed                	= __counter(),
-    AntiG                       	= __counter(),
-    TrimEmerAil                 	= __counter(),
-    TrimEmerElev                	= __counter(),
-    AutoRudder                  	= __counter(),
-    Flaps                       	= __counter(),
-    Friction                    	= __counter(),
-
-    EmerParkBrake               	= __counter(),
-
-    
-
-    AudioNormal               		= __counter(),
-
-
-    ClockSel                     	= __counter(),
-    ClockCtrl                      	= __counter(),
-    
-    WARNING_PRESS                   = __counter(),
-    CAUTION_PRESS                   = __counter(),
-
-    
-    STICK_WEAPON_RELEASE			= __counter(),
-    STICK_TRIGGER_2ND_DETENT		= __counter(),
-
-
-    STICK_WEAPON_RELEASE_OFF		= __counter(),
-    WPN_AG_LAUNCH_OP_STEP			= __counter(),
-	
-    ThrottleAxis					= __counter(),
-    ThrottleClick					= __counter(),
-
-
 }
-
 
 
 -- if command == 0x55 then

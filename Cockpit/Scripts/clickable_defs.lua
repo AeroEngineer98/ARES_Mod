@@ -69,6 +69,8 @@ function multiposition_switch(hint_,device_,command_,arg_,count_,delta_,inversed
 			}
 end
 
+
+
 function multiposition_switch_cl(hint_,device_,command_,arg_,count_,delta_,inversed_,min_,animation_speed_,cycled_,attach_left_,attach_right_)
     local	element = multiposition_switch(hint_,device_,command_,arg_,count_,delta_,inversed_,min_,animation_speed_,cycled_,attach_left_,attach_right_)
 	element.anim_close_ends	= {true, true}

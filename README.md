@@ -15,12 +15,17 @@ This mod is my first foray into the modding world of DCS. I've created the 3D mo
 - Darrent Turner (Flight Test)
 - Jake Rabideau (Flight Test)
 
+### August 6, 2023 Commit
+- Added a weapons panel
+- Changed the guns handdling to be through the weapons system lua script
+- Added the ability to release bombs and missiles, though there's no targeting ability with any yet
+- Moved the cockpit 5" aft toward the pilot
+
 
 ### February 24, 2023 Commit
 - Added liveries! ARES can now have the Iron Eagle III livery
 - Upgraded the standard "Blue Swoosh" livery
 - Updated some missions
-- Updated the flight model to have a G/AoA limiter
 
 
 ### February 19, 2023 Commit

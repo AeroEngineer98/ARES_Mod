@@ -183,7 +183,7 @@ namespace PlaneFM
 			//fprintf(stderr, "stickcommand: %f   ", stickcommand);
 
 			if (airspeed <= 150) {
-				fprintf(stderr, "Airspeed <= 200  ");
+				//fprintf(stderr, "Airspeed <= 200  ");
 				//FinalStickCommand = stickcommand;
 				if (aoa <= aoaPLimit && aoa >= aoaNLimit)
 				{

@@ -31,7 +31,7 @@ join(res.keyCommands,{
 {pressed = iCommandPlaneTrimRightRudder,                    up = iCommandPlaneTrimStop,                         name = _('Trim: Rudder Right'),		                            category = _('Flight Control')},
 
 -- Systems          
-{down = iCommandPlaneAirBrake,				                                                                    name = _('Airbrake'),					                        category = _('Systems')},
+{down = device_commands.PlaneAirBrake,																			name = _('Airbrake'),											category = _('Systems')},
 {down = iCommandPlaneAirBrakeOn,                            up = iCommandPlaneAirBrakeOn,				        name = _('Airbrake On'),							            category = _('Systems'),                        value_down =  1.0,		value_up = 0.0},
 {down = iCommandPlaneAirBrakeOff,                           up = iCommandPlaneAirBrakeOff,			            name = _('Airbrake Off'),							            category = _('Systems'),                        value_down =  1.0,		value_up = 0.0},
 {down = iCommandPlaneWingtipSmokeOnOff,		                                                                    name = _('Smoke'),						                        category = _('Systems')},
@@ -41,11 +41,11 @@ join(res.keyCommands,{
 {down = iCommandPlaneFlaps,					                                                                    name = _('Flaps Up/Down'),				                        category = _('Systems')},
 {down = iCommandPlaneFlapsOn,				                                                                    name = _('Flaps Landing Position'),		                        category = _('Systems')},
 {down = iCommandPlaneFlapsOff,				                                                                    name = _('Flaps Up'),					                        category = _('Systems')},
-{down = iCommandPlaneGear,					                                                                    name = _('Landing Gear Up/Down'),		                        category = _('Systems')},
+{down = device_commands.GearHandle,																				name = _('Landing Gear Up/Down'),								category = _('Systems')},
 {down = iCommandPlaneGearUp,				                                                                    name = _('Landing Gear Up'),			                        category = _('Systems')},
 {down = iCommandPlaneGearDown,				                                                                    name = _('Landing Gear Down'),			                        category = _('Systems')},
 {down = iCommandPlaneGearUp,					            up = iCommandPlaneGearDown,                         name = _('Landing Gear Down else Up'),		                    category = _('Systems')},
-{down = iCommandPlaneWheelBrakeOn,                          up = iCommandPlaneWheelBrakeOff,			        name = _('Wheel Brake On'),		                                category = _('Systems')},
+{down = Keys.WheelBrakeOnKey,                          		up = Keys.WheelBrakeOffKey,			        		name = _('Wheel Brake On'),		                                category = _('Systems')},
 -- {down = iCommandPlaneWheelBrakeLeftOn,	                    up = iCommandPlaneWheelBrakeLeftOff,		        name = _('Wheel Brake Left - ON/OFF'),		                    category = {_('Systems')}},
 -- {down = iCommandPlaneWheelBrakeRightOn,	                    up = iCommandPlaneWheelBrakeRightOff,		        name = _('Wheel Brake Right - ON/OFF'),		                    category = {_('Systems')}},
 {down = iCommandPlaneFonar,					                                                                    name = _('Canopy Open/Close'),					                category = _('Systems')},
@@ -82,9 +82,9 @@ join(res.keyCommands,{
 
 {down = Keys.Call,	                                        up = Keys.Call,                                     name = _('Call'),                                               category = {_('Stick'), _('HOTAS')}, value_down =  1.0,		value_up = 0.0},
 
-{down = Keys.Trigger,	                                    up = Keys.Trigger,                                  name = _('Gun Trigger First Detent'),                           category = {_('Stick'), _('HOTAS')}, value_down =  1.0,		value_up = 0.0},
-{down = Keys.Trigger,	                                    up = Keys.Trigger,                                  name = _('Gun Trigger Second Detent'),                          category = {_('Stick'), _('HOTAS')}, value_down =  2.0,		value_up = 0.0},
-{down = Keys.WeaponRelease,	                                up = Keys.WeaponRelease,	                        name = _('Weapon Release Button (WRB)'),                        category = {_('Stick'), _('HOTAS')}, value_down =  1.0,		value_up = 0.0},
+{down = Keys.PlaneFireOn,	                                up = Keys.PlaneFireOff,                             name = _('Gun Trigger First Detent'),                         	category = {_('Stick'), _('HOTAS')}},
+{down = Keys.PlaneFireOn,	                                up = Keys.PlaneFireOff,                             name = _('Gun Trigger Second Detent'),                        	category = {_('Stick'), _('HOTAS')}},
+{down = Keys.PickleOn,	                                	up = Keys.PickleOff,	                        	name = _('Weapon Release Button (WRB)'),                        category = {_('Stick'), _('HOTAS')}},
 
 {down = Keys.DisplayMngt,                                   up = Keys.DisplayMngt,                              name = _('DMS Fwd - HUD'),                                      category = {_('Stick'), _('HOTAS')}, value_down =  1.0,		value_up = 0.0},
 {down = Keys.DisplayMngt,                                   up = Keys.DisplayMngt,                              name = _('DMS Aft - No Function'),                              category = {_('Stick'), _('HOTAS')}, value_down =  2.0,		value_up = 0.0},
