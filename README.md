@@ -15,6 +15,10 @@ This mod is my first foray into the modding world of DCS. I've created the 3D mo
 - Darrent Turner (Flight Test)
 - Jake Rabideau (Flight Test)
 
+
+### August 8, 2023 Commit
+- Updated the included header files to try to fix an issue Darren was having with the Custom_FM.dll file not being used.
+
 ### August 6, 2023 Commit
 - Added a weapons panel
 - Changed the guns handdling to be through the weapons system lua script
