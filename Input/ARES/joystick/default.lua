@@ -27,8 +27,8 @@ join(res.keyCommands,{
 {down = iCommandPlaneAUTIncreaseRegime,			                                                                name = _('Throttle Step Up'),			                        category = _('Flight Control')},
 {down = iCommandPlaneAUTDecreaseRegime,			                                                                name = _('Throttle Step Down'),			                        category = _('Flight Control')},
 
-{pressed = iCommandPlaneTrimLeftRudder,	                    up = iCommandPlaneTrimStop,                         name = _('Trim: Rudder Left'),		                            category = _('Flight Control')},
-{pressed = iCommandPlaneTrimRightRudder,                    up = iCommandPlaneTrimStop,                         name = _('Trim: Rudder Right'),		                            category = _('Flight Control')},
+{pressed = RuddertrimLeftKey,																					name = _('Trim: Rudder Left'),		                            category = _('Flight Control')},
+{pressed = RuddertrimRightKey,																					name = _('Trim: Rudder Right'),		                            category = _('Flight Control')},
 
 -- Systems          
 {down = device_commands.PlaneAirBrake,																			name = _('Airbrake'),											category = _('Systems')},
@@ -63,10 +63,10 @@ join(res.keyCommands,{
 {pressed = iCommandAltimeterPressureDecrease,               up = iCommandAltimeterPressureStop,                 name = _('Altimeter Pressure Decrease'),                        category = _('Systems')},
 
 -- Stick
-{pressed = iCommandPlaneTrimUp,			                    up = iCommandPlaneTrimStop,                         name = _('Trim: Nose Up'),			                            category = {_('Stick'), _('HOTAS')}},
-{pressed = iCommandPlaneTrimDown,		                    up = iCommandPlaneTrimStop,                         name = _('Trim: Nose Down'),		                            category = {_('Stick'), _('HOTAS')}},
-{pressed = iCommandPlaneTrimLeft,		                    up = iCommandPlaneTrimStop,                         name = _('Trim: Left Wing Down'),	                            category = {_('Stick'), _('HOTAS')}},
-{pressed = iCommandPlaneTrimRight,		                    up = iCommandPlaneTrimStop,                         name = _('Trim: Right Wing Down'),	                            category = {_('Stick'), _('HOTAS')}},
+{pressed = TrimUpKey,																							name = _('Trim: Nose Up'),			                            category = {_('Stick'), _('HOTAS')}},
+{pressed = TrimDownKey,																							name = _('Trim: Nose Down'),		                            category = {_('Stick'), _('HOTAS')}},
+{pressed = TrimLeftKey,																							name = _('Trim: Left Wing Down'),	                            category = {_('Stick'), _('HOTAS')}},
+{pressed = TrimRightKey,																						name = _('Trim: Right Wing Down'),	                            category = {_('Stick'), _('HOTAS')}},
     
 {down = Keys.StickStep,	                                    up = Keys.StickStep,                                name = _('Step'),		                                        category = {_('Stick'), _('HOTAS')}, value_down =  1.0,		value_up = 0.0},
 {down = Keys.StickDesignate,	                            up = Keys.StickDesignate,                           name = _('Designate'),                                          category = {_('Stick'), _('HOTAS')}, value_down =  1.0,		value_up = 0.0},

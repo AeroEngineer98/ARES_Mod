@@ -121,6 +121,16 @@ Left FWD PANEL
 #106 Landing Gear Light - R - Day
 #107 Landing Gear Light - Unsafe - Day
 
+-- Weapons Panel 2
+#120 Chemtrail
+#121 SW Cool
+#122 Bombs Arm
+#123 Timing Mult
+#124 Release Mode
+#125 Release Timing Knob
+#126 Missile Volume
+
+
 
 
 
@@ -129,20 +139,20 @@ Left FWD PANEL
 Right FWD PANEL
 ==========================================================================
 ---- Warning Lights ----
-#110 Canopy light
-#111 Bingo light
-#112 Hyd_Press light
-#113 Generator light
-#114 L_Fuel_Low light
-#115 R_Fuel_Low light
-#116 Motive light
-#117 Oil_Temp light
-#118 Oil_Pressure light
-#119 Batt light
-#120 Chem Trail light
-#121 Splaps light
-#122 Autopilot light
-#123 Hook light
+#200 Canopy light
+#201 Bingo light
+#202 Hyd_Press light
+#203 Generator light
+#204 L_Fuel_Low light
+#205 R_Fuel_Low light
+#206 Motive light
+#207 Oil_Temp light
+#208 Oil_Pressure light
+#209 Batt light
+#210 Chem Trail light
+#211 Splaps light
+#212 Autopilot light
+#213 Hook light
 
 
 
@@ -150,5 +160,5 @@ Right FWD PANEL
 Right Side PANEL
 ==========================================================================
 
-#200 Day/Night Dimmer Switch
-#201 Variable Dimmer
+#300 Day/Night Dimmer Switch
+#301 Variable Dimmer

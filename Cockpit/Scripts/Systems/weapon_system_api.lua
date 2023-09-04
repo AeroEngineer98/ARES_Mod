@@ -1,4 +1,4 @@
---dofile(LockOn_Options.common_script_path.."../../../Database/wsTypes.lua")
+dofile(LockOn_Options.common_script_path.."../../../Database/wsTypes.lua")
 
 local count = -1
 local function counter()
@@ -9,12 +9,13 @@ end
 
 WPN_WEAPON_TYPE_IDS = {
     NO_WEAPON = 0,
-    --AA_IR_MISSILE = 1,
-    --AG_WEAPON_BEG = 2,
-    --AG_UNGUIDED_BOMB = 3,
-    --AG_UNGUIDED_ROCKET = 4,
+    AA_IR_MISSILE = 1,
+    AG_WEAPON_BEG = 2,
+    AG_UNGUIDED_BOMB = 3,
+    AG_UNGUIDED_ROCKET = 4,
     AG_GUN = 5,
-    --AG_WEAPON_END = 6,
+    AG_WEAPON_END = 6,
+	AA_AIM9M = 7
 }
 
 

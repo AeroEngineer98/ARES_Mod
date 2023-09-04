@@ -75,7 +75,7 @@ join(res.keyCommands,{
 {combos = {{key = '2'}},                                                down = Keys.SelectPylon2Key,																	name = _('Arm Pylon 2'),										category = {_('Systems')}},
 {combos = {{key = '3'}},                                                down = Keys.SelectPylon3Key,																	name = _('Arm Pylon 3'),										category = {_('Systems')}},
 {combos = {{key = '4'}},                                                down = Keys.SelectPylon4Key,																	name = _('Arm Pylon 4'),										category = {_('Systems')}},
-{combos = {{key = '5'}},                                                down = Keys.GunEnableKey,																		name = _('Arm Gun'),										category = {_('Systems')}},
+{combos = {{key = '5'}},                                                down = Keys.GunEnableKey,																		name = _('Arm Gun'),											category = {_('Systems')}},
 
 {                                                                       down = Keys.APDisengage,                            up = Keys.APDisengage,                      name = _('Autopilot Disengage'),                                category = {_('Stick'), _('HOTAS')},            value_down =  1.0,		value_up = 0.0},
 {                                                                       down = Keys.APOvrd,                                 up = Keys.APOvrd,                           name = _('Autopilot Override'),                                 category = {_('Stick'), _('HOTAS')},            value_down =  1.0,		value_up = 0.0},

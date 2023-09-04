@@ -1176,14 +1176,14 @@ void ed_fm_set_command(int command, float value)	// Command = Command Index (See
 		PlaneFM::rolling_friction = 5.0; // was 0.165
 		PlaneFM::WheelBrakeCommand = 1.0 *weight_on_wheels;
 		// Console Log start
-		fprintf(stderr, "%s: %f  \n", "rolling_friction", PlaneFM::rolling_friction);
+		//fprintf(stderr, "%s: %f  \n", "rolling_friction", PlaneFM::rolling_friction);
 		// Console Log End
 		break;
 	case WheelBrakeOffKey:
 		PlaneFM::rolling_friction = 0.015;
 		PlaneFM::WheelBrakeCommand = 0.0 *weight_on_wheels;
 		// Console Log start
-		fprintf(stderr, "%s: %f  \n", "rolling_friction", PlaneFM::rolling_friction);
+		//fprintf(stderr, "%s: %f  \n", "rolling_friction", PlaneFM::rolling_friction);
 		// Console Log End
 		break;
 

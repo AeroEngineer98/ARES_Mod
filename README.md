@@ -15,6 +15,8 @@ This mod is my first foray into the modding world of DCS. I've created the 3D mo
 - Darrent Turner (Flight Test)
 - Jake Rabideau (Flight Test)
 
+### September 3, 2023 Commit
+- Added second weapons panel with weapons release mode, release interval, and other fun switches
 
 ### August 8, 2023 Commit
 - Updated the included header files to try to fix an issue Darren was having with the Custom_FM.dll file not being used.

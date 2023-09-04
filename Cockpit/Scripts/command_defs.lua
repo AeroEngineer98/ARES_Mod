@@ -49,12 +49,19 @@ Keys =
 	SelectPylon4Key = 4209,
 	AAModeKey = 4210,
 	AGModeKey = 4211,
+	ChemtrailKey = 4212,
+	SWCoolKey = 4213,
+	BombArmKey = 4214,
+	TimingMultKey = 4215,
+	StoresReleaseModeKey = 4216,
+	StoresReleaseTimerKey = 4217,
+	MSLVolumeKey = 4218,
 
 
 	-- Engine System Keys (4220 - 4229)
 	EngineStartKey = 4220,
 	Engine_StopKey = 4221,
-	EngineIgnitorKey = 4222,
+	EngineIgnitorKey = 4222, 
 
 
 }
@@ -115,6 +122,13 @@ device_commands =
 	SelectPylon2 = 3055,
 	SelectPylon3 = 3056,
 	SelectPylon4 = 3057,
+	Chemtrail = 3058,
+	SWCool = 3059,
+	BombArm = 3060,
+	TimingMult = 3061,
+	StoresReleaseMode = 3062,
+	StoresReleaseTimer = 3063,
+	MSLVolume = 3064,
 
 	-- Engine System Commands (3070 - 3079)
 	EngineStart = 3070,
