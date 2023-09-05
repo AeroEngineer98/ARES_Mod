@@ -46,8 +46,8 @@ local wpn_guns_elapsed = 0
 
 local WPNSelectModes = {'Missiles', 'Bombs', 'Rockets'}
 local ReleaseModes = {'Single', 'Ripple', 'Salvo'}
-local ReleaseTimer
-local RippleLength = 4
+local ReleaseTimer =5
+local RippleLength = 8--4*19
 local RippleWaitStep = 0
 local STA_Arm_pos = {0,0,0,0}
 local STA_Arm_val = {0,0,0,0}
@@ -86,11 +86,7 @@ function update_storages()
 	
 	for i = 1,4 do
 		STA_Info[i-1] = WeaponSystem:get_station_info(i-1)
-		--print_message_to_user(STA_Info[i-1].count)
 	end
-	
-	--print_message_to_user(STA_Info[2].weapon.level3)
-	
 	
 end
 
@@ -106,7 +102,7 @@ end
 
 function updateSwitches()
 
-	--Nose, Nose/Tail SW
+	-- Nose, Nose/Tail SW
 	-- Sidewinder Cool SW
 	-- Missile Volume Knob
 	-- Interval Knob
@@ -151,11 +147,7 @@ function updateSwitches()
 	if RELTimingMult_pos == 1 then
 		ReleaseTimer = ReleaseTimer*10		
 	end
-	
-	print_message_to_user(ReleaseModes[REL_Mode_val])
-	
-	-- WPNSelect_pos = get_cockpit_draw_argument_value(86)
-	--print_message_to_user(WPNSelect_val)
+
 end
 
 
@@ -170,7 +162,6 @@ function update_Stores_List()
 	for i = 0,3 do
 		j = STA_Launch_Order[i+1]
 		
-		--print_message_to_user(j)
 		if STA_Info[j].count > 0 and STA_Info[j].weapon.level2 == wsType_Missile then
 			MSL_STA_List[#MSL_STA_List + 1] = j
 			
@@ -192,7 +183,6 @@ function update_Stores_List()
 	table.remove(RKT_STA_List,1)
 	table.remove(EMT_STA_List,1)
 	
-	-- print_message_to_user(BMB_STA_List[1])
 
 end
 

@@ -8,8 +8,8 @@ Keys =
 	-- Test Keys
 
 	-- Default Commands
-	iCommandPlaneFire = 4084, --iCommandPlaneFire = FireBurst without burst limit
-	iCommandPlaneFireOff = 4085, --iCommandPlaneFireOff = Stop Burst
+	iCommandPlaneFire = 84, --iCommandPlaneFire = FireBurst without burst limit
+	iCommandPlaneFireOff = 85, --iCommandPlaneFireOff = Stop Burst
 
 	-- Gear Keys (4150 - 4159)
 	GeartoggleKey = 4150,
